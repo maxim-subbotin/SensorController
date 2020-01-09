@@ -1,0 +1,560 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B023335A17009D2D4C /* PingConfiguration.swift */; };
+		D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B123335A17009D2D4C /* SwiftPing.swift */; };
+		D674F1B723335A17009D2D4C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B223335A17009D2D4C /* Shared.swift */; };
+		D674F1B823335A17009D2D4C /* ICMP.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B323335A17009D2D4C /* ICMP.swift */; };
+		D674F1B923335A17009D2D4C /* PingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B423335A17009D2D4C /* PingResponse.swift */; };
+		D674F1BE23336C4F009D2D4C /* BDHost.m in Sources */ = {isa = PBXBuildFile; fileRef = D674F1BD23336C4F009D2D4C /* BDHost.m */; };
+		D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA5E2334A83F00760D92 /* SpotsViewController.swift */; };
+		D67DFA612334A96400760D92 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA602334A96400760D92 /* Color.swift */; };
+		D67DFA632334AC0400760D92 /* Spot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA622334AC0400760D92 /* Spot.swift */; };
+		D67DFA6B2335176800760D92 /* SpotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA6A2335176800760D92 /* SpotViewController.swift */; };
+		D67DFA85233519D700760D92 /* SwiftLibModbus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA6E233519D700760D92 /* SwiftLibModbus.swift */; };
+		D67DFA86233519D700760D92 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA70233519D700760D92 /* README.md */; };
+		D67DFA87233519D700760D92 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA71233519D700760D92 /* .gitignore */; };
+		D67DFA88233519D700760D92 /* modbus-data.c in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA76233519D700760D92 /* modbus-data.c */; };
+		D67DFA89233519D700760D92 /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA77233519D700760D92 /* AUTHORS */; };
+		D67DFA8A233519D700760D92 /* modbus.c in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA78233519D700760D92 /* modbus.c */; };
+		D67DFA8B233519D700760D92 /* modbus-tcp.c in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA79233519D700760D92 /* modbus-tcp.c */; };
+		D67DFA8C233519D700760D92 /* COPYING.LESSER in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA7C233519D700760D92 /* COPYING.LESSER */; };
+		D67DFA8D233519D700760D92 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA7D233519D700760D92 /* COPYING */; };
+		D67DFA8E233519D700760D92 /* NEWS in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA7E233519D700760D92 /* NEWS */; };
+		D67DFA8F233519D700760D92 /* modbus-rtu.c in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA7F233519D700760D92 /* modbus-rtu.c */; };
+		D67DFA90233519D700760D92 /* README.rst in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA81233519D700760D92 /* README.rst */; };
+		D67DFA922335262300760D92 /* SpotEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA912335262300760D92 /* SpotEditViewController.swift */; };
+		D6E22531235C94CE00E0D800 /* Connector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E22530235C94CE00E0D800 /* Connector.swift */; };
+		D6E22533235C97B100E0D800 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E22532235C97B100E0D800 /* Tools.swift */; };
+		D6F1DCA82330B16C007248AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F1DCA72330B16C007248AC /* AppDelegate.swift */; };
+		D6F1DCAA2330B16C007248AC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F1DCA92330B16C007248AC /* ViewController.swift */; };
+		D6F1DCAD2330B16C007248AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6F1DCAB2330B16C007248AC /* Main.storyboard */; };
+		D6F1DCAF2330B16E007248AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6F1DCAE2330B16E007248AC /* Assets.xcassets */; };
+		D6F1DCB22330B16E007248AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6F1DCB02330B16E007248AC /* LaunchScreen.storyboard */; };
+		D6F1DCBB2330B17F007248AC /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F1DCBA2330B17F007248AC /* NetworkExtension.framework */; };
+		D6F1DCBE2330B404007248AC /* SwiftWifiIotPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F1DCBD2330B404007248AC /* SwiftWifiIotPlugin.swift */; };
+		D6F1DCC02330B808007248AC /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F1DCBF2330B808007248AC /* ExternalAccessory.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D674F1B023335A17009D2D4C /* PingConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingConfiguration.swift; sourceTree = "<group>"; };
+		D674F1B123335A17009D2D4C /* SwiftPing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPing.swift; sourceTree = "<group>"; };
+		D674F1B223335A17009D2D4C /* Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
+		D674F1B323335A17009D2D4C /* ICMP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICMP.swift; sourceTree = "<group>"; };
+		D674F1B423335A17009D2D4C /* PingResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingResponse.swift; sourceTree = "<group>"; };
+		D674F1BB23336C4E009D2D4C /* WifiScanner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WifiScanner-Bridging-Header.h"; sourceTree = "<group>"; };
+		D674F1BC23336C4F009D2D4C /* BDHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDHost.h; sourceTree = "<group>"; };
+		D674F1BD23336C4F009D2D4C /* BDHost.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDHost.m; sourceTree = "<group>"; };
+		D67DFA5E2334A83F00760D92 /* SpotsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotsViewController.swift; sourceTree = "<group>"; };
+		D67DFA602334A96400760D92 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		D67DFA622334AC0400760D92 /* Spot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spot.swift; sourceTree = "<group>"; };
+		D67DFA6A2335176800760D92 /* SpotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotViewController.swift; sourceTree = "<group>"; };
+		D67DFA6E233519D700760D92 /* SwiftLibModbus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLibModbus.swift; sourceTree = "<group>"; };
+		D67DFA6F233519D700760D92 /* SwiftLibModbus-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SwiftLibModbus-Bridging-Header.h"; sourceTree = "<group>"; };
+		D67DFA70233519D700760D92 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D67DFA71233519D700760D92 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		D67DFA74233519D700760D92 /* modbus-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-private.h"; sourceTree = "<group>"; };
+		D67DFA75233519D700760D92 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		D67DFA76233519D700760D92 /* modbus-data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "modbus-data.c"; sourceTree = "<group>"; };
+		D67DFA77233519D700760D92 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
+		D67DFA78233519D700760D92 /* modbus.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = modbus.c; sourceTree = "<group>"; };
+		D67DFA79233519D700760D92 /* modbus-tcp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "modbus-tcp.c"; sourceTree = "<group>"; };
+		D67DFA7A233519D700760D92 /* modbus-rtu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-rtu.h"; sourceTree = "<group>"; };
+		D67DFA7B233519D700760D92 /* modbus-version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-version.h"; sourceTree = "<group>"; };
+		D67DFA7C233519D700760D92 /* COPYING.LESSER */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING.LESSER; sourceTree = "<group>"; };
+		D67DFA7D233519D700760D92 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		D67DFA7E233519D700760D92 /* NEWS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NEWS; sourceTree = "<group>"; };
+		D67DFA7F233519D700760D92 /* modbus-rtu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "modbus-rtu.c"; sourceTree = "<group>"; };
+		D67DFA80233519D700760D92 /* modbus-tcp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-tcp.h"; sourceTree = "<group>"; };
+		D67DFA81233519D700760D92 /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
+		D67DFA82233519D700760D92 /* modbus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = modbus.h; sourceTree = "<group>"; };
+		D67DFA83233519D700760D92 /* modbus-tcp-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-tcp-private.h"; sourceTree = "<group>"; };
+		D67DFA84233519D700760D92 /* modbus-rtu-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-rtu-private.h"; sourceTree = "<group>"; };
+		D67DFA912335262300760D92 /* SpotEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotEditViewController.swift; sourceTree = "<group>"; };
+		D6E22530235C94CE00E0D800 /* Connector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connector.swift; sourceTree = "<group>"; };
+		D6E22532235C97B100E0D800 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
+		D6F1DCA42330B16C007248AC /* WifiScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WifiScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6F1DCA72330B16C007248AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D6F1DCA92330B16C007248AC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D6F1DCAC2330B16C007248AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D6F1DCAE2330B16E007248AC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D6F1DCB12330B16E007248AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D6F1DCB32330B16E007248AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6F1DCBA2330B17F007248AC /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		D6F1DCBC2330B17F007248AC /* WifiScanner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WifiScanner.entitlements; sourceTree = "<group>"; };
+		D6F1DCBD2330B404007248AC /* SwiftWifiIotPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftWifiIotPlugin.swift; sourceTree = "<group>"; };
+		D6F1DCBF2330B808007248AC /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D6F1DCA12330B16C007248AC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6F1DCC02330B808007248AC /* ExternalAccessory.framework in Frameworks */,
+				D6F1DCBB2330B17F007248AC /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D674F1AF23335A17009D2D4C /* Ping */ = {
+			isa = PBXGroup;
+			children = (
+				D674F1B023335A17009D2D4C /* PingConfiguration.swift */,
+				D674F1B123335A17009D2D4C /* SwiftPing.swift */,
+				D674F1B223335A17009D2D4C /* Shared.swift */,
+				D674F1B323335A17009D2D4C /* ICMP.swift */,
+				D674F1B423335A17009D2D4C /* PingResponse.swift */,
+			);
+			path = Ping;
+			sourceTree = "<group>";
+		};
+		D674F1BA23336C26009D2D4C /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				D674F1BC23336C4F009D2D4C /* BDHost.h */,
+				D674F1BD23336C4F009D2D4C /* BDHost.m */,
+				D674F1BB23336C4E009D2D4C /* WifiScanner-Bridging-Header.h */,
+			);
+			path = ObjC;
+			sourceTree = "<group>";
+		};
+		D67DFA6C233519D700760D92 /* Modbus */ = {
+			isa = PBXGroup;
+			children = (
+				D67DFA6D233519D700760D92 /* SwiftLibModbus */,
+				D67DFA70233519D700760D92 /* README.md */,
+				D67DFA71233519D700760D92 /* .gitignore */,
+				D67DFA72233519D700760D92 /* Vendor */,
+			);
+			path = Modbus;
+			sourceTree = "<group>";
+		};
+		D67DFA6D233519D700760D92 /* SwiftLibModbus */ = {
+			isa = PBXGroup;
+			children = (
+				D67DFA6E233519D700760D92 /* SwiftLibModbus.swift */,
+				D67DFA6F233519D700760D92 /* SwiftLibModbus-Bridging-Header.h */,
+			);
+			path = SwiftLibModbus;
+			sourceTree = "<group>";
+		};
+		D67DFA72233519D700760D92 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				D67DFA73233519D700760D92 /* libmodbus */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		D67DFA73233519D700760D92 /* libmodbus */ = {
+			isa = PBXGroup;
+			children = (
+				D67DFA74233519D700760D92 /* modbus-private.h */,
+				D67DFA75233519D700760D92 /* config.h */,
+				D67DFA76233519D700760D92 /* modbus-data.c */,
+				D67DFA77233519D700760D92 /* AUTHORS */,
+				D67DFA78233519D700760D92 /* modbus.c */,
+				D67DFA79233519D700760D92 /* modbus-tcp.c */,
+				D67DFA7A233519D700760D92 /* modbus-rtu.h */,
+				D67DFA7B233519D700760D92 /* modbus-version.h */,
+				D67DFA7C233519D700760D92 /* COPYING.LESSER */,
+				D67DFA7D233519D700760D92 /* COPYING */,
+				D67DFA7E233519D700760D92 /* NEWS */,
+				D67DFA7F233519D700760D92 /* modbus-rtu.c */,
+				D67DFA80233519D700760D92 /* modbus-tcp.h */,
+				D67DFA81233519D700760D92 /* README.rst */,
+				D67DFA82233519D700760D92 /* modbus.h */,
+				D67DFA83233519D700760D92 /* modbus-tcp-private.h */,
+				D67DFA84233519D700760D92 /* modbus-rtu-private.h */,
+			);
+			path = libmodbus;
+			sourceTree = "<group>";
+		};
+		D6F1DC9B2330B16C007248AC = {
+			isa = PBXGroup;
+			children = (
+				D6F1DCA62330B16C007248AC /* WifiScanner */,
+				D6F1DCA52330B16C007248AC /* Products */,
+				D6F1DCB92330B17F007248AC /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D6F1DCA52330B16C007248AC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6F1DCA42330B16C007248AC /* WifiScanner.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D6F1DCA62330B16C007248AC /* WifiScanner */ = {
+			isa = PBXGroup;
+			children = (
+				D67DFA6C233519D700760D92 /* Modbus */,
+				D674F1BA23336C26009D2D4C /* ObjC */,
+				D674F1AF23335A17009D2D4C /* Ping */,
+				D6F1DCBC2330B17F007248AC /* WifiScanner.entitlements */,
+				D6F1DCA72330B16C007248AC /* AppDelegate.swift */,
+				D6F1DCA92330B16C007248AC /* ViewController.swift */,
+				D6F1DCAB2330B16C007248AC /* Main.storyboard */,
+				D6F1DCAE2330B16E007248AC /* Assets.xcassets */,
+				D6F1DCB02330B16E007248AC /* LaunchScreen.storyboard */,
+				D6F1DCB32330B16E007248AC /* Info.plist */,
+				D6F1DCBD2330B404007248AC /* SwiftWifiIotPlugin.swift */,
+				D67DFA5E2334A83F00760D92 /* SpotsViewController.swift */,
+				D67DFA602334A96400760D92 /* Color.swift */,
+				D67DFA622334AC0400760D92 /* Spot.swift */,
+				D67DFA6A2335176800760D92 /* SpotViewController.swift */,
+				D67DFA912335262300760D92 /* SpotEditViewController.swift */,
+				D6E22530235C94CE00E0D800 /* Connector.swift */,
+				D6E22532235C97B100E0D800 /* Tools.swift */,
+			);
+			path = WifiScanner;
+			sourceTree = "<group>";
+		};
+		D6F1DCB92330B17F007248AC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D6F1DCBF2330B808007248AC /* ExternalAccessory.framework */,
+				D6F1DCBA2330B17F007248AC /* NetworkExtension.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D6F1DCA32330B16C007248AC /* WifiScanner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6F1DCB62330B16E007248AC /* Build configuration list for PBXNativeTarget "WifiScanner" */;
+			buildPhases = (
+				D6F1DCA02330B16C007248AC /* Sources */,
+				D6F1DCA12330B16C007248AC /* Frameworks */,
+				D6F1DCA22330B16C007248AC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WifiScanner;
+			productName = WifiScanner;
+			productReference = D6F1DCA42330B16C007248AC /* WifiScanner.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D6F1DC9C2330B16C007248AC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Max Subbotin";
+				TargetAttributes = {
+					D6F1DCA32330B16C007248AC = {
+						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
+						SystemCapabilities = {
+							com.apple.AccessWiFi = {
+								enabled = 1;
+							};
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.HotspotConfiguration = {
+								enabled = 1;
+							};
+							com.apple.NetworkExtensions.iOS = {
+								enabled = 1;
+							};
+							com.apple.WAC = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = D6F1DC9F2330B16C007248AC /* Build configuration list for PBXProject "WifiScanner" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D6F1DC9B2330B16C007248AC;
+			productRefGroup = D6F1DCA52330B16C007248AC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D6F1DCA32330B16C007248AC /* WifiScanner */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D6F1DCA22330B16C007248AC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D67DFA8D233519D700760D92 /* COPYING in Resources */,
+				D67DFA87233519D700760D92 /* .gitignore in Resources */,
+				D6F1DCB22330B16E007248AC /* LaunchScreen.storyboard in Resources */,
+				D67DFA8C233519D700760D92 /* COPYING.LESSER in Resources */,
+				D67DFA8E233519D700760D92 /* NEWS in Resources */,
+				D6F1DCAF2330B16E007248AC /* Assets.xcassets in Resources */,
+				D67DFA89233519D700760D92 /* AUTHORS in Resources */,
+				D67DFA86233519D700760D92 /* README.md in Resources */,
+				D6F1DCAD2330B16C007248AC /* Main.storyboard in Resources */,
+				D67DFA90233519D700760D92 /* README.rst in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D6F1DCA02330B16C007248AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D67DFA8B233519D700760D92 /* modbus-tcp.c in Sources */,
+				D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */,
+				D674F1B723335A17009D2D4C /* Shared.swift in Sources */,
+				D67DFA612334A96400760D92 /* Color.swift in Sources */,
+				D67DFA8A233519D700760D92 /* modbus.c in Sources */,
+				D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */,
+				D674F1B923335A17009D2D4C /* PingResponse.swift in Sources */,
+				D6F1DCBE2330B404007248AC /* SwiftWifiIotPlugin.swift in Sources */,
+				D67DFA88233519D700760D92 /* modbus-data.c in Sources */,
+				D6F1DCAA2330B16C007248AC /* ViewController.swift in Sources */,
+				D67DFA632334AC0400760D92 /* Spot.swift in Sources */,
+				D67DFA8F233519D700760D92 /* modbus-rtu.c in Sources */,
+				D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */,
+				D6E22531235C94CE00E0D800 /* Connector.swift in Sources */,
+				D67DFA922335262300760D92 /* SpotEditViewController.swift in Sources */,
+				D6F1DCA82330B16C007248AC /* AppDelegate.swift in Sources */,
+				D674F1BE23336C4F009D2D4C /* BDHost.m in Sources */,
+				D67DFA6B2335176800760D92 /* SpotViewController.swift in Sources */,
+				D6E22533235C97B100E0D800 /* Tools.swift in Sources */,
+				D674F1B823335A17009D2D4C /* ICMP.swift in Sources */,
+				D67DFA85233519D700760D92 /* SwiftLibModbus.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D6F1DCAB2330B16C007248AC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D6F1DCAC2330B16C007248AC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D6F1DCB02330B16E007248AC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D6F1DCB12330B16E007248AC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D6F1DCB42330B16E007248AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D6F1DCB52330B16E007248AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D6F1DCB72330B16E007248AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WifiScanner/WifiScanner.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4QVDV2N2SB;
+				INFOPLIST_FILE = WifiScanner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxsubbotin.WifiScanner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WifiScanner/ObjC/WifiScanner-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D6F1DCB82330B16E007248AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WifiScanner/WifiScanner.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4QVDV2N2SB;
+				INFOPLIST_FILE = WifiScanner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.maxsubbotin.WifiScanner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WifiScanner/ObjC/WifiScanner-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D6F1DC9F2330B16C007248AC /* Build configuration list for PBXProject "WifiScanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6F1DCB42330B16E007248AC /* Debug */,
+				D6F1DCB52330B16E007248AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D6F1DCB62330B16E007248AC /* Build configuration list for PBXNativeTarget "WifiScanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6F1DCB72330B16E007248AC /* Debug */,
+				D6F1DCB82330B16E007248AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D6F1DC9C2330B16C007248AC /* Project object */;
+}
