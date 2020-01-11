@@ -12,10 +12,24 @@ enum ConnectorCommand: Int32 {
     case yearMonth = 0x1010
     case dayHour = 0x1011
     case minuteSecond = 0x1012
-    case temperatureDevice = 0x1013
+    case temperatureDevice = 0x1013     // 5...1000
     case temperatureCurrent = 0x1014
-    case fanSpeedCurrent = 0x1015
+    case fanSpeedCurrent = 0x1015       // % x 10
     case valveState = 0x1016
+    case fanSpeedDevice = 0x1017        // % x 10
+    case fanMode = 0x1018               // 0 - auto, 1 - manual
+    case regulatorState = 0x1019        // 0 - OFF, 1 - ON
+    case param1 = 0x1020                // ...0x102D
+}
+
+enum FanMode: Int {
+    case auto = 0
+    case manual = 1
+}
+
+enum RegulatorState: Int {
+    case off = 0
+    case on = 1
 }
 
 protocol ConnectorDelegate: class {
@@ -114,7 +128,7 @@ class Connector {
         self.modbus.disconnect()
     }
     
-    func getFanSpeed() {
+    func getFanSpeedCurrent() {
         connect()
         self.modbus.readRegistersFrom(startAddress: ConnectorCommand.fanSpeedCurrent.rawValue, count: 1, success: {objects in
             print("Fan speed: \(objects)")
@@ -134,6 +148,42 @@ class Connector {
         }, failure: {error in
             print("Error on valve state")
             self.delegate?.onCommandFail(self, command: .valveState, error: error)
+        })
+        self.modbus.disconnect()
+    }
+    
+    func getFanSpeed() {
+        connect()
+        self.modbus.readRegistersFrom(startAddress: ConnectorCommand.fanSpeedDevice.rawValue, count: 1, success: {objects in
+            print("Fan speed: \(objects)")
+            self.delegate?.onCommandSuccess(self, command: .fanSpeedDevice, data: objects)
+        }, failure: {error in
+            print("Error on fan speed")
+            self.delegate?.onCommandFail(self, command: .fanSpeedDevice, error: error)
+        })
+        self.modbus.disconnect()
+    }
+    
+    func getFanMode() {
+        connect()
+        self.modbus.readRegistersFrom(startAddress: ConnectorCommand.fanMode.rawValue, count: 1, success: {objects in
+            print("Fan mode: \(objects)")
+            self.delegate?.onCommandSuccess(self, command: .fanMode, data: objects)
+        }, failure: {error in
+            print("Error on fan mode")
+            self.delegate?.onCommandFail(self, command: .fanMode, error: error)
+        })
+        self.modbus.disconnect()
+    }
+    
+    func getRegulatorState() {
+        connect()
+        self.modbus.readRegistersFrom(startAddress: ConnectorCommand.regulatorState.rawValue, count: 1, success: {objects in
+            print("Regulator state: \(objects)")
+            self.delegate?.onCommandSuccess(self, command: .regulatorState, data: objects)
+        }, failure: {error in
+            print("Error on regulator state")
+            self.delegate?.onCommandFail(self, command: .regulatorState, error: error)
         })
         self.modbus.disconnect()
     }
@@ -174,13 +224,13 @@ class Connector {
             let second = calendarDate.second {
             
             let y = year - Int(round(Double(year) * 0.01)) * 100
-            let yearMonth = month * 256 + y
+            let yearMonth = y + month * 256
             
             connect()
             self.modbus.writeRegister(address: ConnectorCommand.yearMonth.rawValue, value: Int32(yearMonth), success: {
-                print("Device date was changed successfully")
+                print("Device year/month was changed successfully")
             }, failure: {(error) in
-                print("Device date changing was failed: \(error.localizedDescription)")
+                print("Device year/month changing was failed: \(error.localizedDescription)")
                 print(error.userInfo)
             })
             self.modbus.disconnect()
@@ -188,9 +238,9 @@ class Connector {
             let dayHour = day * 256 + hour
             connect()
             self.modbus.writeRegister(address: ConnectorCommand.yearMonth.rawValue, value: Int32(dayHour), success: {
-                print("Device date was changed successfully")
+                print("Device day/hour was changed successfully")
             }, failure: {(error) in
-                print("Device date changing was failed: \(error.localizedDescription)")
+                print("Device day/hour changing was failed: \(error.localizedDescription)")
                 print(error.userInfo)
             })
             self.modbus.disconnect()

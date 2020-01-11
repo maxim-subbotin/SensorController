@@ -14,8 +14,11 @@ enum CellType: Int {
     case time
     case temperatureDevice
     case temperatureCurrent
-    case fanSpeed
+    case fanSpeedCurrent
     case valveState
+    case fanSpeed
+    case regulatorState
+    case fanMode
     
     case unknown
 }
@@ -188,16 +191,20 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     private var date = Date()
     private var temperatureDevice: Double = 0
     private var temperatureCurrent: Double = 0
-    private var fanSpeed: Double = 0
+    private var fanSpeedCurrent: Double = 0
     private var valveState: Int = 0
+    private var fanSpeed: Double = 0
+    private var fanMode: FanMode = .auto
+    private var regulatorState: RegulatorState = .off
     
-    private var lblYear = UILabel()
+    /*private var lblYear = UILabel()
     private var lblDay = UILabel()
     private var lblMinute = UILabel()
     private var lblDeviceTemperature = UILabel()
     private var lblCurrentTemperature = UILabel()
     private var lblFanSpeed = UILabel()
-    private var lblValveState = UILabel()
+    private var lblValveState = UILabel()*/
+    
     private var tblData = UITableView()
     
     private var connector = Connector()
@@ -322,7 +329,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             year = Int(bytes[0])
             month = Int(bytes[1])
             
-            lblYear.text = "Year: \(i)"
+            //lblYear.text = "Year: \(i)"
             connector.getDay()
         }
         if command == .dayHour {
@@ -332,7 +339,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             day = Int(bytes[0])
             hour = Int(bytes[1])
             
-            lblDay.text = "Day: \(i)"
+            //lblDay.text = "Day: \(i)"
             connector.getMinute()
             
             cells.append(.date)
@@ -345,7 +352,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             minute = Int(bytes[0])
             second = Int(bytes[1])
             
-            lblMinute.text = "Minute: \(i)"
+            //lblMinute.text = "Minute: \(i)"
             connector.getDeviceTemperature()
             
             var dateComponents = DateComponents()
@@ -365,7 +372,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             let i = data.first as! Int
             temperatureDevice = Double(i) * 0.1
             
-            lblDeviceTemperature.text = "Device temperature: \(Double(i) * 0.1)"
+            //lblDeviceTemperature.text = "Device temperature: \(Double(i) * 0.1)"
             connector.getCurrentTemperature()
             
             cells.append(.temperatureDevice)
@@ -376,35 +383,62 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             
             temperatureCurrent = Double(i) * 0.1
             
-            lblCurrentTemperature.text = "Current temperature: \(Double(i) * 0.1)"
-            connector.getFanSpeed()
+            //lblCurrentTemperature.text = "Current temperature: \(Double(i) * 0.1)"
+            connector.getFanSpeedCurrent()
             
             cells.append(.temperatureCurrent)
             tblData.reloadData()
         }
         if command == .fanSpeedCurrent {
             let i = data.first as! Int
-            fanSpeed = Double(i) * 0.1
+            fanSpeedCurrent = Double(i) * 0.1
             
-            lblFanSpeed.text = "Fan speed: \(fanSpeed)"
+            //lblFanSpeed.text = "Fan speed: \(fanSpeedCurrent)"
             connector.getValveState()
             
-            cells.append(.fanSpeed)
+            cells.append(.fanSpeedCurrent)
             tblData.reloadData()
         }
         if command == .valveState {
             let i = data.first as! Int
             valveState = i
             
-            lblValveState.text = "Valve state"
+            //lblValveState.text = "Valve state"
+            connector.getFanSpeed()
             
             cells.append(.valveState)
+            tblData.reloadData()
+        }
+        if command == .fanSpeedDevice {
+            let i = data.first as! Int
+            fanSpeed = Double(i) * 0.1
+            
+            //lblValveState.text = "Valve state"
+            connector.getFanMode()
+            
+            cells.append(.fanSpeed)
+            tblData.reloadData()
+        }
+        if command == .fanSpeedDevice {
+            let i = data.first as! Int
+            fanMode = FanMode(rawValue: i) ?? .auto
+            
+            connector.getRegulatorState()
+            
+            cells.append(.fanMode)
+            tblData.reloadData()
+        }
+        if command == .regulatorState {
+            let i = data.first as! Int
+            regulatorState = RegulatorState(rawValue: i) ?? .off
+            
+            cells.append(.regulatorState)
             tblData.reloadData()
         }
     }
     
     func onCommandFail(_ connector: Connector, command: ConnectorCommand, error: NSError) {
-        if command == .yearMonth {
+        /*if command == .yearMonth {
             lblYear.text = "Year: \(error.localizedDescription)"
         }
         if command == .dayHour {
@@ -421,7 +455,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         }
         if command == .fanSpeedCurrent {
             lblFanSpeed.text = "Fan speed: \(error.localizedDescription)"
-        }
+        }*/
     }
     
     //MARK: - table delegates
@@ -459,18 +493,39 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             doubleCell.enabled = false
             spotCell = doubleCell
         }
-        if cellType == .fanSpeed {
+        if cellType == .fanSpeedCurrent {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
-            doubleCell.title = "Fan speed"
-            doubleCell.value = fanSpeed
-            doubleCell.enabled = true
+            doubleCell.title = "Current fan speed"
+            doubleCell.value = fanSpeedCurrent
+            doubleCell.enabled = false
             spotCell = doubleCell
         }
         if cellType == .valveState {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
             doubleCell.title = "Valve state"
             doubleCell.value = Double(valveState)
+            doubleCell.enabled = false
+            spotCell = doubleCell
+        }
+        if cellType == .fanSpeed {
+            let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
+            doubleCell.title = "Fan speed"
+            doubleCell.value = Double(fanSpeed)
             doubleCell.enabled = true
+            spotCell = doubleCell
+        }
+        if cellType == .fanMode {
+            let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
+            doubleCell.title = "Fan mode"
+            doubleCell.value = Double(fanMode.rawValue)
+            doubleCell.enabled = true
+            spotCell = doubleCell
+        }
+        if cellType == .regulatorState {
+            let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
+            doubleCell.title = "Regulator state"
+            doubleCell.value = Double(regulatorState.rawValue)
+            doubleCell.enabled = false
             spotCell = doubleCell
         }
         spotCell?.delegate = self
@@ -489,7 +544,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             print("Temperature was changed: \(temp)")
             connector.setTemperature(temp * 10)
         }
-        if command == .fanSpeed {
+        if command == .fanSpeedCurrent {
             let speed = value as! Double
             print("Fan speed was changed: \(speed)")
             connector.setFanSpeed(speed * 10)
