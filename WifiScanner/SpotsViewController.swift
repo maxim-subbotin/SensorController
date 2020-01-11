@@ -206,29 +206,33 @@ class SpotsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let spot = spots[indexPath.row]
-        //if spot.ssid == currentSsid {
-            let vc = SpotViewController()
-            vc.spot = spot
-            self.navigationController?.pushViewController(vc, animated: true)
-            
-        //    return
-        //}
-        
-        print("Tap on \(spot.ssid)")
-        
-        //let connection = Connector()
-        //connection.getDeviceCurrent()
-        
-        /*let hotspotConfig = NEHotspotConfiguration(ssid: spot.ssid, passphrase: spot.password, isWEP: false)
-        NEHotspotConfigurationManager.shared.apply(hotspotConfig, completionHandler: { (error) in
-            if error != nil {
-                let msg = error!.localizedDescription
-                let alert = UIAlertController(title: "Connection error", message: msg, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
-            self.tableView.reloadData()
-        })*/
+        if spot.ssid == currentSsid {
+            openSpot(spot)
+            return
+        }
+
+        if #available(iOS 11.0, *) {
+            let hotspotConfig = NEHotspotConfiguration(ssid: spot.ssid, passphrase: spot.password, isWEP: false)
+            NEHotspotConfigurationManager.shared.apply(hotspotConfig, completionHandler: { (error) in
+                if error != nil {
+                    let msg = error!.localizedDescription
+                    let alert = UIAlertController(title: "Connection error", message: msg, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    self.openSpot(spot)
+                }
+                self.tableView.reloadData()
+            })
+        } else {
+            openSpot(spot)
+        }
+    }
+    
+    func openSpot(_ spot: Spot) {
+        let vc = SpotViewController()
+        vc.spot = spot
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {

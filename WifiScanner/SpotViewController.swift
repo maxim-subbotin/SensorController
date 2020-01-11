@@ -217,11 +217,14 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         
         initUI()
         
-        let ip = Tools.getIPAddress()
-        print("Current ip address: \(ip)")
-        
-        connector.delegate = self
-        connector.getYear()
+        if let ip = Tools.getIPAddress() {
+            print("Current ip address: \(ip)")
+            if let wifiIP = Tools.getWifiAddredd(byCurrentAddress: ip) {
+                connector.idAddress = wifiIP
+                connector.delegate = self
+                connector.getYear()
+            }
+        }
     }
     
     func initUI() {
