@@ -64,6 +64,17 @@ class SpotCardView: UIView {
         NSLayoutConstraint.activate([lC1, tC1, hC1, rC1])
         
         self.addSubview(lblDetail)
+        lblDetail.textAlignment = .left
+        lblDetail.textColor = ColorScheme.current.spotCellDetailColor
+        lblDetail.font = UIFont.systemFont(ofSize: 16)
+        lblDetail.translatesAutoresizingMaskIntoConstraints = false
+        let lC2 = lblDetail.leftAnchor.constraint(equalTo: self.indicatorView.rightAnchor, constant: indicatorOffset)
+        let tC2 = lblDetail.topAnchor.constraint(equalTo: self.lblTitle.bottomAnchor)
+        let hC2 = lblDetail.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        let rC2 = lblDetail.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -indicatorOffset)
+        NSLayoutConstraint.activate([lC2, tC2, hC2, rC2])
+        
+        self.addSubview(lblDetail)
     }
 }
 
