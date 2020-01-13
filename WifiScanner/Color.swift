@@ -2,7 +2,7 @@
 //  Extension.swift
 //  Infograph
 //
-//  Created by Snappii on 4/16/19.
+// 4/16/19.
 //  Copyright © 2019 Snappii. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  BDHost.h
 //  WifiScanner
 //
-//  Created by Snappii on 9/19/19.
+// 9/19/19.
 //  Copyright © 2019 Max Subbotin. All rights reserved.
 //
 

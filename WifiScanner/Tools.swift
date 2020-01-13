@@ -2,7 +2,7 @@
 //  Tools.swift
 //  WifiScanner
 //
-//  Created by Snappii on 10/20/19.
+// 10/20/19.
 //  Copyright © 2019 Max Subbotin. All rights reserved.
 //
 

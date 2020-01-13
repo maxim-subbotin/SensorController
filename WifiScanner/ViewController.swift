@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  WifiScanner
 //
-//  Created by Snappii on 9/17/19.
+// 9/17/19.
 //  Copyright © 2019 Max Subbotin. All rights reserved.
 //
 

@@ -1,0 +1,23 @@
+//
+//  ColorScheme.swift
+//  WifiScanner
+//
+//  1/13/20.
+//  Copyright © 2020 Max Subbotin. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+class ColorScheme {
+    public var navigationBarColor = UIColor(hexString: "#191919")
+    public var navigationTextColor = UIColor.white
+    public var backgroundColor = UIColor(hexString: "#111523")
+    public var spotCellBackgroundColor = UIColor(hexString: "#1B1E2E")
+    public var spotCellTitleColor = UIColor.white
+    public var spotCellDetailColor = UIColor(hexString: "#868A9E")
+    public var spotCellIndicatorDisableColor = UIColor(hexString: "#868A9E")
+    public var spotCellIndicatorEnableColor = UIColor(hexString: "#5FC688")
+    
+    public static var current = ColorScheme()
+}

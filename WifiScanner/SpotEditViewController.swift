@@ -2,7 +2,7 @@
 //  SpotEditViewController.swift
 //  WifiScanner
 //
-//  Created by Snappii on 9/20/19.
+// 9/20/19.
 //  Copyright © 2019 Max Subbotin. All rights reserved.
 //
 

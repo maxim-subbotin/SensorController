@@ -30,6 +30,8 @@
 		D67DFA8F233519D700760D92 /* modbus-rtu.c in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA7F233519D700760D92 /* modbus-rtu.c */; };
 		D67DFA90233519D700760D92 /* README.rst in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA81233519D700760D92 /* README.rst */; };
 		D67DFA922335262300760D92 /* SpotEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA912335262300760D92 /* SpotEditViewController.swift */; };
+		D68F240923CC5D7400A249A2 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F240823CC5D7400A249A2 /* ColorScheme.swift */; };
+		D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F240B23CC600600A249A2 /* SpotCardView.swift */; };
 		D6E22531235C94CE00E0D800 /* Connector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E22530235C94CE00E0D800 /* Connector.swift */; };
 		D6E22533235C97B100E0D800 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E22532235C97B100E0D800 /* Tools.swift */; };
 		D6F1DCA82330B16C007248AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F1DCA72330B16C007248AC /* AppDelegate.swift */; };
@@ -77,6 +79,8 @@
 		D67DFA83233519D700760D92 /* modbus-tcp-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-tcp-private.h"; sourceTree = "<group>"; };
 		D67DFA84233519D700760D92 /* modbus-rtu-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-rtu-private.h"; sourceTree = "<group>"; };
 		D67DFA912335262300760D92 /* SpotEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotEditViewController.swift; sourceTree = "<group>"; };
+		D68F240823CC5D7400A249A2 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
+		D68F240B23CC600600A249A2 /* SpotCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotCardView.swift; sourceTree = "<group>"; };
 		D6E22530235C94CE00E0D800 /* Connector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connector.swift; sourceTree = "<group>"; };
 		D6E22532235C97B100E0D800 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		D6F1DCA42330B16C007248AC /* WifiScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WifiScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +183,14 @@
 			path = libmodbus;
 			sourceTree = "<group>";
 		};
+		D68F240A23CC5FF100A249A2 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				D68F240B23CC600600A249A2 /* SpotCardView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		D6F1DC9B2330B16C007248AC = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +211,7 @@
 		D6F1DCA62330B16C007248AC /* WifiScanner */ = {
 			isa = PBXGroup;
 			children = (
+				D68F240A23CC5FF100A249A2 /* UI */,
 				D67DFA6C233519D700760D92 /* Modbus */,
 				D674F1BA23336C26009D2D4C /* ObjC */,
 				D674F1AF23335A17009D2D4C /* Ping */,
@@ -217,6 +230,7 @@
 				D67DFA912335262300760D92 /* SpotEditViewController.swift */,
 				D6E22530235C94CE00E0D800 /* Connector.swift */,
 				D6E22532235C97B100E0D800 /* Tools.swift */,
+				D68F240823CC5D7400A249A2 /* ColorScheme.swift */,
 			);
 			path = WifiScanner;
 			sourceTree = "<group>";
@@ -330,8 +344,10 @@
 				D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */,
 				D674F1B723335A17009D2D4C /* Shared.swift in Sources */,
 				D67DFA612334A96400760D92 /* Color.swift in Sources */,
+				D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */,
 				D67DFA8A233519D700760D92 /* modbus.c in Sources */,
 				D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */,
+				D68F240923CC5D7400A249A2 /* ColorScheme.swift in Sources */,
 				D674F1B923335A17009D2D4C /* PingResponse.swift in Sources */,
 				D6F1DCBE2330B404007248AC /* SwiftWifiIotPlugin.swift in Sources */,
 				D67DFA88233519D700760D92 /* modbus-data.c in Sources */,
