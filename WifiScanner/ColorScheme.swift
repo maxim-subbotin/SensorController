@@ -18,6 +18,7 @@ class ColorScheme {
     public var spotCellDetailColor = UIColor(hexString: "#868A9E")
     public var spotCellIndicatorDisableColor = UIColor(hexString: "#868A9E")
     public var spotCellIndicatorEnableColor = UIColor(hexString: "#5FC688")
+    public var spotCellIndicatorAnimationColor = UIColor(hexString: "#E4DFDA")
     
     public static var current = ColorScheme()
 }

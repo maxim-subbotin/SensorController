@@ -166,6 +166,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "spotCell", for: indexPath) as! SpotCollectionViewCell
+        cell.stopAnimation()
         let spot = spots[indexPath.row]
         cell.spot = spot
         return cell
@@ -178,6 +179,10 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
             return
         }
         
+        if let cell = collectionView.visibleCells.filter({ $0 is SpotCollectionViewCell && ($0 as! SpotCollectionViewCell).spot?.ssid == spot.ssid }).first {
+            (cell as! SpotCollectionViewCell).startAnimation()
+        }
+        
         if #available(iOS 11.0, *) {
             let hotspotConfig = NEHotspotConfiguration(ssid: spot.ssid, passphrase: spot.password, isWEP: false)
             NEHotspotConfigurationManager.shared.apply(hotspotConfig, completionHandler: { (error) in
@@ -186,9 +191,19 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
                     let alert = UIAlertController(title: "Connection error", message: msg, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
-                } else {
-                    self.openSpot(spot)
+                    self.collectionView.reloadData()
+                    
+                    return
                 }
+                
+                if let ip = Tools.getIPAddress() {
+                    print("Connected to network \(spot.ssid) successfully. IP: \(ip)")
+                    self.openSpot(spot)
+                } else {
+                    print("Unable to connect: \(spot.ssid)")
+                }
+                
+                
                 self.collectionView.reloadData()
             })
         } else {

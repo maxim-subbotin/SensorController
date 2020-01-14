@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class SpotCardView: UIView {
-    private var indicatorView = UIView()
+    private var indicatorView = SpotIndicatorView()
     private var lblTitle = UILabel()
     private var lblDetail = UILabel()
     private var _spot: Spot?
@@ -50,7 +50,8 @@ class SpotCardView: UIView {
         let hC = indicatorView.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -2 * indicatorOffset)
         let wC = indicatorView.widthAnchor.constraint(equalTo: self.heightAnchor, constant: -2 * indicatorOffset)
         NSLayoutConstraint.activate([lC, cyC, hC, wC])
-        indicatorView.backgroundColor = ColorScheme.current.spotCellIndicatorEnableColor
+        indicatorView.lineColor = ColorScheme.current.spotCellIndicatorDisableColor
+        indicatorView.animateColor = ColorScheme.current.spotCellIndicatorAnimationColor
         
         self.addSubview(lblTitle)
         lblTitle.textAlignment = .left
@@ -75,6 +76,14 @@ class SpotCardView: UIView {
         NSLayoutConstraint.activate([lC2, tC2, hC2, rC2])
         
         self.addSubview(lblDetail)
+    }
+    
+    func startAnimation() {
+        self.indicatorView.animate()
+    }
+    
+    func stopAnimation() {
+        self.indicatorView.stopAnimate()
     }
 }
 
@@ -112,6 +121,14 @@ class SpotCollectionViewCell: UICollectionViewCell {
         spotView.backgroundColor = ColorScheme.current.spotCellBackgroundColor
         spotView.layer.cornerRadius = 5
         spotView.clipsToBounds = true
+    }
+    
+    func startAnimation() {
+        spotView.startAnimation()
+    }
+    
+    func stopAnimation() {
+        spotView.stopAnimation()
     }
 }
 
