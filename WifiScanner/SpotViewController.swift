@@ -89,8 +89,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     
     func applyCardPanel() {
         let cardPanelHeight = CGFloat(100)
-        let cardOffset = CGFloat(10)
-        
+
         self.view.addSubview(cardPanelView)
         cardPanelView.translatesAutoresizingMaskIntoConstraints = false
         let lC = cardPanelView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
@@ -100,6 +99,21 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         NSLayoutConstraint.activate([lC, tC, wC, hC])
         
         cardPanelView.addSubview(cardTemp)
+        cardPanelView.addSubview(cardFanSpeed)
+        cardPanelView.addSubview(cardValveState)
+        cardPanelView.addSubview(cardRegState)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            applyCardPanelForiPad()
+        } else {
+            applyCardPanelForiPhone()
+        }
+
+    }
+
+    func applyCardPanelForiPad() {
+        let cardOffset = CGFloat(10)
+        
         cardTemp.title = "Temperature"
         cardTemp.color1 = UIColor(hexString: "#F67965")
         cardTemp.color2 = UIColor(hexString: "#F66EA6")
@@ -111,7 +125,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         cardTemp.layer.cornerRadius = 5
         NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
         
-        cardPanelView.addSubview(cardFanSpeed)
+        
         cardFanSpeed.title = "Fan speed"
         cardFanSpeed.color1 = UIColor(hexString: "#4575FA")
         cardFanSpeed.color2 = UIColor(hexString: "#4430E6")
@@ -123,7 +137,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         cardFanSpeed.layer.cornerRadius = 5
         NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
         
-        cardPanelView.addSubview(cardValveState)
+        
         cardValveState.title = "Valve state"
         cardValveState.color1 = UIColor(hexString: "#2A3354")
         cardValveState.color2 = UIColor(hexString: "#1B1E2E")
@@ -135,7 +149,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         cardValveState.layer.cornerRadius = 5
         NSLayoutConstraint.activate([lC3, tC3, wC3, hC3])
         
-        cardPanelView.addSubview(cardRegState)
+        
         cardRegState.title = "Regulator state"
         cardRegState.color1 = UIColor(hexString: "#D76065")
         cardRegState.color2 = UIColor(hexString: "#BC7E80")
@@ -147,7 +161,11 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         cardRegState.layer.cornerRadius = 5
         NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
     }
-
+    
+    func applyCardPanelForiPhone() {
+        applyCardPanelForiPad()
+    }
+    
     //MARK: - connection delegate
     
     func onSuccessConnection(_ connector: Connector) {
