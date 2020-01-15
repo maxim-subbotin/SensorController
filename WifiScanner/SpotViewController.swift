@@ -188,22 +188,25 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     private var hour: Int = -1
     private var minute: Int = -1
     private var second: Int = -1
-    private var date = Date()
+    
+    private var _spotState = SpotState()
+    public var spotState: SpotState {
+        get {
+            return _spotState
+        }
+        set {
+            _spotState = newValue
+        }
+    }
+    
+    /*private var date = Date()
     private var temperatureDevice: Double = 0
     private var temperatureCurrent: Double = 0
     private var fanSpeedCurrent: Double = 0
     private var valveState: Int = 0
     private var fanSpeed: Double = 0
     private var fanMode: FanMode = .auto
-    private var regulatorState: RegulatorState = .off
-    
-    /*private var lblYear = UILabel()
-    private var lblDay = UILabel()
-    private var lblMinute = UILabel()
-    private var lblDeviceTemperature = UILabel()
-    private var lblCurrentTemperature = UILabel()
-    private var lblFanSpeed = UILabel()
-    private var lblValveState = UILabel()*/
+    private var regulatorState: RegulatorState = .off*/
     
     private var tblData = UITableView()
     
@@ -216,11 +219,13 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         
         self.navigationItem.title = (spot != nil && spot!.name != nil) ? spot!.name : "Spot"
         
-        self.view.backgroundColor = UIColor(hexString: "#EDEDED")
+        self.navigationItem.title = spot?.name ?? "Spot"
         
-        self.navigationController?.navigationBar.barTintColor = UIColor(hexString: "#C1CAD6")
-        self.navigationController?.navigationBar.tintColor = UIColor(hexString: "#404040")
-        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor(hexString: "#404040")]
+        self.view.backgroundColor = ColorScheme.current.backgroundColor
+        
+        self.navigationController?.navigationBar.barTintColor = ColorScheme.current.navigationBarColor
+        self.navigationController?.navigationBar.tintColor = ColorScheme.current.navigationTextColor
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ColorScheme.current.navigationTextColor]
         
         initUI()
         
@@ -235,7 +240,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     }
     
     func initUI() {
-        self.view.addSubview(tblData)
+        /*self.view.addSubview(tblData)
         tblData.frame = .zero
         tblData.translatesAutoresizingMaskIntoConstraints = false
         let lC = tblData.leftAnchor.constraint(equalTo: self.view.leftAnchor)
@@ -248,67 +253,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         tblData.register(DateSpotDateCell.self, forCellReuseIdentifier: "dateCell")
         tblData.register(TimeSpotDataCell.self, forCellReuseIdentifier: "timeCell")
         tblData.register(DoubleSpotDataCell.self, forCellReuseIdentifier: "doubleCell")
-        tblData.separatorStyle = .none
-        
-        /*self.view.addSubview(lblYear)
-        lblYear.text = "Year: "
-        lblYear.frame = .zero
-        lblYear.translatesAutoresizingMaskIntoConstraints = false
-        let lC = lblYear.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: offset)
-        let wC = lblYear.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -2 * offset)
-        let tC = lblYear.topAnchor.constraint(equalTo: self.view.topAnchor, constant: offset + 64)
-        let hC = lblYear.heightAnchor.constraint(equalToConstant: 30)
-        NSLayoutConstraint.activate([lC, wC, tC, hC])
-        
-        self.view.addSubview(lblDay)
-        lblDay.text = "Day: "
-        lblDay.frame = .zero
-        lblDay.translatesAutoresizingMaskIntoConstraints = false
-        let lC1 = lblDay.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: offset)
-        let wC1 = lblDay.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -2 * offset)
-        let tC1 = lblDay.topAnchor.constraint(equalTo: lblYear.bottomAnchor, constant: offset)
-        let hC1 = lblDay.heightAnchor.constraint(equalToConstant: 30)
-        NSLayoutConstraint.activate([lC1, wC1, tC1, hC1])
-        
-        self.view.addSubview(lblMinute)
-        lblMinute.text = "Minute: "
-        lblMinute.frame = .zero
-        lblMinute.translatesAutoresizingMaskIntoConstraints = false
-        let lC2 = lblMinute.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: offset)
-        let wC2 = lblMinute.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -2 * offset)
-        let tC2 = lblMinute.topAnchor.constraint(equalTo: lblDay.bottomAnchor, constant: offset)
-        let hC2 = lblMinute.heightAnchor.constraint(equalToConstant: 30)
-        NSLayoutConstraint.activate([lC2, wC2, tC2, hC2])
-        
-        self.view.addSubview(lblDeviceTemperature)
-        lblDeviceTemperature.text = "Device temperature: "
-        lblDeviceTemperature.frame = .zero
-        lblDeviceTemperature.translatesAutoresizingMaskIntoConstraints = false
-        let lC3 = lblDeviceTemperature.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: offset)
-        let wC3 = lblDeviceTemperature.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -2 * offset)
-        let tC3 = lblDeviceTemperature.topAnchor.constraint(equalTo: lblMinute.bottomAnchor, constant: offset)
-        let hC3 = lblDeviceTemperature.heightAnchor.constraint(equalToConstant: 30)
-        NSLayoutConstraint.activate([lC3, wC3, tC3, hC3])
-        
-        self.view.addSubview(lblCurrentTemperature)
-        lblCurrentTemperature.text = "Device temperature: "
-        lblCurrentTemperature.frame = .zero
-        lblCurrentTemperature.translatesAutoresizingMaskIntoConstraints = false
-        let lC4 = lblCurrentTemperature.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: offset)
-        let wC4 = lblCurrentTemperature.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -2 * offset)
-        let tC4 = lblCurrentTemperature.topAnchor.constraint(equalTo: lblDeviceTemperature.bottomAnchor, constant: offset)
-        let hC4 = lblCurrentTemperature.heightAnchor.constraint(equalToConstant: 30)
-        NSLayoutConstraint.activate([lC4, wC4, tC4, hC4])
-        
-        self.view.addSubview(lblFanSpeed)
-        lblFanSpeed.text = "Fan speed: "
-        lblFanSpeed.frame = .zero
-        lblFanSpeed.translatesAutoresizingMaskIntoConstraints = false
-        let lC5 = lblFanSpeed.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: offset)
-        let wC5 = lblFanSpeed.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -2 * offset)
-        let tC5 = lblFanSpeed.topAnchor.constraint(equalTo: lblCurrentTemperature.bottomAnchor, constant: offset)
-        let hC5 = lblFanSpeed.heightAnchor.constraint(equalToConstant: 30)
-        NSLayoutConstraint.activate([lC5, wC5, tC5, hC5])*/
+        tblData.separatorStyle = .none*/
     }
 
     //MARK: - connection delegate
@@ -363,16 +308,15 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             dateComponents.minute = minute
             dateComponents.second = second
 
-            date = Calendar.current.date(from: dateComponents) ?? Date()
+            spotState.date = Calendar.current.date(from: dateComponents) ?? Date()
             
             cells.append(.time)
             tblData.reloadData()
         }
         if command == .temperatureDevice {
             let i = data.first as! Int
-            temperatureDevice = Double(i) * 0.1
+            spotState.temperatureDevice = Double(i) * 0.1
             
-            //lblDeviceTemperature.text = "Device temperature: \(Double(i) * 0.1)"
             connector.getCurrentTemperature()
             
             cells.append(.temperatureDevice)
@@ -381,9 +325,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         if command == .temperatureCurrent {
             let i = data.first as! Int
             
-            temperatureCurrent = Double(i) * 0.1
+            spotState.temperatureCurrent = Double(i) * 0.1
             
-            //lblCurrentTemperature.text = "Current temperature: \(Double(i) * 0.1)"
             connector.getFanSpeedCurrent()
             
             cells.append(.temperatureCurrent)
@@ -391,9 +334,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         }
         if command == .fanSpeedCurrent {
             let i = data.first as! Int
-            fanSpeedCurrent = Double(i) * 0.1
+            spotState.fanSpeedCurrent = Double(i) * 0.1
             
-            //lblFanSpeed.text = "Fan speed: \(fanSpeedCurrent)"
             connector.getValveState()
             
             cells.append(.fanSpeedCurrent)
@@ -401,9 +343,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         }
         if command == .valveState {
             let i = data.first as! Int
-            valveState = i
+            spotState.valveState = i
             
-            //lblValveState.text = "Valve state"
             connector.getFanSpeed()
             
             cells.append(.valveState)
@@ -411,9 +352,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         }
         if command == .fanSpeedDevice {
             let i = data.first as! Int
-            fanSpeed = Double(i) * 0.1
+            spotState.fanSpeed = Double(i) * 0.1
             
-            //lblValveState.text = "Valve state"
             connector.getFanMode()
             
             cells.append(.fanSpeed)
@@ -421,7 +361,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         }
         if command == .fanSpeedDevice {
             let i = data.first as! Int
-            fanMode = FanMode(rawValue: i) ?? .auto
+            spotState.fanMode = FanMode(rawValue: i) ?? .auto
             
             connector.getRegulatorState()
             
@@ -430,7 +370,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         }
         if command == .regulatorState {
             let i = data.first as! Int
-            regulatorState = RegulatorState(rawValue: i) ?? .off
+            spotState.regulatorState = RegulatorState(rawValue: i) ?? .off
             
             cells.append(.regulatorState)
             tblData.reloadData()
@@ -438,24 +378,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     }
     
     func onCommandFail(_ connector: Connector, command: ConnectorCommand, error: NSError) {
-        /*if command == .yearMonth {
-            lblYear.text = "Year: \(error.localizedDescription)"
-        }
-        if command == .dayHour {
-            lblDay.text = "Day: \(error.localizedDescription)"
-        }
-        if command == .minuteSecond {
-            lblMinute.text = "Minute: \(error.localizedDescription)"
-        }
-        if command == .temperatureDevice {
-            lblDeviceTemperature.text = "Device temperature: \(error.localizedDescription)"
-        }
-        if command == .temperatureCurrent {
-            lblCurrentTemperature.text = "Current temperature: \(error.localizedDescription)"
-        }
-        if command == .fanSpeedCurrent {
-            lblFanSpeed.text = "Fan speed: \(error.localizedDescription)"
-        }*/
+        //
     }
     
     //MARK: - table delegates
@@ -471,60 +394,60 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         if cellType == .date {
             let dateCell = tableView.dequeueReusableCell(withIdentifier: "dateCell") as! DateSpotDateCell
             dateCell.title = "Date"
-            dateCell.date = date
+            dateCell.date = spotState.date
             spotCell = dateCell
         }
         if cellType == .time {
             let timeCell = tableView.dequeueReusableCell(withIdentifier: "timeCell") as! TimeSpotDataCell
             timeCell.title = "Time"
-            timeCell.date = date
+            timeCell.date = spotState.date
             spotCell = timeCell
         }
         if cellType == .temperatureDevice {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
             doubleCell.title = "Device temperature"
-            doubleCell.value = temperatureDevice
+            doubleCell.value = spotState.temperatureDevice
             spotCell = doubleCell
         }
         if cellType == .temperatureCurrent {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
             doubleCell.title = "Current temperature"
-            doubleCell.value = temperatureCurrent
+            doubleCell.value = spotState.temperatureCurrent
             doubleCell.enabled = false
             spotCell = doubleCell
         }
         if cellType == .fanSpeedCurrent {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
             doubleCell.title = "Current fan speed"
-            doubleCell.value = fanSpeedCurrent
+            doubleCell.value = spotState.fanSpeedCurrent
             doubleCell.enabled = false
             spotCell = doubleCell
         }
         if cellType == .valveState {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
             doubleCell.title = "Valve state"
-            doubleCell.value = Double(valveState)
+            doubleCell.value = Double(spotState.valveState)
             doubleCell.enabled = false
             spotCell = doubleCell
         }
         if cellType == .fanSpeed {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
             doubleCell.title = "Fan speed"
-            doubleCell.value = Double(fanSpeed)
+            doubleCell.value = Double(spotState.fanSpeed)
             doubleCell.enabled = true
             spotCell = doubleCell
         }
         if cellType == .fanMode {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
             doubleCell.title = "Fan mode"
-            doubleCell.value = Double(fanMode.rawValue)
+            doubleCell.value = Double(spotState.fanMode.rawValue)
             doubleCell.enabled = true
             spotCell = doubleCell
         }
         if cellType == .regulatorState {
             let doubleCell = tableView.dequeueReusableCell(withIdentifier: "doubleCell") as! DoubleSpotDataCell
             doubleCell.title = "Regulator state"
-            doubleCell.value = Double(regulatorState.rawValue)
+            doubleCell.value = Double(spotState.regulatorState.rawValue)
             doubleCell.enabled = false
             spotCell = doubleCell
         }

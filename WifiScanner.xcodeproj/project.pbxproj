@@ -514,7 +514,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = WifiScanner/WifiScanner.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Maxim Subbotin (5H66236T35)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 4QVDV2N2SB;
 				INFOPLIST_FILE = WifiScanner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10;
@@ -524,6 +525,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxsubbotin.WifiScanner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "WiFi Scanner 2020";
 				SWIFT_OBJC_BRIDGING_HEADER = "WifiScanner/ObjC/WifiScanner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -537,7 +539,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = WifiScanner/WifiScanner.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Maxim Subbotin (5H66236T35)";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 4QVDV2N2SB;
 				INFOPLIST_FILE = WifiScanner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10;
@@ -547,6 +550,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxsubbotin.WifiScanner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "WiFi Scanner 2020";
 				SWIFT_OBJC_BRIDGING_HEADER = "WifiScanner/ObjC/WifiScanner-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -173,6 +173,9 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        openDemoSpot()
+        return
+        
         let spot = spots[indexPath.row]
         if spot.ssid == currentSsid {
             openSpot(spot)
@@ -232,6 +235,12 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    func openDemoSpot() {
+        let vc = SpotViewController()
+        vc.spot = Spot.demo
+        vc.spotState = SpotState.demo
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 
     
     //MARK: - actions
