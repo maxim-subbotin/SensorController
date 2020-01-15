@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D60F251F23CF9FC700C4570B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60F251E23CF9FC700C4570B /* CardView.swift */; };
 		D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B023335A17009D2D4C /* PingConfiguration.swift */; };
 		D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B123335A17009D2D4C /* SwiftPing.swift */; };
 		D674F1B723335A17009D2D4C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B223335A17009D2D4C /* Shared.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D60F251E23CF9FC700C4570B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		D674F1B023335A17009D2D4C /* PingConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingConfiguration.swift; sourceTree = "<group>"; };
 		D674F1B123335A17009D2D4C /* SwiftPing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPing.swift; sourceTree = "<group>"; };
 		D674F1B223335A17009D2D4C /* Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			children = (
 				D68F240B23CC600600A249A2 /* SpotCardView.swift */,
 				D6E23AE323CDB5B200F0CB94 /* SpotIndicatorView.swift */,
+				D60F251E23CF9FC700C4570B /* CardView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				D67DFA88233519D700760D92 /* modbus-data.c in Sources */,
 				D6F1DCAA2330B16C007248AC /* ViewController.swift in Sources */,
 				D67DFA632334AC0400760D92 /* Spot.swift in Sources */,
+				D60F251F23CF9FC700C4570B /* CardView.swift in Sources */,
 				D67DFA8F233519D700760D92 /* modbus-rtu.c in Sources */,
 				D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */,
 				D6E22531235C94CE00E0D800 /* Connector.swift in Sources */,

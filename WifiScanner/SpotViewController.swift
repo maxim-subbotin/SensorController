@@ -23,162 +23,6 @@ enum CellType: Int {
     case unknown
 }
 
-class SpotDateCell: UITableViewCell {
-    private var lblTitle = UILabel()
-    private var separator = UIView()
-    public var title: String? {
-        get {
-            return lblTitle.text
-        }
-        set {
-            lblTitle.text = newValue
-        }
-    }
-    public var cellType: CellType = .unknown
-    public weak var delegate: SpotDataCellDelegate?
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        initUI()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    func initUI() {
-        self.contentView.addSubview(lblTitle)
-        lblTitle.frame = .zero
-        lblTitle.translatesAutoresizingMaskIntoConstraints = false
-        let lC = lblTitle.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10)
-        let wC = lblTitle.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: -20)
-        let tC = lblTitle.topAnchor.constraint(equalTo: self.contentView.topAnchor)
-        let hC = lblTitle.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
-        NSLayoutConstraint.activate([lC, wC, tC, hC])
-        
-        self.contentView.addSubview(separator)
-        separator.frame = .zero
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        let lC1 = separator.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 0)
-        let wC1 = separator.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: 0)
-        let tC1 = separator.heightAnchor.constraint(equalToConstant: 1)
-        let hC1 = separator.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
-        NSLayoutConstraint.activate([lC1, wC1, tC1, hC1])
-        separator.backgroundColor = UIColor(hexString: "#F0F0F0")
-    }
-}
-
-protocol SpotDataCellDelegate: class {
-    func onCellEditing(_ command: CellType, value: Any)
-}
-
-class InputSpotDateCell: SpotDateCell, UITextFieldDelegate {
-    internal var txtDate = UITextField()
-    public var enabled: Bool {
-        get {
-            return txtDate.isEnabled
-        }
-        set {
-            txtDate.isEnabled = newValue
-        }
-    }
-    
-    override func initUI() {
-        super.initUI()
-        
-        self.contentView.addSubview(txtDate)
-        txtDate.frame = .zero
-        txtDate.translatesAutoresizingMaskIntoConstraints = false
-        let lC = txtDate.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10)
-        let wC = txtDate.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: -20)
-        let tC = txtDate.topAnchor.constraint(equalTo: self.contentView.topAnchor)
-        let hC = txtDate.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
-        NSLayoutConstraint.activate([lC, wC, tC, hC])
-        txtDate.textAlignment = .right
-        
-        txtDate.delegate = self
-    }
-}
-
-class DateSpotDateCell: InputSpotDateCell {
-    private var _date: Date?
-    public var date: Date? {
-        get {
-            return _date
-        }
-        set {
-            _date = newValue
-            txtDate.text = newValue?.dateFormat
-        }
-    }
-    internal var datePicker = UIDatePicker()
-    
-    override func initUI() {
-        super.initUI()
-        
-        txtDate.inputView = datePicker
-        datePicker.datePickerMode = .date
-        datePicker.addTarget(self, action: #selector(onPickerChange), for: .valueChanged)
-        datePicker.addTarget(self, action: #selector(onPickerEnd), for: .editingDidEnd)
-    }
-    
-    @objc func onPickerChange() {
-        date = datePicker.date
-    }
-    
-    @objc func onPickerEnd() {
-        let d = datePicker.date
-        self.delegate?.onCellEditing(cellType, value: d)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        onPickerEnd()
-    }
-}
-
-class TimeSpotDataCell: DateSpotDateCell {
-    override public var date: Date? {
-        get {
-            return super.date
-        }
-        set {
-            super.date = newValue
-            txtDate.text = newValue?.timeFormat
-        }
-    }
-    
-    override func initUI() {
-        super.initUI()
-        datePicker.datePickerMode = .time
-    }
-}
-
-class DoubleSpotDataCell: InputSpotDateCell {
-    private var _value: Double = 0
-    public var value: Double {
-        get {
-            return _value
-        }
-        set {
-            _value = newValue
-            txtDate.text = "\(_value)"
-        }
-    }
-    
-    override func initUI() {
-        super.initUI()
-        txtDate.keyboardType = .numberPad
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if let str = textField.text {
-            if let d = Double(str) {
-                self.delegate?.onCellEditing(cellType, value: d)
-            }
-        }
-    }
-}
-
 class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate {
     public var spot:Spot? = nil
     
@@ -196,17 +40,17 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         }
         set {
             _spotState = newValue
+            
+            cardTemp.value = "\(_spotState.temperatureDevice)°"
+            cardFanSpeed.value = "\(_spotState.fanSpeed)%"
         }
     }
     
-    /*private var date = Date()
-    private var temperatureDevice: Double = 0
-    private var temperatureCurrent: Double = 0
-    private var fanSpeedCurrent: Double = 0
-    private var valveState: Int = 0
-    private var fanSpeed: Double = 0
-    private var fanMode: FanMode = .auto
-    private var regulatorState: RegulatorState = .off*/
+    private var cardTemp = CardPanelView()
+    private var cardFanSpeed = CardPanelView()
+    private var cardValveState = CardPanelView()
+    private var cardRegState = CardPanelView()
+    private var cardPanelView = UIView()
     
     private var tblData = UITableView()
     
@@ -240,20 +84,68 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     }
     
     func initUI() {
-        /*self.view.addSubview(tblData)
-        tblData.frame = .zero
-        tblData.translatesAutoresizingMaskIntoConstraints = false
-        let lC = tblData.leftAnchor.constraint(equalTo: self.view.leftAnchor)
-        let wC = tblData.widthAnchor.constraint(equalTo: self.view.widthAnchor)
-        let tC = tblData.topAnchor.constraint(equalTo: self.view.topAnchor)
-        let hC = tblData.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        NSLayoutConstraint.activate([lC, wC, tC, hC])
-        tblData.delegate = self
-        tblData.dataSource = self
-        tblData.register(DateSpotDateCell.self, forCellReuseIdentifier: "dateCell")
-        tblData.register(TimeSpotDataCell.self, forCellReuseIdentifier: "timeCell")
-        tblData.register(DoubleSpotDataCell.self, forCellReuseIdentifier: "doubleCell")
-        tblData.separatorStyle = .none*/
+        applyCardPanel()
+    }
+    
+    func applyCardPanel() {
+        let cardPanelHeight = CGFloat(100)
+        let cardOffset = CGFloat(10)
+        
+        self.view.addSubview(cardPanelView)
+        cardPanelView.translatesAutoresizingMaskIntoConstraints = false
+        let lC = cardPanelView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
+        let tC = cardPanelView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80)
+        let wC = cardPanelView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+        let hC = cardPanelView.heightAnchor.constraint(equalToConstant: cardPanelHeight)
+        NSLayoutConstraint.activate([lC, tC, wC, hC])
+        
+        cardPanelView.addSubview(cardTemp)
+        cardTemp.title = "Temperature"
+        cardTemp.color1 = UIColor(hexString: "#F67965")
+        cardTemp.color2 = UIColor(hexString: "#F66EA6")
+        cardTemp.translatesAutoresizingMaskIntoConstraints = false
+        let lC1 = cardTemp.leftAnchor.constraint(equalTo: cardPanelView.leftAnchor, constant: cardOffset)
+        let tC1 = cardTemp.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
+        let wC1 = cardTemp.widthAnchor.constraint(equalToConstant: 150)
+        let hC1 = cardTemp.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
+        cardTemp.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
+        
+        cardPanelView.addSubview(cardFanSpeed)
+        cardFanSpeed.title = "Fan speed"
+        cardFanSpeed.color1 = UIColor(hexString: "#4575FA")
+        cardFanSpeed.color2 = UIColor(hexString: "#4430E6")
+        cardFanSpeed.translatesAutoresizingMaskIntoConstraints = false
+        let lC2 = cardFanSpeed.leftAnchor.constraint(equalTo: cardTemp.rightAnchor, constant: cardOffset)
+        let tC2 = cardFanSpeed.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
+        let wC2 = cardFanSpeed.widthAnchor.constraint(equalToConstant: 150)
+        let hC2 = cardFanSpeed.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
+        cardFanSpeed.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
+        
+        cardPanelView.addSubview(cardValveState)
+        cardValveState.title = "Valve state"
+        cardValveState.color1 = UIColor(hexString: "#2A3354")
+        cardValveState.color2 = UIColor(hexString: "#1B1E2E")
+        cardValveState.translatesAutoresizingMaskIntoConstraints = false
+        let lC3 = cardValveState.leftAnchor.constraint(equalTo: cardFanSpeed.rightAnchor, constant: cardOffset)
+        let tC3 = cardValveState.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
+        let wC3 = cardValveState.widthAnchor.constraint(equalToConstant: 150)
+        let hC3 = cardValveState.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
+        cardValveState.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([lC3, tC3, wC3, hC3])
+        
+        cardPanelView.addSubview(cardRegState)
+        cardRegState.title = "Regulator state"
+        cardRegState.color1 = UIColor(hexString: "#D76065")
+        cardRegState.color2 = UIColor(hexString: "#BC7E80")
+        cardRegState.translatesAutoresizingMaskIntoConstraints = false
+        let lC4 = cardRegState.leftAnchor.constraint(equalTo: cardValveState.rightAnchor, constant: cardOffset)
+        let tC4 = cardRegState.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
+        let wC4 = cardRegState.widthAnchor.constraint(equalToConstant: 150)
+        let hC4 = cardRegState.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
+        cardRegState.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
     }
 
     //MARK: - connection delegate
@@ -476,6 +368,165 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             let date = value as! Date
             print("Attemption to set date: \(date)")
             connector.setDate(date)
+        }
+    }
+}
+
+
+// MARK: - cells
+
+class SpotDateCell: UITableViewCell {
+    private var lblTitle = UILabel()
+    private var separator = UIView()
+    public var title: String? {
+        get {
+            return lblTitle.text
+        }
+        set {
+            lblTitle.text = newValue
+        }
+    }
+    public var cellType: CellType = .unknown
+    public weak var delegate: SpotDataCellDelegate?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        initUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    func initUI() {
+        self.contentView.addSubview(lblTitle)
+        lblTitle.frame = .zero
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let lC = lblTitle.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10)
+        let wC = lblTitle.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: -20)
+        let tC = lblTitle.topAnchor.constraint(equalTo: self.contentView.topAnchor)
+        let hC = lblTitle.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        NSLayoutConstraint.activate([lC, wC, tC, hC])
+        
+        self.contentView.addSubview(separator)
+        separator.frame = .zero
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        let lC1 = separator.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 0)
+        let wC1 = separator.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: 0)
+        let tC1 = separator.heightAnchor.constraint(equalToConstant: 1)
+        let hC1 = separator.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        NSLayoutConstraint.activate([lC1, wC1, tC1, hC1])
+        separator.backgroundColor = UIColor(hexString: "#F0F0F0")
+    }
+}
+
+protocol SpotDataCellDelegate: class {
+    func onCellEditing(_ command: CellType, value: Any)
+}
+
+class InputSpotDateCell: SpotDateCell, UITextFieldDelegate {
+    internal var txtDate = UITextField()
+    public var enabled: Bool {
+        get {
+            return txtDate.isEnabled
+        }
+        set {
+            txtDate.isEnabled = newValue
+        }
+    }
+    
+    override func initUI() {
+        super.initUI()
+        
+        self.contentView.addSubview(txtDate)
+        txtDate.frame = .zero
+        txtDate.translatesAutoresizingMaskIntoConstraints = false
+        let lC = txtDate.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10)
+        let wC = txtDate.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: -20)
+        let tC = txtDate.topAnchor.constraint(equalTo: self.contentView.topAnchor)
+        let hC = txtDate.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        NSLayoutConstraint.activate([lC, wC, tC, hC])
+        txtDate.textAlignment = .right
+        
+        txtDate.delegate = self
+    }
+}
+
+class DateSpotDateCell: InputSpotDateCell {
+    private var _date: Date?
+    public var date: Date? {
+        get {
+            return _date
+        }
+        set {
+            _date = newValue
+            txtDate.text = newValue?.dateFormat
+        }
+    }
+    internal var datePicker = UIDatePicker()
+    
+    override func initUI() {
+        super.initUI()
+        
+        txtDate.inputView = datePicker
+        datePicker.datePickerMode = .date
+        datePicker.addTarget(self, action: #selector(onPickerChange), for: .valueChanged)
+        datePicker.addTarget(self, action: #selector(onPickerEnd), for: .editingDidEnd)
+    }
+    
+    @objc func onPickerChange() {
+        date = datePicker.date
+    }
+    
+    @objc func onPickerEnd() {
+        let d = datePicker.date
+        self.delegate?.onCellEditing(cellType, value: d)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        onPickerEnd()
+    }
+}
+
+class TimeSpotDataCell: DateSpotDateCell {
+    override public var date: Date? {
+        get {
+            return super.date
+        }
+        set {
+            super.date = newValue
+            txtDate.text = newValue?.timeFormat
+        }
+    }
+    
+    override func initUI() {
+        super.initUI()
+        datePicker.datePickerMode = .time
+    }
+}
+
+class DoubleSpotDataCell: InputSpotDateCell {
+    private var _value: Double = 0
+    public var value: Double {
+        get {
+            return _value
+        }
+        set {
+            _value = newValue
+            txtDate.text = "\(_value)"
+        }
+    }
+    
+    override func initUI() {
+        super.initUI()
+        txtDate.keyboardType = .numberPad
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let str = textField.text {
+            if let d = Double(str) {
+                self.delegate?.onCellEditing(cellType, value: d)
+            }
         }
     }
 }
