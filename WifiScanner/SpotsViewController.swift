@@ -69,6 +69,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         self.collectionView.register(SpotCollectionViewCell.self, forCellWithReuseIdentifier: "spotCell")
         
         self.view.addSubview(collectionView)
+        collectionView.backgroundColor = ColorScheme.current.backgroundColor
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         let cxC = collectionView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         let tC = collectionView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70)
@@ -219,8 +220,9 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let colNumber = UIApplication.shared.statusBarOrientation.isLandscape ? 3 : 2
         let w = UIDevice.current.isiPad ?
-            (UIScreen.main.bounds.width - 20) / 2 :
+            (UIScreen.main.bounds.width - CGFloat(10 * colNumber)) / CGFloat(colNumber) :
             (UIScreen.main.bounds.width - 10)
         return CGSize(width: w, height: 100)
     }
@@ -251,5 +253,25 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func onSpotEdit(_ spot: Spot) {
         
+    }
+    
+    //MARK: - rotate
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        collectionView.reloadData()
+        
+        /*guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+        
+        if UIApplication.shared.statusBarOrientation.isLandscape {
+            //here you can do the logic for the cell size if phone is in landscape
+        } else {
+            //logic if not landscape
+        }
+        
+        flowLayout.invalidateLayout()*/
     }
 }

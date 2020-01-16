@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D60EC82A23D0F39500D81289 /* SpotParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60EC82923D0F39500D81289 /* SpotParameterView.swift */; };
 		D60F251F23CF9FC700C4570B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60F251E23CF9FC700C4570B /* CardView.swift */; };
 		D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B023335A17009D2D4C /* PingConfiguration.swift */; };
 		D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B123335A17009D2D4C /* SwiftPing.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D60EC82923D0F39500D81289 /* SpotParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotParameterView.swift; sourceTree = "<group>"; };
 		D60F251E23CF9FC700C4570B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		D674F1B023335A17009D2D4C /* PingConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingConfiguration.swift; sourceTree = "<group>"; };
 		D674F1B123335A17009D2D4C /* SwiftPing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPing.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				D68F240B23CC600600A249A2 /* SpotCardView.swift */,
 				D6E23AE323CDB5B200F0CB94 /* SpotIndicatorView.swift */,
 				D60F251E23CF9FC700C4570B /* CardView.swift */,
+				D60EC82923D0F39500D81289 /* SpotParameterView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				D67DFA8B233519D700760D92 /* modbus-tcp.c in Sources */,
 				D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */,
 				D674F1B723335A17009D2D4C /* Shared.swift in Sources */,
+				D60EC82A23D0F39500D81289 /* SpotParameterView.swift in Sources */,
 				D67DFA612334A96400760D92 /* Color.swift in Sources */,
 				D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */,
 				D67DFA8A233519D700760D92 /* modbus.c in Sources */,

@@ -69,11 +69,16 @@ class CardView: UIView {
         super.draw(rect)
         applyGradient()
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.setNeedsDisplay()
+    }
 }
 
 class CardPanelView: CardView {
-    private var lblValue = UILabel()
-    private var lblTitle = UILabel()
+    internal var lblValue = UILabel()
+    internal var lblTitle = UILabel()
     private var titleHeight = CGFloat(35)
     public var title: String? {
         get {
@@ -132,5 +137,46 @@ class CardPanelView: CardView {
         let wC1 = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor)
         let hC1 = lblTitle.heightAnchor.constraint(equalToConstant: titleHeight)
         NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
+    }
+}
+
+class RegulatorStateCardView: CardPanelView {
+    private var lblStatus = UILabel()
+    public var onStateColor = UIColor(hexString: "#56AB7B")
+    public var offStateColor = UIColor(hexString: "#CE4444")
+    private var _state = RegulatorState.off
+    public var state: RegulatorState {
+        get {
+            return _state
+        }
+        set {
+            _state = newValue
+            if _state == .off {
+                lblStatus.text = "OFF"
+                lblStatus.backgroundColor = offStateColor
+            }
+            if _state == .on {
+                lblStatus.text = "ON"
+                lblStatus.backgroundColor = onStateColor
+            }
+        }
+    }
+    
+    override func applyUI() {
+        super.applyUI()
+        
+        self.addSubview(lblStatus)
+        lblStatus.textAlignment = .center
+        lblStatus.textColor = .white
+        lblStatus.font = UIFont.boldSystemFont(ofSize: 20)
+        lblStatus.translatesAutoresizingMaskIntoConstraints = false
+        let cxC = lblStatus.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        let tC = lblStatus.centerYAnchor.constraint(equalTo: lblValue.centerYAnchor)
+        let wC = lblStatus.widthAnchor.constraint(equalToConstant: 50)
+        let hC = lblStatus.heightAnchor.constraint(equalToConstant: 50)
+        lblStatus.backgroundColor = .red
+        lblStatus.layer.cornerRadius = 25
+        lblStatus.clipsToBounds = true
+        NSLayoutConstraint.activate([cxC, tC, wC, hC])
     }
 }

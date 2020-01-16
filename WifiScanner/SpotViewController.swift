@@ -41,16 +41,31 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         set {
             _spotState = newValue
             
-            cardTemp.value = "\(_spotState.temperatureDevice)°"
-            cardFanSpeed.value = "\(_spotState.fanSpeed)%"
+            cardTemp.value = "\(_spotState.temperatureCurrent)°"
+            cardFanSpeed.value = "\(_spotState.fanSpeedCurrent)%"
+            cardRegState.state = _spotState.regulatorState
+            
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
+            paramDateView.value = formatter.string(from: _spotState.date)
+            paramDevTempView.value = "\(_spotState.temperatureDevice)°"
+            paramFanSpeedView.value = "\(_spotState.fanSpeed)%"
+            paramFanMode.value = (_spotState.fanMode == .auto ? "Auto" : "Manual")
         }
     }
     
     private var cardTemp = CardPanelView()
     private var cardFanSpeed = CardPanelView()
     private var cardValveState = CardPanelView()
-    private var cardRegState = CardPanelView()
+    private var cardRegState = RegulatorStateCardView()
     private var cardPanelView = UIView()
+    
+    private var paramsPanelView = UIView()
+    private var paramDateView = SpotParameterView()
+    private var paramDevTempView = SpotParameterView()
+    private var paramFanSpeedView = SpotParameterView()
+    private var paramFanMode = SpotParameterView()
     
     private var tblData = UITableView()
     
@@ -105,6 +120,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             applyCardPanelForiPad()
+            applyParamsPanelForiPad()
         } else {
             applyCardPanelForiPhone()
         }
@@ -120,7 +136,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         cardTemp.translatesAutoresizingMaskIntoConstraints = false
         let lC1 = cardTemp.leftAnchor.constraint(equalTo: cardPanelView.leftAnchor, constant: cardOffset)
         let tC1 = cardTemp.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
-        let wC1 = cardTemp.widthAnchor.constraint(equalToConstant: 150)
+        let wC1 = cardTemp.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.25, constant: -cardOffset * 1.25)
         let hC1 = cardTemp.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
         cardTemp.layer.cornerRadius = 5
         NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
@@ -132,7 +148,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         cardFanSpeed.translatesAutoresizingMaskIntoConstraints = false
         let lC2 = cardFanSpeed.leftAnchor.constraint(equalTo: cardTemp.rightAnchor, constant: cardOffset)
         let tC2 = cardFanSpeed.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
-        let wC2 = cardFanSpeed.widthAnchor.constraint(equalToConstant: 150)
+        let wC2 = cardFanSpeed.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.25, constant: -cardOffset * 1.25)
         let hC2 = cardFanSpeed.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
         cardFanSpeed.layer.cornerRadius = 5
         NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
@@ -144,7 +160,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         cardValveState.translatesAutoresizingMaskIntoConstraints = false
         let lC3 = cardValveState.leftAnchor.constraint(equalTo: cardFanSpeed.rightAnchor, constant: cardOffset)
         let tC3 = cardValveState.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
-        let wC3 = cardValveState.widthAnchor.constraint(equalToConstant: 150)
+        let wC3 = cardValveState.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.25, constant: -cardOffset * 1.25)
         let hC3 = cardValveState.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
         cardValveState.layer.cornerRadius = 5
         NSLayoutConstraint.activate([lC3, tC3, wC3, hC3])
@@ -156,7 +172,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         cardRegState.translatesAutoresizingMaskIntoConstraints = false
         let lC4 = cardRegState.leftAnchor.constraint(equalTo: cardValveState.rightAnchor, constant: cardOffset)
         let tC4 = cardRegState.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
-        let wC4 = cardRegState.widthAnchor.constraint(equalToConstant: 150)
+        let wC4 = cardRegState.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.25, constant: -cardOffset * 1.25)
         let hC4 = cardRegState.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
         cardRegState.layer.cornerRadius = 5
         NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
@@ -164,6 +180,59 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     
     func applyCardPanelForiPhone() {
         applyCardPanelForiPad()
+    }
+    
+    func applyParamsPanelForiPad() {
+        let cardOffset = CGFloat(10)
+        let paramHeight = CGFloat(55)
+        
+        self.view.addSubview(paramsPanelView)
+        paramsPanelView.translatesAutoresizingMaskIntoConstraints = false
+        let lC = paramsPanelView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
+        let tC = paramsPanelView.topAnchor.constraint(equalTo: cardPanelView.bottomAnchor, constant: cardOffset)
+        let wC = paramsPanelView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+        let hC = paramsPanelView.heightAnchor.constraint(equalToConstant: 2 * paramHeight + cardOffset)
+        NSLayoutConstraint.activate([lC, tC, wC, hC])
+        
+        paramsPanelView.addSubview(paramDateView)
+        paramDateView.layer.cornerRadius = 5
+        paramDateView.title = "Date"
+        paramDateView.translatesAutoresizingMaskIntoConstraints = false
+        let lC1 = paramDateView.leftAnchor.constraint(equalTo: paramsPanelView.leftAnchor, constant: cardOffset)
+        let tC1 = paramDateView.topAnchor.constraint(equalTo: paramsPanelView.topAnchor, constant: 0)
+        let wC1 = paramDateView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
+        let hC1 = paramDateView.heightAnchor.constraint(equalToConstant: paramHeight)
+        NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
+        
+        paramsPanelView.addSubview(paramDevTempView)
+        paramDevTempView.layer.cornerRadius = 5
+        paramDevTempView.title = "Device temperature"
+        paramDevTempView.translatesAutoresizingMaskIntoConstraints = false
+        let lC2 = paramDevTempView.leftAnchor.constraint(equalTo: paramDateView.rightAnchor, constant: cardOffset)
+        let tC2 = paramDevTempView.topAnchor.constraint(equalTo: paramsPanelView.topAnchor, constant: 0)
+        let wC2 = paramDevTempView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
+        let hC2 = paramDevTempView.heightAnchor.constraint(equalToConstant: paramHeight)
+        NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
+        
+        paramsPanelView.addSubview(paramFanSpeedView)
+        paramFanSpeedView.layer.cornerRadius = 5
+        paramFanSpeedView.title = "Fan speed (manual)"
+        paramFanSpeedView.translatesAutoresizingMaskIntoConstraints = false
+        let lC3 = paramFanSpeedView.leftAnchor.constraint(equalTo: paramDateView.leftAnchor, constant: 0)
+        let tC3 = paramFanSpeedView.topAnchor.constraint(equalTo: paramDateView.bottomAnchor, constant: cardOffset)
+        let wC3 = paramFanSpeedView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
+        let hC3 = paramFanSpeedView.heightAnchor.constraint(equalToConstant: paramHeight)
+        NSLayoutConstraint.activate([lC3, tC3, wC3, hC3])
+        
+        paramsPanelView.addSubview(paramFanMode)
+        paramFanMode.layer.cornerRadius = 5
+        paramFanMode.title = "Fan mode"
+        paramFanMode.translatesAutoresizingMaskIntoConstraints = false
+        let lC4 = paramFanMode.leftAnchor.constraint(equalTo: paramFanSpeedView.rightAnchor, constant: cardOffset)
+        let tC4 = paramFanMode.topAnchor.constraint(equalTo: paramFanSpeedView.topAnchor, constant: 0)
+        let wC4 = paramFanMode.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
+        let hC4 = paramFanMode.heightAnchor.constraint(equalToConstant: paramHeight)
+        NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
     }
     
     //MARK: - connection delegate
