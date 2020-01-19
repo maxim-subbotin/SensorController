@@ -115,7 +115,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     //MARK: - card panel
     
     func applyCardPanel() {
-        let cardPanelHeight = CGFloat(100)
+        let cardPanelHeight = UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(100) : CGFloat(210)
 
         self.view.addSubview(cardPanelView)
         cardPanelView.translatesAutoresizingMaskIntoConstraints = false
@@ -198,7 +198,54 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     }
     
     func applyCardPanelForiPhone() {
-        applyCardPanelForiPad()
+        let cardOffset = CGFloat(10)
+        
+        cardTemp.title = "Temperature"
+        cardTemp.color1 = UIColor(hexString: "#F67965")
+        cardTemp.color2 = UIColor(hexString: "#F66EA6")
+        cardTemp.translatesAutoresizingMaskIntoConstraints = false
+        let lC1 = cardTemp.leftAnchor.constraint(equalTo: cardPanelView.leftAnchor, constant: cardOffset)
+        let tC1 = cardTemp.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
+        let wC1 = cardTemp.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
+        let hC1 = cardTemp.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
+        cardTemp.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
+        
+        
+        cardFanSpeed.title = "Fan speed"
+        cardFanSpeed.color1 = UIColor(hexString: "#4575FA")
+        cardFanSpeed.color2 = UIColor(hexString: "#4430E6")
+        cardFanSpeed.translatesAutoresizingMaskIntoConstraints = false
+        let lC2 = cardFanSpeed.leftAnchor.constraint(equalTo: cardTemp.rightAnchor, constant: cardOffset)
+        let tC2 = cardFanSpeed.topAnchor.constraint(equalTo: cardPanelView.topAnchor, constant: 0)
+        let wC2 = cardFanSpeed.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
+        let hC2 = cardFanSpeed.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
+        cardFanSpeed.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
+        
+        
+        cardValveState.title = "Valve state"
+        cardValveState.color1 = UIColor(hexString: "#2A3354")
+        cardValveState.color2 = UIColor(hexString: "#1B1E2E")
+        cardValveState.translatesAutoresizingMaskIntoConstraints = false
+        let lC3 = cardValveState.leftAnchor.constraint(equalTo: cardTemp.leftAnchor, constant: 0)
+        let tC3 = cardValveState.topAnchor.constraint(equalTo: cardTemp.bottomAnchor, constant: cardOffset)
+        let wC3 = cardValveState.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
+        let hC3 = cardValveState.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
+        cardValveState.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([lC3, tC3, wC3, hC3])
+        
+        
+        cardRegState.title = "Regulator state"
+        cardRegState.color1 = UIColor(hexString: "#D76065")
+        cardRegState.color2 = UIColor(hexString: "#BC7E80")
+        cardRegState.translatesAutoresizingMaskIntoConstraints = false
+        let lC4 = cardRegState.leftAnchor.constraint(equalTo: cardValveState.rightAnchor, constant: cardOffset)
+        let tC4 = cardRegState.topAnchor.constraint(equalTo: cardValveState.topAnchor, constant: 0)
+        let wC4 = cardRegState.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
+        let hC4 = cardRegState.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
+        cardRegState.layer.cornerRadius = 5
+        NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
     }
     
     //MARK: - params panel
