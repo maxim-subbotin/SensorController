@@ -478,18 +478,19 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let param = parameters[indexPath.row]
+        let value = getExtraParamValue(byType: param.type)
         var cell: SpotParameterViewCell?
-        if param.type == .controlSequence {
+        if param.type == .controlSequence || param.type == .regulatorBehaviourInShutdown || param.type == .fanWorkModeInShutdown {
             cell = tableView.dequeueReusableCell(withIdentifier: "enumCell") as! SpotEnumParameterViewCell
-            (cell as! SpotEnumParameterViewCell).values = [ValueSelectorItem(withTitle: "Only heat", andValue: ControlSequenceType.onlyHeat),
-                                                           ValueSelectorItem(withTitle: "Only cold", andValue: ControlSequenceType.onlyCold),
-                                                           ValueSelectorItem(withTitle: "Heat and cold", andValue: ControlSequenceType.heatAndCold)]
+            (cell as! SpotEnumParameterViewCell).values = items(forType: param.type)
+            (cell as! SpotEnumParameterViewCell).selectedValue = item(forType: param.type, andValue: value)
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }
         
+        cell?.value = value
         cell?.type = param
-        cell?.value = getExtraParam(byType: parameters[indexPath.row].type)
+        cell?.valueTitle = getExtraParamFormattedValue(byType: parameters[indexPath.row].type)
         cell?.backgroundColor = ColorScheme.current.backgroundColor
         cell?.viewController = self
         return cell ?? UITableViewCell()
@@ -587,7 +588,11 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     
     //MARK: - params
     
-    func getExtraParam(byType type: SpotAdditionalParamType) -> String? {
+    func getExtraParamValue(byType type: SpotAdditionalParamType) -> Any? {
+        return spotState.additionalParams[type]
+    }
+    
+    func getExtraParamFormattedValue(byType type: SpotAdditionalParamType) -> String? {
         if let val = spotState.additionalParams[type] {
             if val is ControlSequenceType {
                 switch (val as! ControlSequenceType) {
@@ -656,6 +661,46 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             }
         }
         return nil
+    }
+    
+    func item(forType type: SpotAdditionalParamType, andValue val: Any) -> ValueSelectorItem? {
+        if type == .controlSequence && val is ControlSequenceType {
+            switch (val as! ControlSequenceType) {
+                case .heatAndCold: return ValueSelectorItem(withTitle: "Heat and cold", andValue: val)
+                case .onlyCold: return ValueSelectorItem(withTitle: "Only cold", andValue: val)
+                case .onlyHeat: return ValueSelectorItem(withTitle: "Only heat", andValue: val)
+            }
+        }
+        if type == .regulatorBehaviourInShutdown {
+            switch (val as! RegulatorShutdownWorkType) {
+                case .fullShutdown: return ValueSelectorItem(withTitle: "Full shutdown", andValue: val)
+                case .partialShutdown: return ValueSelectorItem(withTitle: "Partial shutdown", andValue: val)
+            }
+        }
+        if type == .fanWorkModeInShutdown {
+            switch (val as! FanShutdownWorkType) {
+                case .valveClosed: return ValueSelectorItem(withTitle: "Valve closed", andValue: val)
+                case .valveOpened: return ValueSelectorItem(withTitle: "Valve opened", andValue: val)
+            }
+        }
+        return nil
+    }
+    
+    func items(forType type: SpotAdditionalParamType) -> [ValueSelectorItem] {
+        if type == .controlSequence {
+            return [ValueSelectorItem(withTitle: "Only heat", andValue: ControlSequenceType.onlyHeat),
+                    ValueSelectorItem(withTitle: "Only cold", andValue: ControlSequenceType.onlyCold),
+                    ValueSelectorItem(withTitle: "Heat and cold", andValue: ControlSequenceType.heatAndCold)]
+        }
+        if type == .regulatorBehaviourInShutdown {
+            return [ValueSelectorItem(withTitle: "Full shutdown", andValue: RegulatorShutdownWorkType.fullShutdown),
+                    ValueSelectorItem(withTitle: "Partial shutdown", andValue: RegulatorShutdownWorkType.fullShutdown)]
+        }
+        if type == .fanWorkModeInShutdown {
+            return [ValueSelectorItem(withTitle: "Valve closed", andValue: FanShutdownWorkType.valveClosed),
+                    ValueSelectorItem(withTitle: "Valve opened", andValue: FanShutdownWorkType.valveOpened)]
+        }
+        return [ValueSelectorItem]()
     }
 }
 

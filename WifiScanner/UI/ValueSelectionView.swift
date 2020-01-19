@@ -35,6 +35,7 @@ class ValueSelectionView: UITableView, UITableViewDelegate, UITableViewDataSourc
         }
     }
     public weak var selectionDelegate: ValueSelectionViewDelegate?
+    public var selectedValue: ValueSelectorItem?
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -60,8 +61,13 @@ class ValueSelectionView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 20)
-        cell.textLabel?.text = values[indexPath.row].title
+        let val = values[indexPath.row]
+        if selectedValue != nil && selectedValue!.title == val.title {
+            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        } else {
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 20)
+        }
+        cell.textLabel?.text = val.title
         cell.backgroundColor = ColorScheme.current.selectorMenuBackgroundColor
         cell.textLabel?.textColor = ColorScheme.current.selectorMenuTextColor
         return cell
@@ -96,6 +102,14 @@ class ValueSelectorViewController: UIViewController, ValueSelectionViewDelegate 
         set {
             _selectionDelegate = newValue
             viewSelector.selectionDelegate = _selectionDelegate
+        }
+    }
+    public var selectedValue: ValueSelectorItem? {
+        get {
+            return viewSelector.selectedValue
+        }
+        set {
+            viewSelector.selectedValue = newValue
         }
     }
     

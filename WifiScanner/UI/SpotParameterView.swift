@@ -79,7 +79,7 @@ class SpotParameterViewCell: UITableViewCell {
             paramView.title = _type?.title
         }
     }
-    public var value: String? {
+    public var valueTitle: String? {
         get {
             return paramView.value
         }
@@ -87,6 +87,7 @@ class SpotParameterViewCell: UITableViewCell {
             paramView.value = newValue
         }
     }
+    public var value: Any?
     public weak var viewController: UIViewController?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -124,6 +125,7 @@ class SpotParameterViewCell: UITableViewCell {
 
 class SpotEnumParameterViewCell: SpotParameterViewCell, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate {
     public var values = [ValueSelectorItem]()
+    public var selectedValue: ValueSelectorItem?
     
     override func onTap(_ gesture: UITapGestureRecognizer) {
         super.onTap(gesture)
@@ -131,6 +133,7 @@ class SpotEnumParameterViewCell: SpotParameterViewCell, UIPopoverPresentationCon
         let vc = ValueSelectorViewController()
         vc.selectionDelegate = self
         vc.values = self.values
+        vc.selectedValue = self.selectedValue
         vc.modalPresentationStyle = .popover
         let popover = vc.popoverPresentationController
         vc.preferredContentSize = CGSize(width: 300, height: 60 * self.values.count)
