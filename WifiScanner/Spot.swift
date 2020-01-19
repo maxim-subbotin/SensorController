@@ -36,6 +36,7 @@ class SpotState {
     public var fanSpeed: Double = 0
     public var fanMode: FanMode = .auto
     public var regulatorState: RegulatorState = .off
+    public var additionalParams = [SpotAdditionalParamType: Any]()
     
     public static var demo: SpotState {
         let state = SpotState()
@@ -47,6 +48,25 @@ class SpotState {
         state.valveState = 1
         state.fanMode = .auto
         state.regulatorState = .on
+        
+        var params = [SpotAdditionalParamType: Any]()
+        params[.controlSequence] = ControlSequenceType.onlyHeat
+        params[.regulatorBehaviourInShutdown] = RegulatorShutdownWorkType.fullShutdown
+        params[.displayBrightness] = 3
+        params[.temperatureSensorCalibration] = 0.5
+        params[.fanWorkModeInShutdown] = FanShutdownWorkType.valveClosed
+        params[.ventilationMode] = VentilationMode.turnOff
+        params[.autoFanSpeedGraph] = AutoFanSpeedGraphType.graph1
+        params[.reactionTimeOnTemperature] = 30
+        params[.maxFanSpeedLimit] = 50
+        params[.buttonBlockMode] = ButtonBlockMode.manual
+        params[.brightnessDimmingOnSleep] = BrightnessDimmingOnSleepType.yes
+        params[.temperatureStepInSleepMode] = 5
+        params[.weekProgramMode] = WeekProgramMode.byAirTemperature
+        params[.defaultSettings] = DefaultSettingsType.no
+        
+        state.additionalParams = params
+        
         return state
     }
 }
@@ -107,8 +127,8 @@ enum BrightnessDimmingOnSleepType: Int {
 }
 
 enum WeekProgramMode: Int {
-    case enabled = 1
-    case disabled = 2
+    case disabled = 1
+    case byAirTemperature = 2
     case byFanSpeed = 3
 }
 

@@ -66,3 +66,49 @@ class SpotParameterView: UIView {
         self.backgroundColor = ColorScheme.current.spotParameterBackgroundColor
     }
 }
+
+class SpotParameterViewCell: UITableViewCell {
+    private var paramView = SpotParameterView()
+    private var _type: ParameterType?
+    public var type: ParameterType? {
+        get {
+            return _type
+        }
+        set {
+            _type = newValue
+            paramView.title = _type?.title
+        }
+    }
+    public var value: String? {
+        get {
+            return paramView.value
+        }
+        set {
+            paramView.value = newValue
+        }
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        applyUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        applyUI()
+    }
+    
+    func applyUI() {
+        let offset = CGFloat(10)
+        
+        self.contentView.addSubview(paramView)
+        paramView.layer.cornerRadius = 5
+        paramView.clipsToBounds = true
+        paramView.translatesAutoresizingMaskIntoConstraints = false
+        let lC = paramView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: offset)
+        let tC = paramView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: offset / 2)
+        let wC = paramView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: -2 * offset)
+        let hC = paramView.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, constant: -offset)
+        NSLayoutConstraint.activate([lC, tC, wC, hC])
+    }
+}

@@ -52,6 +52,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             paramDevTempView.value = "\(_spotState.temperatureDevice)°"
             paramFanSpeedView.value = "\(_spotState.fanSpeed)%"
             paramFanMode.value = (_spotState.fanMode == .auto ? "Auto" : "Manual")
+            
+            addParamsTableView.reloadData()
         }
     }
     
@@ -281,6 +283,10 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
         
         self.view.addSubview(addParamsTableView)
+        addParamsTableView.allowsSelection = false
+        addParamsTableView.backgroundColor = ColorScheme.current.backgroundColor
+        addParamsTableView.separatorStyle = .none
+        addParamsTableView.register(SpotParameterViewCell.self, forCellReuseIdentifier: "paramCell")
         addParamsTableView.delegate = self
         addParamsTableView.dataSource = self
         addParamsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -423,8 +429,10 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = parameters[indexPath.row].title
+        let cell = tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell
+        cell.type = parameters[indexPath.row]
+        cell.value = getExtraParam(byType: parameters[indexPath.row].type)
+        cell.backgroundColor = ColorScheme.current.backgroundColor
         return cell
         
         /*let cell = UITableViewCell()
@@ -497,7 +505,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 55 + 10
     }
 
     func onCellEditing(_ command: CellType, value: Any) {
@@ -516,6 +524,79 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             print("Attemption to set date: \(date)")
             connector.setDate(date)
         }
+    }
+    
+    //MARK: - params
+    
+    func getExtraParam(byType type: SpotAdditionalParamType) -> String? {
+        if let val = spotState.additionalParams[type] {
+            if val is ControlSequenceType {
+                switch (val as! ControlSequenceType) {
+                    case .heatAndCold: return "Heat and cold"
+                    case .onlyCold: return "Only cold"
+                    case .onlyHeat: return "Only heat"
+                }
+            }
+            if val is RegulatorShutdownWorkType {
+                switch (val as! RegulatorShutdownWorkType) {
+                    case .fullShutdown: return "Full shutdown"
+                    case .partialShutdown: return "Partial shutdown"
+                }
+            }
+            if val is FanShutdownWorkType {
+                switch (val as! FanShutdownWorkType) {
+                    case .valveClosed: return "Valve closed"
+                    case .valveOpened: return "Valve opened"
+                }
+            }
+            if val is VentilationMode {
+                switch (val as! VentilationMode) {
+                    case .turnOff: return "Turn off"
+                    case .turnOn: return "Turn on"
+                }
+            }
+            if val is AutoFanSpeedGraphType {
+                switch (val as! AutoFanSpeedGraphType) {
+                    case .graph1: return "Graph 1"
+                    case .graph2: return "Graph 2"
+                    case .graph3: return "Graph 3"
+                }
+            }
+            if val is ButtonBlockMode {
+                switch (val as! ButtonBlockMode) {
+                    case .auto: return "Auto"
+                    case .manual: return "Manual"
+                    case .forbid: return "Forbid"
+                }
+            }
+            if val is BrightnessDimmingOnSleepType {
+                switch (val as! BrightnessDimmingOnSleepType) {
+                    case .no: return "No"
+                    case .yes: return "Yes"
+                }
+            }
+            if val is WeekProgramMode {
+                switch (val as! WeekProgramMode) {
+                    case .disabled: return "Disabled"
+                    case .byFanSpeed: return "By fan speed"
+                    case .byAirTemperature: return "By air temperature"
+                }
+            }
+            if val is DefaultSettingsType {
+                switch (val as! DefaultSettingsType) {
+                    case .no: return "No"
+                    case .yes: return "Yes"
+                }
+            }
+
+            
+            return "\(val)"
+            
+            if val is NSNumber {
+                return "\(val as! NSNumber)"
+            }
+        }
+        return nil
     }
 }
 
