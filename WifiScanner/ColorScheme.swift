@@ -24,6 +24,8 @@ class ColorScheme {
     public var spotParameterBackgroundColor = UIColor(hexString: "#1B1E2E")
     public var spotParameterTitleColor = UIColor(hexString: "#838A9E")
     public var spotParameterValueColor = UIColor.white
+    public var spotHeaderBackgroundColor = UIColor(hexString: "#1B1E2E")
+    public var spotHeaderTextColor = UIColor(hexString: "#84899C")
     
     public static var current = ColorScheme()
 }

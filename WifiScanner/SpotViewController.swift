@@ -67,6 +67,12 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     private var paramFanSpeedView = SpotParameterView()
     private var paramFanMode = SpotParameterView()
     
+    private var addParamsHeaderView = UIView()
+    private var addParamsHeaderLabel = UILabel()
+    private var addParamsTableView = UITableView()
+    private var paramHeight = CGFloat(55)
+    private var parameters = ParameterType.allTypes
+    
     private var tblData = UITableView()
     
     private var connector = Connector()
@@ -100,7 +106,11 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     
     func initUI() {
         applyCardPanel()
+        applyParamsPanel()
+        applyAdditionalParamsView()
     }
+    
+    //MARK: - card panel
     
     func applyCardPanel() {
         let cardPanelHeight = CGFloat(100)
@@ -120,11 +130,18 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             applyCardPanelForiPad()
-            applyParamsPanelForiPad()
         } else {
             applyCardPanelForiPhone()
         }
 
+    }
+    
+    func applyParamsPanel() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            applyParamsPanelForiPad()
+        } else {
+            applyParamsPanelForiPad()
+        }
     }
 
     func applyCardPanelForiPad() {
@@ -182,6 +199,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         applyCardPanelForiPad()
     }
     
+    //MARK: - params panel
+    
     func applyParamsPanelForiPad() {
         let cardOffset = CGFloat(10)
         let paramHeight = CGFloat(55)
@@ -233,6 +252,43 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         let wC4 = paramFanMode.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
         let hC4 = paramFanMode.heightAnchor.constraint(equalToConstant: paramHeight)
         NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
+    }
+    
+    //MARK: - additional params view
+    
+    func applyAdditionalParamsView() {
+        let cardOffset = CGFloat(10)
+        let headerHeight = CGFloat(50)
+        
+        self.view.addSubview(addParamsHeaderView)
+        addParamsHeaderView.backgroundColor = ColorScheme.current.spotHeaderBackgroundColor
+        addParamsHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        let lC = addParamsHeaderView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
+        let tC = addParamsHeaderView.topAnchor.constraint(equalTo: paramsPanelView.bottomAnchor, constant: 2 * cardOffset)
+        let wC = addParamsHeaderView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+        let hC = addParamsHeaderView.heightAnchor.constraint(equalToConstant: headerHeight)
+        NSLayoutConstraint.activate([lC, tC, wC, hC])
+        
+        self.addParamsHeaderView.addSubview(addParamsHeaderLabel)
+        addParamsHeaderLabel.textColor = ColorScheme.current.spotHeaderTextColor
+        addParamsHeaderLabel.font = UIFont.systemFont(ofSize: 22)
+        addParamsHeaderLabel.text = "Additional parameters"
+        addParamsHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
+        let lC1 = addParamsHeaderLabel.leftAnchor.constraint(equalTo: addParamsHeaderView.leftAnchor, constant: 2 * cardOffset)
+        let tC1 = addParamsHeaderLabel.topAnchor.constraint(equalTo: addParamsHeaderView.topAnchor, constant: 0)
+        let wC1 = addParamsHeaderLabel.widthAnchor.constraint(equalTo: addParamsHeaderView.widthAnchor, constant: -cardOffset)
+        let hC1 = addParamsHeaderLabel.heightAnchor.constraint(equalTo: addParamsHeaderView.heightAnchor)
+        NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
+        
+        self.view.addSubview(addParamsTableView)
+        addParamsTableView.delegate = self
+        addParamsTableView.dataSource = self
+        addParamsTableView.translatesAutoresizingMaskIntoConstraints = false
+        let lC2 = addParamsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
+        let tC2 = addParamsTableView.topAnchor.constraint(equalTo: addParamsHeaderView.bottomAnchor, constant: cardOffset)
+        let wC2 = addParamsTableView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+        let hC2 = addParamsTableView.heightAnchor.constraint(equalToConstant: 14 * paramHeight)
+        NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
     }
     
     //MARK: - connection delegate
@@ -363,11 +419,15 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     //MARK: - table delegates
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cells.count
+        return parameters.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
+        cell.textLabel?.text = parameters[indexPath.row].title
+        return cell
+        
+        /*let cell = UITableViewCell()
         let cellType = cells[indexPath.row]
         var spotCell: SpotDateCell?
         if cellType == .date {
@@ -433,11 +493,11 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         spotCell?.delegate = self
         spotCell?.cellType = cellType
         
-        return spotCell ?? cell
+        return spotCell ?? cell*/
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
 
     func onCellEditing(_ command: CellType, value: Any) {
