@@ -27,5 +27,8 @@ class ColorScheme {
     public var spotHeaderBackgroundColor = UIColor(hexString: "#1B1E2E")
     public var spotHeaderTextColor = UIColor(hexString: "#84899C")
     
+    public var selectorMenuBackgroundColor = UIColor(hexString: "#1B1E2E")
+    public var selectorMenuTextColor = UIColor.white
+    
     public static var current = ColorScheme()
 }

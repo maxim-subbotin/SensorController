@@ -68,7 +68,7 @@ class SpotParameterView: UIView {
 }
 
 class SpotParameterViewCell: UITableViewCell {
-    private var paramView = SpotParameterView()
+    internal var paramView = SpotParameterView()
     private var _type: ParameterType?
     public var type: ParameterType? {
         get {
@@ -87,6 +87,7 @@ class SpotParameterViewCell: UITableViewCell {
             paramView.value = newValue
         }
     }
+    public weak var viewController: UIViewController?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -110,5 +111,37 @@ class SpotParameterViewCell: UITableViewCell {
         let wC = paramView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, constant: -2 * offset)
         let hC = paramView.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, constant: -offset)
         NSLayoutConstraint.activate([lC, tC, wC, hC])
+        
+        self.paramView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap(_:)))
+        self.paramView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc internal func onTap(_ gesture: UITapGestureRecognizer) {
+        print("Tap on cell with type: \(type?.title ?? "--")")
+    }
+}
+
+class SpotEnumParameterViewCell: SpotParameterViewCell, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate {
+    public var values = [ValueSelectorItem]()
+    
+    override func onTap(_ gesture: UITapGestureRecognizer) {
+        super.onTap(gesture)
+        
+        let vc = ValueSelectorViewController()
+        vc.selectionDelegate = self
+        vc.values = self.values
+        vc.modalPresentationStyle = .popover
+        let popover = vc.popoverPresentationController
+        vc.preferredContentSize = CGSize(width: 300, height: 60 * self.values.count)
+        popover?.delegate = self
+        popover?.sourceView = self.paramView
+        popover?.sourceRect = CGRect(x: self.paramView.frame.width - 10, y: 10, width: 1, height: 1)
+        
+        self.viewController?.present(vc, animated: true, completion: nil)
+    }
+    
+    func onValueSelection(_ val: ValueSelectorItem) {
+
     }
 }

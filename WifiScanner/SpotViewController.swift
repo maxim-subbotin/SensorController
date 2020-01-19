@@ -334,6 +334,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         addParamsTableView.backgroundColor = ColorScheme.current.backgroundColor
         addParamsTableView.separatorStyle = .none
         addParamsTableView.register(SpotParameterViewCell.self, forCellReuseIdentifier: "paramCell")
+        addParamsTableView.register(SpotEnumParameterViewCell.self, forCellReuseIdentifier: "enumCell")
         addParamsTableView.delegate = self
         addParamsTableView.dataSource = self
         addParamsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -476,11 +477,22 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell
-        cell.type = parameters[indexPath.row]
-        cell.value = getExtraParam(byType: parameters[indexPath.row].type)
-        cell.backgroundColor = ColorScheme.current.backgroundColor
-        return cell
+        let param = parameters[indexPath.row]
+        var cell: SpotParameterViewCell?
+        if param.type == .controlSequence {
+            cell = tableView.dequeueReusableCell(withIdentifier: "enumCell") as! SpotEnumParameterViewCell
+            (cell as! SpotEnumParameterViewCell).values = [ValueSelectorItem(withTitle: "Only heat", andValue: ControlSequenceType.onlyHeat),
+                                                           ValueSelectorItem(withTitle: "Only cold", andValue: ControlSequenceType.onlyCold),
+                                                           ValueSelectorItem(withTitle: "Heat and cold", andValue: ControlSequenceType.heatAndCold)]
+        } else {
+            cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
+        }
+        
+        cell?.type = param
+        cell?.value = getExtraParam(byType: parameters[indexPath.row].type)
+        cell?.backgroundColor = ColorScheme.current.backgroundColor
+        cell?.viewController = self
+        return cell ?? UITableViewCell()
         
         /*let cell = UITableViewCell()
         let cellType = cells[indexPath.row]
