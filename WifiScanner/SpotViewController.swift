@@ -23,7 +23,7 @@ enum CellType: Int {
     case unknown
 }
 
-class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate {
+class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -85,9 +85,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         super.viewDidLoad()
         
         self.navigationItem.title = (spot != nil && spot!.name != nil) ? spot!.name : "Spot"
-        
         self.navigationItem.title = spot?.name ?? "Spot"
-        
         self.view.backgroundColor = ColorScheme.current.backgroundColor
         
         self.navigationController?.navigationBar.barTintColor = ColorScheme.current.navigationBarColor
@@ -106,6 +104,16 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        (view as! UIScrollView).contentSize = CGSize(width: self.view.bounds.width, height: addParamsHeaderView.frame.maxY + 10 + 14 * (paramHeight + 10) + 10)
+    }
+    
+    override func loadView() {
+        self.view = UIScrollView()
+    }
+    
     func initUI() {
         applyCardPanel()
         applyParamsPanel()
@@ -120,7 +128,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         self.view.addSubview(cardPanelView)
         cardPanelView.translatesAutoresizingMaskIntoConstraints = false
         let lC = cardPanelView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
-        let tC = cardPanelView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80)
+        let tC = cardPanelView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10)
         let wC = cardPanelView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
         let hC = cardPanelView.heightAnchor.constraint(equalToConstant: cardPanelHeight)
         NSLayoutConstraint.activate([lC, tC, wC, hC])
@@ -331,6 +339,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         
         self.view.addSubview(addParamsTableView)
         addParamsTableView.allowsSelection = false
+        addParamsTableView.isScrollEnabled = false
         addParamsTableView.backgroundColor = ColorScheme.current.backgroundColor
         addParamsTableView.separatorStyle = .none
         addParamsTableView.register(SpotParameterViewCell.self, forCellReuseIdentifier: "paramCell")
@@ -341,7 +350,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         let lC2 = addParamsTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
         let tC2 = addParamsTableView.topAnchor.constraint(equalTo: addParamsHeaderView.bottomAnchor, constant: cardOffset)
         let wC2 = addParamsTableView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
-        let hC2 = addParamsTableView.heightAnchor.constraint(equalToConstant: 14 * paramHeight)
+        let hC2 = addParamsTableView.heightAnchor.constraint(equalToConstant: 14 * (paramHeight + 10))
         NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
     }
     
@@ -484,6 +493,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             cell = tableView.dequeueReusableCell(withIdentifier: "enumCell") as! SpotEnumParameterViewCell
             (cell as! SpotEnumParameterViewCell).values = items(forType: param.type)
             (cell as! SpotEnumParameterViewCell).selectedValue = item(forType: param.type, andValue: value)
+            (cell as! SpotEnumParameterViewCell).delegate = self
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }
@@ -767,6 +777,22 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
                     ValueSelectorItem(withTitle: "Yes", andValue: DefaultSettingsType.yes)]
         }
         return [ValueSelectorItem]()
+    }
+    
+    //MARK: - enum param changing callback
+    
+    func onEnumParameterSelection(_ val: ValueSelectorItem, forParam param: ParameterType) {
+        spotState.additionalParams[param.type] = val.value
+        
+        for cell in addParamsTableView.visibleCells {
+            if cell is SpotEnumParameterViewCell {
+                let paramCell = cell as! SpotEnumParameterViewCell
+                if paramCell.type?.type == param.type {
+                    paramCell.selectedValue = val
+                    paramCell.valueTitle = item(forType: param.type, andValue: val.value)?.title
+                }
+            }
+        }
     }
 }
 

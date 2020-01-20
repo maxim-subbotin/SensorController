@@ -123,9 +123,14 @@ class SpotParameterViewCell: UITableViewCell {
     }
 }
 
+protocol SpotEnumParameterViewCellDelegate: class {
+    func onEnumParameterSelection(_ val: ValueSelectorItem, forParam param: ParameterType)
+}
+
 class SpotEnumParameterViewCell: SpotParameterViewCell, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate {
     public var values = [ValueSelectorItem]()
     public var selectedValue: ValueSelectorItem?
+    public weak var delegate: SpotEnumParameterViewCellDelegate?
     
     override func onTap(_ gesture: UITapGestureRecognizer) {
         super.onTap(gesture)
@@ -145,6 +150,8 @@ class SpotEnumParameterViewCell: SpotParameterViewCell, UIPopoverPresentationCon
     }
     
     func onValueSelection(_ val: ValueSelectorItem) {
-
+        if let type = self.type {
+            delegate?.onEnumParameterSelection(val, forParam: type)
+        }
     }
 }
