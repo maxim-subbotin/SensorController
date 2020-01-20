@@ -35,6 +35,7 @@
 		D67DFA922335262300760D92 /* SpotEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA912335262300760D92 /* SpotEditViewController.swift */; };
 		D68F240923CC5D7400A249A2 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F240823CC5D7400A249A2 /* ColorScheme.swift */; };
 		D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F240B23CC600600A249A2 /* SpotCardView.swift */; };
+		D6C9998D23D63D25003A938D /* BrightnessSensorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9998C23D63D25003A938D /* BrightnessSensorView.swift */; };
 		D6E22531235C94CE00E0D800 /* Connector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E22530235C94CE00E0D800 /* Connector.swift */; };
 		D6E22533235C97B100E0D800 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E22532235C97B100E0D800 /* Tools.swift */; };
 		D6E23AE423CDB5B200F0CB94 /* SpotIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E23AE323CDB5B200F0CB94 /* SpotIndicatorView.swift */; };
@@ -88,6 +89,7 @@
 		D67DFA912335262300760D92 /* SpotEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotEditViewController.swift; sourceTree = "<group>"; };
 		D68F240823CC5D7400A249A2 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		D68F240B23CC600600A249A2 /* SpotCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotCardView.swift; sourceTree = "<group>"; };
+		D6C9998C23D63D25003A938D /* BrightnessSensorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrightnessSensorView.swift; sourceTree = "<group>"; };
 		D6E22530235C94CE00E0D800 /* Connector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connector.swift; sourceTree = "<group>"; };
 		D6E22532235C97B100E0D800 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		D6E23AE323CDB5B200F0CB94 /* SpotIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotIndicatorView.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				D60F251E23CF9FC700C4570B /* CardView.swift */,
 				D60EC82923D0F39500D81289 /* SpotParameterView.swift */,
 				D639840B23D4A37100C02F43 /* ValueSelectionView.swift */,
+				D6C9998C23D63D25003A938D /* BrightnessSensorView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				D67DFA922335262300760D92 /* SpotEditViewController.swift in Sources */,
 				D6F1DCA82330B16C007248AC /* AppDelegate.swift in Sources */,
 				D674F1BE23336C4F009D2D4C /* BDHost.m in Sources */,
+				D6C9998D23D63D25003A938D /* BrightnessSensorView.swift in Sources */,
 				D67DFA6B2335176800760D92 /* SpotViewController.swift in Sources */,
 				D6E22533235C97B100E0D800 /* Tools.swift in Sources */,
 				D674F1B823335A17009D2D4C /* ICMP.swift in Sources */,
