@@ -29,6 +29,9 @@ class ColorScheme {
     
     public var selectorMenuBackgroundColor = UIColor(hexString: "#1B1E2E")
     public var selectorMenuTextColor = UIColor.white
+    public var selectorCheckboxBorderColor = UIColor(hexString: "#84899C")
+    public var selectorCheckboxBackgroundColor = UIColor.white
+    
     
     public static var current = ColorScheme()
 }
