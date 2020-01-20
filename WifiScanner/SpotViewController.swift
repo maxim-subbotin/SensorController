@@ -23,7 +23,7 @@ enum CellType: Int {
     case unknown
 }
 
-class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate {
+class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -301,6 +301,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         NSLayoutConstraint.activate([lC3, tC3, wC3, hC3])
         
         paramsPanelView.addSubview(paramFanMode)
+        paramFanMode.isUserInteractionEnabled = true
         paramFanMode.layer.cornerRadius = 5
         paramFanMode.title = "Fan mode"
         paramFanMode.translatesAutoresizingMaskIntoConstraints = false
@@ -309,6 +310,9 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         let wC4 = paramFanMode.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
         let hC4 = paramFanMode.heightAnchor.constraint(equalToConstant: paramHeight)
         NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
+        
+        let fanTapGesture = UITapGestureRecognizer(target: self, action: #selector(onFanModeTap(_:)))
+        paramFanMode.addGestureRecognizer(fanTapGesture)
     }
     
     //MARK: - additional params view
@@ -792,6 +796,36 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
                     paramCell.valueTitle = item(forType: param.type, andValue: val.value)?.title
                 }
             }
+        }
+    }
+    
+    //MARK: - on fan mode change
+    
+    @objc func onFanModeTap(_ tapGesture: UITapGestureRecognizer) {
+        let vc = ValueSelectorViewController()
+        vc.values = [ValueSelectorItem(withTitle: "Auto", andValue: FanMode.auto),
+                     ValueSelectorItem(withTitle: "Manual", andValue: FanMode.manual)]
+        if spotState.fanMode == .auto {
+            vc.selectedValue = ValueSelectorItem(withTitle: "Auto", andValue: FanMode.auto)
+        } else if spotState.fanMode == .manual {
+            vc.selectedValue = ValueSelectorItem(withTitle: "Manual", andValue: FanMode.manual)
+        }
+        vc.selectionDelegate = self
+        
+        vc.modalPresentationStyle = .popover
+        let popover = vc.popoverPresentationController
+        vc.preferredContentSize = CGSize(width: 300, height: 60 * 2)
+        popover?.delegate = self
+        popover?.sourceView = self.paramFanMode
+        popover?.sourceRect = CGRect(x: self.paramFanMode.frame.width / 2, y: self.paramFanMode.frame.height / 2, width: 1, height: 1)
+        
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    func onValueSelection(_ val: ValueSelectorItem) {
+        if val.value is FanMode {
+            spotState.fanMode = val.value as! FanMode
+            paramFanMode.value = val.title
         }
     }
 }
