@@ -480,7 +480,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         let param = parameters[indexPath.row]
         let value = getExtraParamValue(byType: param.type)
         var cell: SpotParameterViewCell?
-        if param.type == .controlSequence || param.type == .regulatorBehaviourInShutdown || param.type == .fanWorkModeInShutdown {
+        if param.type == .controlSequence || param.type == .regulatorBehaviourInShutdown || param.type == .fanWorkModeInShutdown || param.type == .ventilationMode || param.type == .autoFanSpeedGraph || param.type == .buttonBlockMode || param.type == .brightnessDimmingOnSleep || param.type == .weekProgramMode || param.type == .defaultSettings {
             cell = tableView.dequeueReusableCell(withIdentifier: "enumCell") as! SpotEnumParameterViewCell
             (cell as! SpotEnumParameterViewCell).values = items(forType: param.type)
             (cell as! SpotEnumParameterViewCell).selectedValue = item(forType: param.type, andValue: value)
@@ -683,6 +683,45 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
                 case .valveOpened: return ValueSelectorItem(withTitle: "Valve opened", andValue: val)
             }
         }
+        if type == .ventilationMode {
+            switch (val as! VentilationMode) {
+                case .turnOff: return ValueSelectorItem(withTitle: "Turn off", andValue: val)
+                case .turnOn: return ValueSelectorItem(withTitle: "Turn on", andValue: val)
+            }
+        }
+        if type == .autoFanSpeedGraph {
+            switch (val as! AutoFanSpeedGraphType) {
+                case .graph1: return ValueSelectorItem(withTitle: "Graph 1", andValue: val)
+                case .graph2: return ValueSelectorItem(withTitle: "Graph 2", andValue: val)
+                case .graph3: return ValueSelectorItem(withTitle: "Graph 3", andValue: val)
+            }
+        }
+        if type == .buttonBlockMode {
+            switch (val as! ButtonBlockMode) {
+                case .auto: return ValueSelectorItem(withTitle: "Auto", andValue: val)
+                case .manual: return ValueSelectorItem(withTitle: "Manual", andValue: val)
+                case .forbid: return ValueSelectorItem(withTitle: "Forbid", andValue: val)
+            }
+        }
+        if type == .brightnessDimmingOnSleep {
+            switch (val as! BrightnessDimmingOnSleepType) {
+                case .no: return ValueSelectorItem(withTitle: "No", andValue: val)
+                case .yes: return ValueSelectorItem(withTitle: "Yes", andValue: val)
+            }
+        }
+        if type == .weekProgramMode {
+            switch (val as! WeekProgramMode) {
+                case .disabled: return ValueSelectorItem(withTitle: "Disabled", andValue: val)
+                case .byFanSpeed: return ValueSelectorItem(withTitle: "By fan speed", andValue: val)
+                case .byAirTemperature: return ValueSelectorItem(withTitle: "By air temperature", andValue: val)
+            }
+        }
+        if type == .defaultSettings {
+            switch (val as! DefaultSettingsType) {
+                case .no: return ValueSelectorItem(withTitle: "No", andValue: val)
+                case .yes: return ValueSelectorItem(withTitle: "Yes", andValue: val)
+            }
+        }
         return nil
     }
     
@@ -699,6 +738,33 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         if type == .fanWorkModeInShutdown {
             return [ValueSelectorItem(withTitle: "Valve closed", andValue: FanShutdownWorkType.valveClosed),
                     ValueSelectorItem(withTitle: "Valve opened", andValue: FanShutdownWorkType.valveOpened)]
+        }
+        if type == .ventilationMode {
+            return [ValueSelectorItem(withTitle: "Turn off", andValue: VentilationMode.turnOff),
+                    ValueSelectorItem(withTitle: "Turn on", andValue: VentilationMode.turnOn)]
+        }
+        if type == .autoFanSpeedGraph {
+            return [ValueSelectorItem(withTitle: "Graph 1", andValue: AutoFanSpeedGraphType.graph1),
+                    ValueSelectorItem(withTitle: "Graph 2", andValue: AutoFanSpeedGraphType.graph2),
+                    ValueSelectorItem(withTitle: "Graph 3", andValue: AutoFanSpeedGraphType.graph3)]
+        }
+        if type == .buttonBlockMode {
+            return [ValueSelectorItem(withTitle: "Auto", andValue: ButtonBlockMode.auto),
+                    ValueSelectorItem(withTitle: "Manual", andValue: ButtonBlockMode.manual),
+                    ValueSelectorItem(withTitle: "Forbid", andValue: ButtonBlockMode.forbid)]
+        }
+        if type == .brightnessDimmingOnSleep {
+            return [ValueSelectorItem(withTitle: "No", andValue: BrightnessDimmingOnSleepType.no),
+                    ValueSelectorItem(withTitle: "Yes", andValue: BrightnessDimmingOnSleepType.yes)]
+        }
+        if type == .weekProgramMode {
+            return [ValueSelectorItem(withTitle: "Disabled", andValue: WeekProgramMode.disabled),
+                    ValueSelectorItem(withTitle: "By fan speed", andValue: WeekProgramMode.byFanSpeed),
+                    ValueSelectorItem(withTitle: "By air temperature", andValue: WeekProgramMode.byAirTemperature)]
+        }
+        if type == .defaultSettings {
+            return [ValueSelectorItem(withTitle: "No", andValue: DefaultSettingsType.no),
+                    ValueSelectorItem(withTitle: "Yes", andValue: DefaultSettingsType.yes)]
         }
         return [ValueSelectorItem]()
     }

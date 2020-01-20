@@ -139,7 +139,7 @@ class SpotEnumParameterViewCell: SpotParameterViewCell, UIPopoverPresentationCon
         vc.preferredContentSize = CGSize(width: 300, height: 60 * self.values.count)
         popover?.delegate = self
         popover?.sourceView = self.paramView
-        popover?.sourceRect = CGRect(x: self.paramView.frame.width - 10, y: 10, width: 1, height: 1)
+        popover?.sourceRect = CGRect(x: self.paramView.frame.width - 30, y: self.paramView.frame.height / 2, width: 1, height: 1)
         
         self.viewController?.present(vc, animated: true, completion: nil)
     }
