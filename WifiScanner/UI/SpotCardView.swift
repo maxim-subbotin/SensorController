@@ -2,7 +2,7 @@
 //  SpotCardView.swift
 //  WifiScanner
 //
-//  Created by Snappii on 1/13/20.
+//  1/13/20.
 //  Copyright © 2020 Max Subbotin. All rights reserved.
 //
 

@@ -2,8 +2,8 @@
 //  Extension.swift
 //  Infograph
 //
-// 4/16/19.
-//  Copyright © 2019 Snappii. All rights reserved.
+//  4/16/19.
+//  Copyright © 2020 Max Subbotin. All rights reserved.
 //
 
 import Foundation
