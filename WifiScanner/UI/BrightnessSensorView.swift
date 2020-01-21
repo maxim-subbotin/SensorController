@@ -148,6 +148,7 @@ class SpotBrightnessParameterViewCell: SpotParameterViewCell, UIPopoverPresentat
         vc.delegate = self
         vc.modalPresentationStyle = .popover
         let popover = vc.popoverPresentationController
+        popover?.backgroundColor = .clear
         vc.preferredContentSize = CGSize(width: 300, height: 60)
         popover?.delegate = self
         popover?.sourceView = self.paramView
@@ -159,5 +160,15 @@ class SpotBrightnessParameterViewCell: SpotParameterViewCell, UIPopoverPresentat
     func onBrightnessLevel(_ level: Int) {
         self.level = level
         self.delegate?.onBrightnessLevel(level)
+    }
+}
+
+class PopoverNavigationController: UINavigationController {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let r = CGFloat(3)
+        if r >= 0 && (view.superview?.layer.cornerRadius)! != r {
+            view.superview?.layer.cornerRadius = r
+        }
     }
 }

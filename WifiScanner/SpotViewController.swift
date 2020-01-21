@@ -819,10 +819,11 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         
         vc.modalPresentationStyle = .popover
         let popover = vc.popoverPresentationController
+        popover?.backgroundColor = .clear
         vc.preferredContentSize = CGSize(width: 300, height: 60 * 2)
         popover?.delegate = self
         popover?.sourceView = self.paramFanMode
-        popover?.sourceRect = CGRect(x: self.paramFanMode.frame.width / 2, y: self.paramFanMode.frame.height / 2, width: 1, height: 1)
+        popover?.sourceRect = CGRect(x: self.paramFanMode.frame.width - 30, y: self.paramFanMode.frame.height / 2, width: 1, height: 1)
         
         self.present(vc, animated: true, completion: nil)
     }

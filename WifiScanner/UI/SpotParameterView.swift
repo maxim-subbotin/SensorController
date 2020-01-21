@@ -141,6 +141,7 @@ class SpotEnumParameterViewCell: SpotParameterViewCell, UIPopoverPresentationCon
         vc.selectedValue = self.selectedValue
         vc.modalPresentationStyle = .popover
         let popover = vc.popoverPresentationController
+        popover?.backgroundColor = .clear
         vc.preferredContentSize = CGSize(width: 300, height: 60 * self.values.count)
         popover?.delegate = self
         popover?.sourceView = self.paramView
