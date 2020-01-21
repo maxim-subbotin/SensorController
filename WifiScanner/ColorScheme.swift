@@ -32,6 +32,8 @@ class ColorScheme {
     public var selectorCheckboxBorderColor = UIColor(hexString: "#84899C")
     public var selectorCheckboxBackgroundColor = UIColor.white
     
+    public var brightnessSelectedCellColor = UIColor(hexString: "#84899C")
+    public var brightnessDeselectedCellColor = UIColor(hexString: "#194261")
     
     public static var current = ColorScheme()
 }

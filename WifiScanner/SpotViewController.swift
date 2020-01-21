@@ -23,7 +23,7 @@ enum CellType: Int {
     case unknown
 }
 
-class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate {
+class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -348,6 +348,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         addParamsTableView.separatorStyle = .none
         addParamsTableView.register(SpotParameterViewCell.self, forCellReuseIdentifier: "paramCell")
         addParamsTableView.register(SpotEnumParameterViewCell.self, forCellReuseIdentifier: "enumCell")
+        addParamsTableView.register(SpotBrightnessParameterViewCell.self, forCellReuseIdentifier: "brightnessCell")
         addParamsTableView.delegate = self
         addParamsTableView.dataSource = self
         addParamsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -498,6 +499,10 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             (cell as! SpotEnumParameterViewCell).values = items(forType: param.type)
             (cell as! SpotEnumParameterViewCell).selectedValue = item(forType: param.type, andValue: value)
             (cell as! SpotEnumParameterViewCell).delegate = self
+        } else if param.type == .displayBrightness {
+            cell = tableView.dequeueReusableCell(withIdentifier: "brightnessCell") as! SpotBrightnessParameterViewCell
+            (cell as! SpotBrightnessParameterViewCell).level = getExtraParamValue(byType: .displayBrightness) as! Int
+            (cell as! SpotBrightnessParameterViewCell).delegate = self
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }
@@ -827,6 +832,12 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             spotState.fanMode = val.value as! FanMode
             paramFanMode.value = val.title
         }
+    }
+    
+    //MARK: - brightness sensor delegate
+    
+    func onBrightnessLevel(_ level: Int) {
+        spotState.additionalParams[.displayBrightness] = level
     }
 }
 
