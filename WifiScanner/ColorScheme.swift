@@ -35,5 +35,7 @@ class ColorScheme {
     public var brightnessSelectedCellColor = UIColor(hexString: "#84899C")
     public var brightnessDeselectedCellColor = UIColor(hexString: "#194261")
     
+    public var calibratorPointColor = UIColor(hexString: "#84899C")
+    
     public static var current = ColorScheme()
 }

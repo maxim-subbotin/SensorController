@@ -349,6 +349,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         addParamsTableView.register(SpotParameterViewCell.self, forCellReuseIdentifier: "paramCell")
         addParamsTableView.register(SpotEnumParameterViewCell.self, forCellReuseIdentifier: "enumCell")
         addParamsTableView.register(SpotBrightnessParameterViewCell.self, forCellReuseIdentifier: "brightnessCell")
+        addParamsTableView.register(SpotCalibrationParameterViewCell.self, forCellReuseIdentifier: "calibratorCell")
         addParamsTableView.delegate = self
         addParamsTableView.dataSource = self
         addParamsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -503,6 +504,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             cell = tableView.dequeueReusableCell(withIdentifier: "brightnessCell") as! SpotBrightnessParameterViewCell
             (cell as! SpotBrightnessParameterViewCell).level = getExtraParamValue(byType: .displayBrightness) as! Int
             (cell as! SpotBrightnessParameterViewCell).delegate = self
+        } else if param.type == .temperatureSensorCalibration {
+            cell = tableView.dequeueReusableCell(withIdentifier: "calibratorCell") as! SpotCalibrationParameterViewCell
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }
