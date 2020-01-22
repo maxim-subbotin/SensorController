@@ -105,6 +105,10 @@ class CalibrationPointView: UIView {
     }
 }
 
+protocol CalibratorViewDelegate: class {
+    func onCalibrationScaleChange(_ val: CGFloat)
+}
+
 class CalibratorView: UIView, UIScrollViewDelegate {
     private var pointerView = CalibrationPointView()
     private var calibratorScrollView = UIScrollView()
@@ -123,6 +127,7 @@ class CalibratorView: UIView, UIScrollViewDelegate {
             calibratorScrollView.contentOffset = CGPoint(x: offset, y: 0)
         }
     }
+    public weak var delegate: CalibratorViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -182,10 +187,16 @@ class CalibratorView: UIView, UIScrollViewDelegate {
         let val = (x / calibratorView.frame.width) * 10 - 5
         _value = round(val * 10) * 0.1
         lblValue.text = "\(String(format: "%.1f", _value))°"
+        
+        delegate?.onCalibrationScaleChange(_value)
     }
 }
 
-class CalibratorViewController: UIViewController {
+protocol CalibratorViewControllerDelegate: class {
+    func onCalibrationChange(_ value: CGFloat)
+}
+
+class CalibratorViewController: UIViewController, CalibratorViewDelegate {
     private var calibratorView = CalibratorView()
     private var _value: CGFloat = 0
     public var value: CGFloat {
@@ -197,6 +208,7 @@ class CalibratorViewController: UIViewController {
             calibratorView.value = _value
         }
     }
+    public weak var delegate: CalibratorViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -207,6 +219,7 @@ class CalibratorViewController: UIViewController {
         self.view.backgroundColor = ColorScheme.current.selectorMenuBackgroundColor
         
         self.view.addSubview(calibratorView)
+        calibratorView.delegate = self
         calibratorView.translatesAutoresizingMaskIntoConstraints = false
         let lC = calibratorView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0)
         let tC = calibratorView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0)
@@ -214,9 +227,17 @@ class CalibratorViewController: UIViewController {
         let hC = calibratorView.heightAnchor.constraint(equalTo: self.view.heightAnchor, constant: 0)
         NSLayoutConstraint.activate([lC, tC, wC, hC])
     }
+    
+    func onCalibrationScaleChange(_ val: CGFloat) {
+        delegate?.onCalibrationChange(val)
+    }
 }
 
-class SpotCalibrationParameterViewCell: SpotParameterViewCell, UIPopoverPresentationControllerDelegate {
+protocol SpotCalibrationParameterViewCellDelegate: class {
+    func onCalibrationChange(_ value: CGFloat)
+}
+
+class SpotCalibrationParameterViewCell: SpotParameterViewCell, UIPopoverPresentationControllerDelegate, CalibratorViewControllerDelegate {
     private var _calibration: CGFloat = 0
     public var calibration: CGFloat {
         get {
@@ -226,11 +247,13 @@ class SpotCalibrationParameterViewCell: SpotParameterViewCell, UIPopoverPresenta
             _calibration = newValue
         }
     }
+    public weak var delegate: SpotCalibrationParameterViewCellDelegate?
     
     override func onTap(_ gesture: UITapGestureRecognizer) {
         super.onTap(gesture)
         
         let vc = CalibratorViewController()
+        vc.delegate = self
         vc.modalPresentationStyle = .popover
         let popover = vc.popoverPresentationController
         popover?.backgroundColor = .clear
@@ -242,5 +265,11 @@ class SpotCalibrationParameterViewCell: SpotParameterViewCell, UIPopoverPresenta
         self.viewController?.present(vc, animated: true, completion: {
             vc.value = self._calibration
         })
+    }
+    
+    func onCalibrationChange(_ value: CGFloat) {
+        _calibration = value
+        self.valueTitle = "\(String(format: "%.1f", value))"
+        delegate?.onCalibrationChange(value)
     }
 }

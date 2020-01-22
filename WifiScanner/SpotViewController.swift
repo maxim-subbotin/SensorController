@@ -23,7 +23,7 @@ enum CellType: Int {
     case unknown
 }
 
-class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate {
+class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate, SpotCalibrationParameterViewCellDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -508,6 +508,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             cell = tableView.dequeueReusableCell(withIdentifier: "calibratorCell") as! SpotCalibrationParameterViewCell
             let d = getExtraParamValue(byType: .temperatureSensorCalibration) as! Double
             (cell as! SpotCalibrationParameterViewCell).calibration = CGFloat(d)
+            (cell as! SpotCalibrationParameterViewCell).delegate = self
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }
@@ -844,6 +845,12 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     
     func onBrightnessLevel(_ level: Int) {
         spotState.additionalParams[.displayBrightness] = level
+    }
+    
+    //MARK: - temperature calibration
+    
+    func onCalibrationChange(_ value: CGFloat) {
+        spotState.additionalParams[.temperatureSensorCalibration] = value
     }
 }
 
