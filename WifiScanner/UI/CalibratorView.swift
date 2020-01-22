@@ -124,7 +124,7 @@ class CalibratorView: UIView, UIScrollViewDelegate {
             _value = newValue
             lblValue.text = "\(String(format: "%.1f", _value))°"
             let offset = (_value + 5) * 0.1 * calibratorView.frame.width
-            calibratorScrollView.contentOffset = CGPoint(x: offset, y: 0)
+            calibratorScrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
         }
     }
     public weak var delegate: CalibratorViewDelegate?
@@ -223,7 +223,9 @@ class CalibratorViewController: UIViewController, CalibratorViewDelegate {
         calibratorView.translatesAutoresizingMaskIntoConstraints = false
         let lC = calibratorView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0)
         let tC = calibratorView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0)
-        let wC = calibratorView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 0)
+        let wC = UIDevice.current.isiPad ?
+                    calibratorView.widthAnchor.constraint(equalToConstant: 300) :
+                    calibratorView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 0)
         let hC = calibratorView.heightAnchor.constraint(equalTo: self.view.heightAnchor, constant: 0)
         NSLayoutConstraint.activate([lC, tC, wC, hC])
     }
