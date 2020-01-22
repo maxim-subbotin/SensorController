@@ -506,6 +506,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
             (cell as! SpotBrightnessParameterViewCell).delegate = self
         } else if param.type == .temperatureSensorCalibration {
             cell = tableView.dequeueReusableCell(withIdentifier: "calibratorCell") as! SpotCalibrationParameterViewCell
+            let d = getExtraParamValue(byType: .temperatureSensorCalibration) as! Double
+            (cell as! SpotCalibrationParameterViewCell).calibration = CGFloat(d)
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }
