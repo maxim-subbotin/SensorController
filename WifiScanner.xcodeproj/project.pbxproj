@@ -49,6 +49,7 @@
 		D6F1DCBE2330B404007248AC /* SwiftWifiIotPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F1DCBD2330B404007248AC /* SwiftWifiIotPlugin.swift */; };
 		D6F1DCC02330B808007248AC /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F1DCBF2330B808007248AC /* ExternalAccessory.framework */; };
 		D6F2046123DA1943002BFE0D /* DatetimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F2046023DA1943002BFE0D /* DatetimeView.swift */; };
+		D6F2046323DA2749002BFE0D /* TemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F2046223DA2749002BFE0D /* TemperatureView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		D6F1DCBD2330B404007248AC /* SwiftWifiIotPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftWifiIotPlugin.swift; sourceTree = "<group>"; };
 		D6F1DCBF2330B808007248AC /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		D6F2046023DA1943002BFE0D /* DatetimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatetimeView.swift; sourceTree = "<group>"; };
+		D6F2046223DA2749002BFE0D /* TemperatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +210,7 @@
 				D6C9998C23D63D25003A938D /* BrightnessSensorView.swift */,
 				D6AC45A023D793EF00779652 /* CalibratorView.swift */,
 				D6F2046023DA1943002BFE0D /* DatetimeView.swift */,
+				D6F2046223DA2749002BFE0D /* TemperatureView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 				D6E22531235C94CE00E0D800 /* Connector.swift in Sources */,
 				D67DFA922335262300760D92 /* SpotEditViewController.swift in Sources */,
 				D6F1DCA82330B16C007248AC /* AppDelegate.swift in Sources */,
+				D6F2046323DA2749002BFE0D /* TemperatureView.swift in Sources */,
 				D674F1BE23336C4F009D2D4C /* BDHost.m in Sources */,
 				D6C9998D23D63D25003A938D /* BrightnessSensorView.swift in Sources */,
 				D67DFA6B2335176800760D92 /* SpotViewController.swift in Sources */,

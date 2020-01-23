@@ -110,12 +110,17 @@ protocol CalibratorViewDelegate: class {
 }
 
 class CalibratorView: UIView, UIScrollViewDelegate {
+    /*public var minValue = CGFloat(-5)
+    public var maxValue = CGFloat(5)
+    public var step1 = CGFloat(1)
+    public var step2 = CGFloat(0.5)
+    public var step3 = CGFloat(0.1)*/
     private var pointerView = CalibrationPointView()
-    private var calibratorScrollView = UIScrollView()
-    private var calibratorView = CalibratorScaleView(frame: CGRect(x: 0, y: 0, width: 1000, height: 30))
-    private var lblValue = UILabel()
-    private var scaleHeight = CGFloat(70)
-    private var _value: CGFloat = -10
+    internal var calibratorScrollView = UIScrollView()
+    internal var calibratorView = CalibratorScaleView(frame: CGRect(x: 0, y: 0, width: 1000, height: 30))
+    internal var lblValue = UILabel()
+    internal var scaleHeight = CGFloat(70)
+    internal var _value: CGFloat = -10
     public var value: CGFloat {
         get {
             return _value
@@ -139,19 +144,11 @@ class CalibratorView: UIView, UIScrollViewDelegate {
     }
     
     func applyUI() {
-        self.addSubview(pointerView)
-        pointerView.translatesAutoresizingMaskIntoConstraints = false
-        let cxC = pointerView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
-        let tC = pointerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0)
-        let wC = pointerView.widthAnchor.constraint(equalToConstant: 20)
-        let hC = pointerView.heightAnchor.constraint(equalToConstant: 50)
-        NSLayoutConstraint.activate([cxC, tC, wC, hC])
-        
         self.addSubview(calibratorScrollView)
         calibratorScrollView.delegate = self
         calibratorScrollView.translatesAutoresizingMaskIntoConstraints = false
         let cxC1 = calibratorScrollView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
-        let tC1 = calibratorScrollView.topAnchor.constraint(equalTo: pointerView.bottomAnchor, constant: 0)
+        let tC1 = calibratorScrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
         let wC1 = calibratorScrollView.widthAnchor.constraint(equalTo: self.widthAnchor)
         let hC1 = calibratorScrollView.heightAnchor.constraint(equalToConstant: scaleHeight)
         NSLayoutConstraint.activate([cxC1, tC1, wC1, hC1])
@@ -160,8 +157,13 @@ class CalibratorView: UIView, UIScrollViewDelegate {
             calibratorScrollView.contentOffset = CGPoint(x: offset, y: 0)
         }
         
-        calibratorScrollView.addSubview(calibratorView)
-        calibratorScrollView.bounces = false
+        self.addSubview(pointerView)
+        pointerView.translatesAutoresizingMaskIntoConstraints = false
+        let cxC = pointerView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let tC = pointerView.bottomAnchor.constraint(equalTo: calibratorScrollView.topAnchor, constant: 0)
+        let wC = pointerView.widthAnchor.constraint(equalToConstant: 20)
+        let hC = pointerView.heightAnchor.constraint(equalToConstant: 50)
+        NSLayoutConstraint.activate([cxC, tC, wC, hC])
         
         self.addSubview(lblValue)
         lblValue.textAlignment = .center
@@ -170,10 +172,13 @@ class CalibratorView: UIView, UIScrollViewDelegate {
         lblValue.font = UIFont.boldSystemFont(ofSize: 60)
         lblValue.translatesAutoresizingMaskIntoConstraints = false
         let cxC2 = lblValue.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
-        let tC2 = lblValue.topAnchor.constraint(equalTo: calibratorScrollView.bottomAnchor, constant: 0)
+        let tC2 = lblValue.bottomAnchor.constraint(equalTo: pointerView.topAnchor, constant: 0)
         let wC2 = lblValue.widthAnchor.constraint(equalTo: self.widthAnchor)
-        let hC2 = lblValue.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        let hC2 = lblValue.topAnchor.constraint(equalTo: self.topAnchor)
         NSLayoutConstraint.activate([cxC2, tC2, wC2, hC2])
+        
+        calibratorScrollView.addSubview(calibratorView)
+        calibratorScrollView.bounces = false
     }
     
     override func draw(_ rect: CGRect) {
@@ -197,7 +202,7 @@ protocol CalibratorViewControllerDelegate: class {
 }
 
 class CalibratorViewController: UIViewController, CalibratorViewDelegate {
-    private var calibratorView = CalibratorView()
+    internal var calibratorView = CalibratorView()
     private var _value: CGFloat = 0
     public var value: CGFloat {
         get {

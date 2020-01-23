@@ -285,6 +285,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         paramDateView.addGestureRecognizer(dateTapGesture)
         
         paramsPanelView.addSubview(paramDevTempView)
+        paramsPanelView.isUserInteractionEnabled = true
         paramDevTempView.layer.cornerRadius = 5
         paramDevTempView.title = "Device temperature"
         paramDevTempView.translatesAutoresizingMaskIntoConstraints = false
@@ -293,6 +294,9 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         let wC2 = paramDevTempView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
         let hC2 = paramDevTempView.heightAnchor.constraint(equalToConstant: paramHeight)
         NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
+        
+        let tempTapGesture = UITapGestureRecognizer(target: self, action: #selector(onTemperatureTap(_:)))
+        paramDevTempView.addGestureRecognizer(tempTapGesture)
         
         paramsPanelView.addSubview(paramFanSpeedView)
         paramFanSpeedView.layer.cornerRadius = 5
@@ -849,6 +853,21 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         popover?.delegate = self
         popover?.sourceView = self.paramDateView
         popover?.sourceRect = CGRect(x: self.paramDateView.frame.width - 30, y: self.paramDateView.frame.height / 2, width: 1, height: 1)
+        
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func onTemperatureTap(_ tapGesture: UITapGestureRecognizer) {
+        let vc = TemperatureViewController()
+        //vc.date = spotState.date
+        //vc.delegate = self
+        vc.modalPresentationStyle = .popover
+        let popover = vc.popoverPresentationController
+        popover?.backgroundColor = .clear
+        vc.preferredContentSize = CGSize(width: 300, height: 200)
+        popover?.delegate = self
+        popover?.sourceView = self.paramDateView
+        popover?.sourceRect = CGRect(x: self.paramDevTempView.frame.width - 30, y: self.paramDevTempView.frame.height / 2, width: 1, height: 1)
         
         self.present(vc, animated: true, completion: nil)
     }
