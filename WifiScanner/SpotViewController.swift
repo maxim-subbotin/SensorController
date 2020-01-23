@@ -23,7 +23,7 @@ enum CellType: Int {
     case unknown
 }
 
-class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate, SpotCalibrationParameterViewCellDelegate {
+class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate, SpotCalibrationParameterViewCellDelegate, DatetimeViewDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -271,6 +271,7 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         NSLayoutConstraint.activate([lC, tC, wC, hC])
         
         paramsPanelView.addSubview(paramDateView)
+        paramDateView.isUserInteractionEnabled = true
         paramDateView.layer.cornerRadius = 5
         paramDateView.title = "Date"
         paramDateView.translatesAutoresizingMaskIntoConstraints = false
@@ -279,6 +280,9 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         let wC1 = paramDateView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
         let hC1 = paramDateView.heightAnchor.constraint(equalToConstant: paramHeight)
         NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
+        
+        let dateTapGesture = UITapGestureRecognizer(target: self, action: #selector(onDateTap(_:)))
+        paramDateView.addGestureRecognizer(dateTapGesture)
         
         paramsPanelView.addSubview(paramDevTempView)
         paramDevTempView.layer.cornerRadius = 5
@@ -834,6 +838,21 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         self.present(vc, animated: true, completion: nil)
     }
     
+    @objc func onDateTap(_ tapGesture: UITapGestureRecognizer) {
+        let vc = DatetimeViewController()
+        vc.date = spotState.date
+        vc.delegate = self
+        vc.modalPresentationStyle = .popover
+        let popover = vc.popoverPresentationController
+        popover?.backgroundColor = .clear
+        vc.preferredContentSize = CGSize(width: 470, height: 200)
+        popover?.delegate = self
+        popover?.sourceView = self.paramDateView
+        popover?.sourceRect = CGRect(x: self.paramDateView.frame.width - 30, y: self.paramDateView.frame.height / 2, width: 1, height: 1)
+        
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     func onValueSelection(_ val: ValueSelectorItem) {
         if val.value is FanMode {
             spotState.fanMode = val.value as! FanMode
@@ -851,6 +870,17 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     
     func onCalibrationChange(_ value: CGFloat) {
         spotState.additionalParams[.temperatureSensorCalibration] = value
+    }
+    
+    //MARK: - date selection
+    
+    func onDateChanging(_ date: Date) {
+        spotState.date = date
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        paramDateView.value = formatter.string(from: _spotState.date)
     }
 }
 

@@ -48,6 +48,7 @@
 		D6F1DCBB2330B17F007248AC /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F1DCBA2330B17F007248AC /* NetworkExtension.framework */; };
 		D6F1DCBE2330B404007248AC /* SwiftWifiIotPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F1DCBD2330B404007248AC /* SwiftWifiIotPlugin.swift */; };
 		D6F1DCC02330B808007248AC /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F1DCBF2330B808007248AC /* ExternalAccessory.framework */; };
+		D6F2046123DA1943002BFE0D /* DatetimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F2046023DA1943002BFE0D /* DatetimeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -106,6 +107,7 @@
 		D6F1DCBC2330B17F007248AC /* WifiScanner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WifiScanner.entitlements; sourceTree = "<group>"; };
 		D6F1DCBD2330B404007248AC /* SwiftWifiIotPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftWifiIotPlugin.swift; sourceTree = "<group>"; };
 		D6F1DCBF2330B808007248AC /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		D6F2046023DA1943002BFE0D /* DatetimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatetimeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +207,7 @@
 				D639840B23D4A37100C02F43 /* ValueSelectionView.swift */,
 				D6C9998C23D63D25003A938D /* BrightnessSensorView.swift */,
 				D6AC45A023D793EF00779652 /* CalibratorView.swift */,
+				D6F2046023DA1943002BFE0D /* DatetimeView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */,
 				D67DFA8A233519D700760D92 /* modbus.c in Sources */,
 				D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */,
+				D6F2046123DA1943002BFE0D /* DatetimeView.swift in Sources */,
 				D68F240923CC5D7400A249A2 /* ColorScheme.swift in Sources */,
 				D6AC45A123D793EF00779652 /* CalibratorView.swift in Sources */,
 				D674F1B923335A17009D2D4C /* PingResponse.swift in Sources */,

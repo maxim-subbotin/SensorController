@@ -37,5 +37,9 @@ class ColorScheme {
     
     public var calibratorPointColor = UIColor(hexString: "#84899C")
     
+    public var datePickerLabelTextColor = UIColor.white
+    public var datePickerInputBackgroundColor = UIColor(hexString: "#596880")
+    public var datePickerInputTextColor = UIColor(hexString: "#F6F7EB")
+    
     public static var current = ColorScheme()
 }
