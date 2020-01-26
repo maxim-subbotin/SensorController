@@ -50,7 +50,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         super.viewDidLoad()
         
-        self.navigationItem.title = "Spot list"
+        self.navigationItem.title = "Devices"
         
         self.view.backgroundColor = ColorScheme.current.backgroundColor
         

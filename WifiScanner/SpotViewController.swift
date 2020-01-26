@@ -367,6 +367,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         addParamsTableView.register(SpotBrightnessParameterViewCell.self, forCellReuseIdentifier: "brightnessCell")
         addParamsTableView.register(SpotCalibrationParameterViewCell.self, forCellReuseIdentifier: "calibratorCell")
         addParamsTableView.register(SpotFanSpeedParameterViewCell.self, forCellReuseIdentifier: "fanspeedCell")
+        addParamsTableView.register(SpotReactionTimeParameterViewCell.self, forCellReuseIdentifier: "reactionCell")
         addParamsTableView.delegate = self
         addParamsTableView.dataSource = self
         addParamsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -531,6 +532,9 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
             let d = getExtraParamValue(byType: .maxFanSpeedLimit) as! Int
             (cell as! SpotFanSpeedParameterViewCell).fanSpeed = CGFloat(d)
             (cell as! SpotFanSpeedParameterViewCell).delegate = self
+        } else if param.type == .reactionTimeOnTemperature {
+            cell = tableView.dequeueReusableCell(withIdentifier: "reactionCell") as! SpotReactionTimeParameterViewCell
+            
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }

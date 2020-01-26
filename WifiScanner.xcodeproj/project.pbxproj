@@ -36,6 +36,7 @@
 		D68F240923CC5D7400A249A2 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F240823CC5D7400A249A2 /* ColorScheme.swift */; };
 		D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F240B23CC600600A249A2 /* SpotCardView.swift */; };
 		D695920123DDC91300CEDB4F /* FanSpeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695920023DDC91300CEDB4F /* FanSpeedView.swift */; };
+		D695920323DDE11E00CEDB4F /* ReactionTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695920223DDE11E00CEDB4F /* ReactionTimeView.swift */; };
 		D6AC45A123D793EF00779652 /* CalibratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AC45A023D793EF00779652 /* CalibratorView.swift */; };
 		D6C9998D23D63D25003A938D /* BrightnessSensorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9998C23D63D25003A938D /* BrightnessSensorView.swift */; };
 		D6E22531235C94CE00E0D800 /* Connector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E22530235C94CE00E0D800 /* Connector.swift */; };
@@ -94,6 +95,7 @@
 		D68F240823CC5D7400A249A2 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		D68F240B23CC600600A249A2 /* SpotCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotCardView.swift; sourceTree = "<group>"; };
 		D695920023DDC91300CEDB4F /* FanSpeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanSpeedView.swift; sourceTree = "<group>"; };
+		D695920223DDE11E00CEDB4F /* ReactionTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionTimeView.swift; sourceTree = "<group>"; };
 		D6AC45A023D793EF00779652 /* CalibratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibratorView.swift; sourceTree = "<group>"; };
 		D6C9998C23D63D25003A938D /* BrightnessSensorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrightnessSensorView.swift; sourceTree = "<group>"; };
 		D6E22530235C94CE00E0D800 /* Connector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connector.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				D6F2046023DA1943002BFE0D /* DatetimeView.swift */,
 				D6F2046223DA2749002BFE0D /* TemperatureView.swift */,
 				D695920023DDC91300CEDB4F /* FanSpeedView.swift */,
+				D695920223DDE11E00CEDB4F /* ReactionTimeView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				D6E23AE423CDB5B200F0CB94 /* SpotIndicatorView.swift in Sources */,
 				D67DFA8B233519D700760D92 /* modbus-tcp.c in Sources */,
 				D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */,
+				D695920323DDE11E00CEDB4F /* ReactionTimeView.swift in Sources */,
 				D674F1B723335A17009D2D4C /* Shared.swift in Sources */,
 				D60EC82A23D0F39500D81289 /* SpotParameterView.swift in Sources */,
 				D67DFA612334A96400760D92 /* Color.swift in Sources */,
