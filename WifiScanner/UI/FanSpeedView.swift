@@ -23,7 +23,25 @@ class RoundRegulatorView: UIView {
     private var _handleColor = UIColor(hexString: "#DBB4AD")
     private var radius = CGFloat(0)
     private var _minValue = CGFloat(0)
+    public var minValue: CGFloat {
+        get {
+            return _minValue
+        }
+        set {
+            _minValue = newValue
+            self.setNeedsDisplay()
+        }
+    }
     private var _maxValue = CGFloat(100)
+    public var maxValue: CGFloat {
+        get {
+            return _maxValue
+        }
+        set {
+            _maxValue = newValue
+            self.setNeedsDisplay()
+        }
+    }
     public var value: CGFloat {
         get {
             return _minValue + _val * (_maxValue - _minValue)
@@ -137,6 +155,22 @@ class FanSpeedView: UIView, RoundRegulatorViewDelegate {
             regulatorView.value = newValue
         }
     }
+    public var minValue: CGFloat {
+        get {
+            return regulatorView.minValue
+        }
+        set {
+            regulatorView.minValue = newValue
+        }
+    }
+    public var maxValue: CGFloat {
+        get {
+            return regulatorView.maxValue
+        }
+        set {
+            regulatorView.maxValue = newValue
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -174,6 +208,22 @@ class FanSpeedViewController: UIViewController, FanSpeedViewDelegate {
         set {
             _value = newValue
             fanSpeedView.value = _value
+        }
+    }
+    public var minValue: CGFloat {
+        get {
+            return fanSpeedView.minValue
+        }
+        set {
+            fanSpeedView.minValue = newValue
+        }
+    }
+    public var maxValue: CGFloat {
+        get {
+            return fanSpeedView.maxValue
+        }
+        set {
+            fanSpeedView.maxValue = newValue
         }
     }
     public weak var delegate: FanSpeedViewDelegate?
@@ -223,6 +273,8 @@ class SpotFanSpeedParameterViewCell: SpotParameterViewCell, UIPopoverPresentatio
         super.onTap(gesture)
         
         let vc = FanSpeedViewController()
+        vc.minValue = 40
+        vc.maxValue = 100
         vc.value = self.fanSpeed
         vc.delegate = self
         vc.modalPresentationStyle = .popover
