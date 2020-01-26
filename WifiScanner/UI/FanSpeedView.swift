@@ -292,7 +292,7 @@ class SpotFanSpeedParameterViewCell: SpotParameterViewCell, UIPopoverPresentatio
 
     func onFanSpeedChanged(_ val: CGFloat) {
         _fanSpeed = val
-        self.valueTitle = "\(String(format: "%.0f", val))"
+        self.valueTitle = "\(String(format: "%.0f", val))%"
         delegate?.onFanSpeedCellChange(val)
     }
 }

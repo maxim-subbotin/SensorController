@@ -938,14 +938,14 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     //MARK: - device temperature changing
     
     func onTemperatureChange(_ val: CGFloat) {
-        self.paramDevTempView.value = "\(val)"
+        self.paramDevTempView.value = "\(val)°"
         self.spotState.temperatureDevice = Double(val)
     }
     
     //MARK: - device fan speed changing
     
     func onFanSpeedChanged(_ val: CGFloat) {
-        self.paramFanSpeedView.value = "\(String(format: "%.0f", val))"
+        self.paramFanSpeedView.value = "\(String(format: "%.0f", val))%"
         self.spotState.fanSpeed = Double(Int(val))
     }
     
