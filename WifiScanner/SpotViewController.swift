@@ -27,7 +27,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
                             UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate,
                             UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate,
                             SpotCalibrationParameterViewCellDelegate, DatetimeViewDelegate, TemperatureViewControllerDelegate,
-                            FanSpeedViewDelegate {
+                            FanSpeedViewDelegate, SpotFanSpeedParameterViewCellDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -366,6 +366,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         addParamsTableView.register(SpotEnumParameterViewCell.self, forCellReuseIdentifier: "enumCell")
         addParamsTableView.register(SpotBrightnessParameterViewCell.self, forCellReuseIdentifier: "brightnessCell")
         addParamsTableView.register(SpotCalibrationParameterViewCell.self, forCellReuseIdentifier: "calibratorCell")
+        addParamsTableView.register(SpotFanSpeedParameterViewCell.self, forCellReuseIdentifier: "fanspeedCell")
         addParamsTableView.delegate = self
         addParamsTableView.dataSource = self
         addParamsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -525,6 +526,11 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
             let d = getExtraParamValue(byType: .temperatureSensorCalibration) as! Double
             (cell as! SpotCalibrationParameterViewCell).calibration = CGFloat(d)
             (cell as! SpotCalibrationParameterViewCell).delegate = self
+        } else if param.type == .maxFanSpeedLimit {
+            cell = tableView.dequeueReusableCell(withIdentifier: "fanspeedCell") as! SpotFanSpeedParameterViewCell
+            let d = getExtraParamValue(byType: .maxFanSpeedLimit) as! Int
+            (cell as! SpotFanSpeedParameterViewCell).fanSpeed = CGFloat(d)
+            (cell as! SpotFanSpeedParameterViewCell).delegate = self
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }
@@ -937,6 +943,10 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     func onFanSpeedChanged(_ val: CGFloat) {
         self.paramFanSpeedView.value = "\(String(format: "%.0f", val))"
         self.spotState.fanSpeed = Double(Int(val))
+    }
+    
+    func onFanSpeedCellChange(_ value: CGFloat) {
+        self.spotState.additionalParams[.maxFanSpeedLimit] = Int(value)
     }
 }
 

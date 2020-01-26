@@ -202,3 +202,45 @@ class FanSpeedViewController: UIViewController, FanSpeedViewDelegate {
         delegate?.onFanSpeedChanged(val)
     }
 }
+
+protocol SpotFanSpeedParameterViewCellDelegate: class {
+    func onFanSpeedCellChange(_ value: CGFloat)
+}
+
+class SpotFanSpeedParameterViewCell: SpotParameterViewCell, UIPopoverPresentationControllerDelegate, FanSpeedViewDelegate {
+    private var _fanSpeed: CGFloat = 0
+    public var fanSpeed: CGFloat {
+        get {
+            return _fanSpeed
+        }
+        set {
+            _fanSpeed = newValue
+        }
+    }
+    public weak var delegate: SpotFanSpeedParameterViewCellDelegate?
+    
+    override func onTap(_ gesture: UITapGestureRecognizer) {
+        super.onTap(gesture)
+        
+        let vc = FanSpeedViewController()
+        vc.value = self.fanSpeed
+        vc.delegate = self
+        vc.modalPresentationStyle = .popover
+        let popover = vc.popoverPresentationController
+        popover?.backgroundColor = .clear
+        vc.preferredContentSize = CGSize(width: 300, height: 220)
+        popover?.delegate = self
+        popover?.sourceView = self.paramView
+        popover?.sourceRect = CGRect(x: self.paramView.frame.width - 30, y: self.paramView.frame.height / 2, width: 1, height: 1)
+        
+        self.viewController?.present(vc, animated: true, completion: {
+            //vc.value = self._fanSpeed
+        })
+    }
+
+    func onFanSpeedChanged(_ val: CGFloat) {
+        _fanSpeed = val
+        self.valueTitle = "\(String(format: "%.0f", val))"
+        delegate?.onFanSpeedCellChange(val)
+    }
+}
