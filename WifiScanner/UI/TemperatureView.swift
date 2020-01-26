@@ -55,7 +55,7 @@ class TemperatureScaleView: CalibratorScaleView {
         for i in 0...40 {
             let path = UIBezierPath()
             path.move(to: CGPoint(x: x, y: 0))
-            path.addLine(to: CGPoint(x: x, y: rect.height * 0.4))
+            path.addLine(to: CGPoint(x: x, y: rect.height * 0.3))
             path.close()
             UIColor.white.setStroke()
             path.stroke()
@@ -80,6 +80,18 @@ class TemperatureScaleView: CalibratorScaleView {
 }
 
 class TemperatureView: CalibratorView {
+    override public var value: CGFloat {
+        get {
+            return _value
+        }
+        set {
+            _value = newValue
+            lblValue.text = "\(String(format: "%.1f", _value))°"
+            let offset = (_value - 5) * 0.1 * calibratorView.frame.width
+            calibratorScrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -100,18 +112,72 @@ class TemperatureView: CalibratorView {
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if calibratorView.frame.width == 0 {
+            return
+        }
+        
         let x = scrollView.contentOffset.x
         let val = (x / calibratorView.frame.width) * 40 + 5
         _value = round(val * 2) * 0.5
         lblValue.text = "\(String(format: "%.1f", _value))°"
         
-        //delegate?.onCalibrationScaleChange(_value)
+        delegate?.onCalibrationScaleChange(_value)
     }
 }
 
+protocol TemperatureViewControllerDelegate: CalibratorViewControllerDelegate {
+    func onTemperatureChange(_ val: CGFloat)
+}
+
 class TemperatureViewController: CalibratorViewController {
+    internal var temperatureView = TemperatureView()
+    private var _value: CGFloat = 0
+    override public var value: CGFloat {
+        get {
+            return _value
+        }
+        set {
+            _value = newValue
+            temperatureView.value = _value
+        }
+    }
+    public weak var temperatureDelegate: TemperatureViewControllerDelegate?
+    
     override func viewDidLoad() {
+        super.viewDidLoad()
+        applyUI()
+    }
+    
+    override func applyUI() {
+        self.view.backgroundColor = ColorScheme.current.selectorMenuBackgroundColor
+        
+        self.view.addSubview(temperatureView)
+        temperatureView.delegate = self
+        temperatureView.translatesAutoresizingMaskIntoConstraints = false
+        let lC = temperatureView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0)
+        let tC = temperatureView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0)
+        let wC = UIDevice.current.isiPad ?
+            temperatureView.widthAnchor.constraint(equalToConstant: 300) :
+            temperatureView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 0)
+        let hC = temperatureView.heightAnchor.constraint(equalTo: self.view.heightAnchor, constant: 0)
+        NSLayoutConstraint.activate([lC, tC, wC, hC])
+    }
+    
+    override func onCalibrationScaleChange(_ val: CGFloat) {
+        self.temperatureDelegate?.onTemperatureChange(val)
+    }
+    
+    
+    /*public weak var temperatureDelegate: TemperatureViewControllerDelegate?
+    
+    override func viewDidLoad() {
+        let val = self.calibratorView.value
         self.calibratorView = TemperatureView()
         super.viewDidLoad()
+        self.calibratorView.value = val
     }
+    
+    override func onCalibrationScaleChange(_ val: CGFloat) {
+        self.temperatureDelegate?.onTemperatureChange(val)
+    }*/
 }

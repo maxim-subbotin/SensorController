@@ -23,7 +23,10 @@ enum CellType: Int {
     case unknown
 }
 
-class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelegate, UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate, UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate, SpotCalibrationParameterViewCellDelegate, DatetimeViewDelegate {
+class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDelegate,
+                            UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate,
+                            UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate,
+                            SpotCalibrationParameterViewCellDelegate, DatetimeViewDelegate, TemperatureViewControllerDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -859,8 +862,8 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
     
     @objc func onTemperatureTap(_ tapGesture: UITapGestureRecognizer) {
         let vc = TemperatureViewController()
-        //vc.date = spotState.date
-        //vc.delegate = self
+        vc.value = CGFloat(spotState.temperatureDevice)
+        vc.temperatureDelegate = self
         vc.modalPresentationStyle = .popover
         let popover = vc.popoverPresentationController
         popover?.backgroundColor = .clear
@@ -900,6 +903,13 @@ class SpotViewController: UIViewController, ConnectorDelegate, UITableViewDelega
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         paramDateView.value = formatter.string(from: _spotState.date)
+    }
+    
+    //MARK: - device temperature changing
+    
+    func onTemperatureChange(_ val: CGFloat) {
+        self.paramDevTempView.value = "\(val)"
+        self.spotState.temperatureDevice = Double(val)
     }
 }
 
