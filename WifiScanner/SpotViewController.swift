@@ -26,7 +26,8 @@ enum CellType: Int {
 class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDelegate,
                             UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate,
                             UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate,
-                            SpotCalibrationParameterViewCellDelegate, DatetimeViewDelegate, TemperatureViewControllerDelegate {
+                            SpotCalibrationParameterViewCellDelegate, DatetimeViewDelegate, TemperatureViewControllerDelegate,
+                            FanSpeedViewDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -302,6 +303,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         paramDevTempView.addGestureRecognizer(tempTapGesture)
         
         paramsPanelView.addSubview(paramFanSpeedView)
+        paramFanSpeedView.isUserInteractionEnabled = true
         paramFanSpeedView.layer.cornerRadius = 5
         paramFanSpeedView.title = "Fan speed (manual)"
         paramFanSpeedView.translatesAutoresizingMaskIntoConstraints = false
@@ -310,6 +312,9 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         let wC3 = paramFanSpeedView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
         let hC3 = paramFanSpeedView.heightAnchor.constraint(equalToConstant: paramHeight)
         NSLayoutConstraint.activate([lC3, tC3, wC3, hC3])
+        
+        let fanSpeedGesture = UITapGestureRecognizer(target: self, action: #selector(onFanSpeedTap(_:)))
+        paramFanSpeedView.addGestureRecognizer(fanSpeedGesture)
         
         paramsPanelView.addSubview(paramFanMode)
         paramFanMode.isUserInteractionEnabled = true
@@ -875,6 +880,21 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         self.present(vc, animated: true, completion: nil)
     }
     
+    @objc func onFanSpeedTap(_ tapGesture: UITapGestureRecognizer) {
+        let vc = FanSpeedViewController()
+        vc.value = CGFloat(spotState.fanSpeed)
+        vc.delegate = self
+        vc.modalPresentationStyle = .popover
+        let popover = vc.popoverPresentationController
+        popover?.backgroundColor = .clear
+        vc.preferredContentSize = CGSize(width: 350, height: 300)
+        popover?.delegate = self
+        popover?.sourceView = self.paramFanSpeedView
+        popover?.sourceRect = CGRect(x: self.paramFanSpeedView.frame.width - 30, y: self.paramFanSpeedView.frame.height / 2, width: 1, height: 1)
+        
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     func onValueSelection(_ val: ValueSelectorItem) {
         if val.value is FanMode {
             spotState.fanMode = val.value as! FanMode
@@ -910,6 +930,13 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     func onTemperatureChange(_ val: CGFloat) {
         self.paramDevTempView.value = "\(val)"
         self.spotState.temperatureDevice = Double(val)
+    }
+    
+    //MARK: - device fan speed changing
+    
+    func onFanSpeedChanged(_ val: CGFloat) {
+        self.paramFanSpeedView.value = "\(String(format: "%.0f", val))"
+        self.spotState.fanSpeed = Double(Int(val))
     }
 }
 
