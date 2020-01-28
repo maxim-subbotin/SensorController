@@ -27,7 +27,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
                             UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate,
                             UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate,
                             SpotCalibrationParameterViewCellDelegate, DatetimeViewDelegate, TemperatureViewControllerDelegate,
-                            FanSpeedViewDelegate, SpotFanSpeedParameterViewCellDelegate {
+                            FanSpeedViewDelegate, SpotFanSpeedParameterViewCellDelegate, ReactionTimeViewDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -534,7 +534,9 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
             (cell as! SpotFanSpeedParameterViewCell).delegate = self
         } else if param.type == .reactionTimeOnTemperature {
             cell = tableView.dequeueReusableCell(withIdentifier: "reactionCell") as! SpotReactionTimeParameterViewCell
-            
+            let r = getExtraParamValue(byType: .reactionTimeOnTemperature) as! Int
+            (cell as! SpotReactionTimeParameterViewCell).reactionTime = CGFloat(r)
+            (cell as! SpotReactionTimeParameterViewCell).delegate = self
         } else {
             cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
         }
@@ -704,6 +706,10 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
                 }
             }
 
+            if type == .reactionTimeOnTemperature {
+                let n = val as! NSNumber
+                return n.intValue.minutesAndSeconds
+            }
             
             return "\(val)"
             
@@ -965,6 +971,12 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     
     func onFanSpeedCellChange(_ value: CGFloat) {
         self.spotState.additionalParams[.maxFanSpeedLimit] = Int(value)
+    }
+    
+    //MARK: - func onTimeChange(inSeconds sec: Int)
+    
+    func onTimeChange(inSeconds sec: Int) {
+        self.spotState.additionalParams[.reactionTimeOnTemperature] = sec
     }
 }
 
