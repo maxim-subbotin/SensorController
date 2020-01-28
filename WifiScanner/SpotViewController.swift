@@ -513,7 +513,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         let param = parameters[indexPath.row]
         let value = getExtraParamValue(byType: param.type)
         var cell: SpotParameterViewCell?
-        if param.type == .controlSequence || param.type == .regulatorBehaviourInShutdown || param.type == .fanWorkModeInShutdown || param.type == .ventilationMode || param.type == .autoFanSpeedGraph || param.type == .buttonBlockMode || param.type == .brightnessDimmingOnSleep || param.type == .weekProgramMode || param.type == .defaultSettings {
+        if param.type == .controlSequence || param.type == .regulatorBehaviourInShutdown || param.type == .fanWorkModeInShutdown || param.type == .ventilationMode || param.type == .autoFanSpeedGraph || param.type == .buttonBlockMode || param.type == .brightnessDimmingOnSleep || param.type == .temperatureStepInSleepMode || param.type == .weekProgramMode || param.type == .defaultSettings {
             cell = tableView.dequeueReusableCell(withIdentifier: "enumCell") as! SpotEnumParameterViewCell
             (cell as! SpotEnumParameterViewCell).values = items(forType: param.type)
             (cell as! SpotEnumParameterViewCell).selectedValue = item(forType: param.type, andValue: value)
@@ -760,6 +760,10 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
                 case .yes: return ValueSelectorItem(withTitle: "Yes", andValue: val)
             }
         }
+        if type == .temperatureStepInSleepMode {
+            let t = val as! Int
+            return ValueSelectorItem(withTitle: "\(t)°", andValue: t)
+        }
         if type == .weekProgramMode {
             switch (val as! WeekProgramMode) {
                 case .disabled: return ValueSelectorItem(withTitle: "Disabled", andValue: val)
@@ -807,6 +811,16 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         if type == .brightnessDimmingOnSleep {
             return [ValueSelectorItem(withTitle: "No", andValue: BrightnessDimmingOnSleepType.no),
                     ValueSelectorItem(withTitle: "Yes", andValue: BrightnessDimmingOnSleepType.yes)]
+        }
+        if type == .temperatureStepInSleepMode {
+            return [ValueSelectorItem(withTitle: "3°", andValue: 3),
+                    ValueSelectorItem(withTitle: "4°", andValue: 4),
+                    ValueSelectorItem(withTitle: "5°", andValue: 5),
+                    ValueSelectorItem(withTitle: "6°", andValue: 6),
+                    ValueSelectorItem(withTitle: "7°", andValue: 7),
+                    ValueSelectorItem(withTitle: "8°", andValue: 8),
+                    ValueSelectorItem(withTitle: "9°", andValue: 9),
+                    ValueSelectorItem(withTitle: "10°", andValue: 10)]
         }
         if type == .weekProgramMode {
             return [ValueSelectorItem(withTitle: "Disabled", andValue: WeekProgramMode.disabled),
