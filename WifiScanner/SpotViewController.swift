@@ -710,6 +710,18 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
                 let n = val as! NSNumber
                 return n.intValue.minutesAndSeconds
             }
+            if type == .maxFanSpeedLimit {
+                let n = val as! NSNumber
+                return "\(n)%"
+            }
+            if type == .temperatureStepInSleepMode {
+                let n = val as! NSNumber
+                return "\(n)°"
+            }
+            if type == .temperatureSensorCalibration {
+                let n = val as! NSNumber
+                return "\(n)°"
+            }
             
             return "\(val)"
             
