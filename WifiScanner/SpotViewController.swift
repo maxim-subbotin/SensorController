@@ -338,24 +338,31 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         let headerHeight = CGFloat(50)
         
         self.view.addSubview(addParamsHeaderView)
+        addParamsHeaderView.layer.cornerRadius = 5
         addParamsHeaderView.backgroundColor = ColorScheme.current.spotHeaderBackgroundColor
         addParamsHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        let lC = addParamsHeaderView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
-        let tC = addParamsHeaderView.topAnchor.constraint(equalTo: paramsPanelView.bottomAnchor, constant: 2 * cardOffset)
-        let wC = addParamsHeaderView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+        let lC = addParamsHeaderView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        let tC = addParamsHeaderView.topAnchor.constraint(equalTo: paramsPanelView.bottomAnchor, constant: cardOffset)
+        let wC = addParamsHeaderView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -2 * cardOffset)
         let hC = addParamsHeaderView.heightAnchor.constraint(equalToConstant: headerHeight)
         NSLayoutConstraint.activate([lC, tC, wC, hC])
         
+        self.addParamsHeaderView.isUserInteractionEnabled = true
         self.addParamsHeaderView.addSubview(addParamsHeaderLabel)
-        addParamsHeaderLabel.textColor = ColorScheme.current.spotHeaderTextColor
-        addParamsHeaderLabel.font = UIFont.systemFont(ofSize: 22)
+        addParamsHeaderLabel.textColor = .white
+        addParamsHeaderLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        addParamsHeaderLabel.textAlignment = .center
         addParamsHeaderLabel.text = "Additional parameters"
         addParamsHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
-        let lC1 = addParamsHeaderLabel.leftAnchor.constraint(equalTo: addParamsHeaderView.leftAnchor, constant: 2 * cardOffset)
+        let lC1 = addParamsHeaderLabel.leftAnchor.constraint(equalTo: addParamsHeaderView.leftAnchor, constant: 0)
         let tC1 = addParamsHeaderLabel.topAnchor.constraint(equalTo: addParamsHeaderView.topAnchor, constant: 0)
-        let wC1 = addParamsHeaderLabel.widthAnchor.constraint(equalTo: addParamsHeaderView.widthAnchor, constant: -cardOffset)
+        let wC1 = addParamsHeaderLabel.widthAnchor.constraint(equalTo: addParamsHeaderView.widthAnchor, constant: 0)
         let hC1 = addParamsHeaderLabel.heightAnchor.constraint(equalTo: addParamsHeaderView.heightAnchor)
         NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openAdditionalParamsView))
+        addParamsHeaderView.addGestureRecognizer(tapGesture)
+        
         
         self.view.addSubview(addParamsTableView)
         addParamsTableView.allowsSelection = false
@@ -376,6 +383,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         let wC2 = addParamsTableView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
         let hC2 = addParamsTableView.heightAnchor.constraint(equalToConstant: 14 * (paramHeight + 10))
         NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
+        addParamsTableView.isHidden = true
     }
     
     //MARK: - connection delegate
@@ -985,10 +993,18 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         self.spotState.additionalParams[.maxFanSpeedLimit] = Int(value)
     }
     
-    //MARK: - func onTimeChange(inSeconds sec: Int)
+    //MARK: - reaction time changing
     
     func onTimeChange(inSeconds sec: Int) {
         self.spotState.additionalParams[.reactionTimeOnTemperature] = sec
+    }
+    
+    //MARK: - opening of additional params
+    
+    @objc func openAdditionalParamsView() {
+        let vc = SpotAdditionalParametersViewController()
+        vc.spotState = self.spotState
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

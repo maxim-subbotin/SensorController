@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D608674B23E200850013044A /* SpotAdditionalParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D608674A23E200850013044A /* SpotAdditionalParametersViewController.swift */; };
 		D60EC82A23D0F39500D81289 /* SpotParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60EC82923D0F39500D81289 /* SpotParameterView.swift */; };
 		D60F251F23CF9FC700C4570B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60F251E23CF9FC700C4570B /* CardView.swift */; };
 		D639840C23D4A37100C02F43 /* ValueSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D639840B23D4A37100C02F43 /* ValueSelectionView.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D608674A23E200850013044A /* SpotAdditionalParametersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotAdditionalParametersViewController.swift; sourceTree = "<group>"; };
 		D60EC82923D0F39500D81289 /* SpotParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotParameterView.swift; sourceTree = "<group>"; };
 		D60F251E23CF9FC700C4570B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		D639840B23D4A37100C02F43 /* ValueSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueSelectionView.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				D6E22530235C94CE00E0D800 /* Connector.swift */,
 				D6E22532235C97B100E0D800 /* Tools.swift */,
 				D68F240823CC5D7400A249A2 /* ColorScheme.swift */,
+				D608674A23E200850013044A /* SpotAdditionalParametersViewController.swift */,
 			);
 			path = WifiScanner;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				D67DFA922335262300760D92 /* SpotEditViewController.swift in Sources */,
 				D6F1DCA82330B16C007248AC /* AppDelegate.swift in Sources */,
 				D6F2046323DA2749002BFE0D /* TemperatureView.swift in Sources */,
+				D608674B23E200850013044A /* SpotAdditionalParametersViewController.swift in Sources */,
 				D674F1BE23336C4F009D2D4C /* BDHost.m in Sources */,
 				D6C9998D23D63D25003A938D /* BrightnessSensorView.swift in Sources */,
 				D67DFA6B2335176800760D92 /* SpotViewController.swift in Sources */,
