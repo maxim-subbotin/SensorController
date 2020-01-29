@@ -276,7 +276,7 @@ class SpotCalibrationParameterViewCell: SpotParameterViewCell, UIPopoverPresenta
     
     func onCalibrationChange(_ value: CGFloat) {
         _calibration = value
-        self.valueTitle = "\(String(format: "%.1f", value))"
+        self.valueTitle = "\(String(format: "%.1f", value))°"
         delegate?.onCalibrationChange(value)
     }
 }

@@ -63,7 +63,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     
     private var cardTemp = CardPanelView()
     private var cardFanSpeed = CardPanelView()
-    private var cardValveState = CardPanelView()
+    private var cardValveState = ValveStateCardView()
     private var cardRegState = RegulatorStateCardView()
     private var cardPanelView = UIView()
     
@@ -154,7 +154,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         if UIDevice.current.userInterfaceIdiom == .pad {
             applyParamsPanelForiPad()
         } else {
-            applyParamsPanelForiPad()
+            applyParamsPanelForiPhone()
         }
     }
 
@@ -324,6 +324,75 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         let lC4 = paramFanMode.leftAnchor.constraint(equalTo: paramFanSpeedView.rightAnchor, constant: cardOffset)
         let tC4 = paramFanMode.topAnchor.constraint(equalTo: paramFanSpeedView.topAnchor, constant: 0)
         let wC4 = paramFanMode.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, multiplier: 0.5, constant: -1.5 * cardOffset)
+        let hC4 = paramFanMode.heightAnchor.constraint(equalToConstant: paramHeight)
+        NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
+        
+        let fanTapGesture = UITapGestureRecognizer(target: self, action: #selector(onFanModeTap(_:)))
+        paramFanMode.addGestureRecognizer(fanTapGesture)
+    }
+    
+    func applyParamsPanelForiPhone() {
+        let cardOffset = CGFloat(10)
+        let paramHeight = CGFloat(55)
+        
+        self.view.addSubview(paramsPanelView)
+        paramsPanelView.translatesAutoresizingMaskIntoConstraints = false
+        let lC = paramsPanelView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
+        let tC = paramsPanelView.topAnchor.constraint(equalTo: cardPanelView.bottomAnchor, constant: cardOffset)
+        let wC = paramsPanelView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+        let hC = paramsPanelView.heightAnchor.constraint(equalToConstant: 4 * paramHeight + 3 * cardOffset)
+        NSLayoutConstraint.activate([lC, tC, wC, hC])
+        
+        paramsPanelView.addSubview(paramDateView)
+        paramDateView.isUserInteractionEnabled = true
+        paramDateView.layer.cornerRadius = 5
+        paramDateView.title = "Date"
+        paramDateView.translatesAutoresizingMaskIntoConstraints = false
+        let lC1 = paramDateView.leftAnchor.constraint(equalTo: paramsPanelView.leftAnchor, constant: cardOffset)
+        let tC1 = paramDateView.topAnchor.constraint(equalTo: paramsPanelView.topAnchor, constant: 0)
+        let wC1 = paramDateView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, constant: -2 * cardOffset)
+        let hC1 = paramDateView.heightAnchor.constraint(equalToConstant: paramHeight)
+        NSLayoutConstraint.activate([lC1, tC1, wC1, hC1])
+        
+        let dateTapGesture = UITapGestureRecognizer(target: self, action: #selector(onDateTap(_:)))
+        paramDateView.addGestureRecognizer(dateTapGesture)
+        
+        paramsPanelView.addSubview(paramDevTempView)
+        paramsPanelView.isUserInteractionEnabled = true
+        paramDevTempView.layer.cornerRadius = 5
+        paramDevTempView.title = "Device temperature"
+        paramDevTempView.translatesAutoresizingMaskIntoConstraints = false
+        let lC2 = paramDevTempView.leftAnchor.constraint(equalTo: paramDateView.leftAnchor, constant: 0)
+        let tC2 = paramDevTempView.topAnchor.constraint(equalTo: paramDateView.bottomAnchor, constant: cardOffset)
+        let wC2 = paramDevTempView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, constant: -2 * cardOffset)
+        let hC2 = paramDevTempView.heightAnchor.constraint(equalToConstant: paramHeight)
+        NSLayoutConstraint.activate([lC2, tC2, wC2, hC2])
+        
+        let tempTapGesture = UITapGestureRecognizer(target: self, action: #selector(onTemperatureTap(_:)))
+        paramDevTempView.addGestureRecognizer(tempTapGesture)
+        
+        paramsPanelView.addSubview(paramFanSpeedView)
+        paramFanSpeedView.isUserInteractionEnabled = true
+        paramFanSpeedView.layer.cornerRadius = 5
+        paramFanSpeedView.title = "Fan speed (manual)"
+        paramFanSpeedView.translatesAutoresizingMaskIntoConstraints = false
+        let lC3 = paramFanSpeedView.leftAnchor.constraint(equalTo: paramDateView.leftAnchor, constant: 0)
+        let tC3 = paramFanSpeedView.topAnchor.constraint(equalTo: paramDevTempView.bottomAnchor, constant: cardOffset)
+        let wC3 = paramFanSpeedView.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, constant: -2 * cardOffset)
+        let hC3 = paramFanSpeedView.heightAnchor.constraint(equalToConstant: paramHeight)
+        NSLayoutConstraint.activate([lC3, tC3, wC3, hC3])
+        
+        let fanSpeedGesture = UITapGestureRecognizer(target: self, action: #selector(onFanSpeedTap(_:)))
+        paramFanSpeedView.addGestureRecognizer(fanSpeedGesture)
+        
+        paramsPanelView.addSubview(paramFanMode)
+        paramFanMode.isUserInteractionEnabled = true
+        paramFanMode.layer.cornerRadius = 5
+        paramFanMode.title = "Fan mode"
+        paramFanMode.translatesAutoresizingMaskIntoConstraints = false
+        let lC4 = paramFanMode.leftAnchor.constraint(equalTo: paramFanSpeedView.leftAnchor, constant: 0)
+        let tC4 = paramFanMode.topAnchor.constraint(equalTo: paramFanSpeedView.bottomAnchor, constant: cardOffset)
+        let wC4 = paramFanMode.widthAnchor.constraint(equalTo: paramsPanelView.widthAnchor, constant: -2 * cardOffset)
         let hC4 = paramFanMode.heightAnchor.constraint(equalToConstant: paramHeight)
         NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
         
@@ -924,7 +993,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         popover?.backgroundColor = .clear
         vc.preferredContentSize = CGSize(width: 300, height: 200)
         popover?.delegate = self
-        popover?.sourceView = self.paramDateView
+        popover?.sourceView = self.paramDevTempView
         popover?.sourceRect = CGRect(x: self.paramDevTempView.frame.width - 30, y: self.paramDevTempView.frame.height / 2, width: 1, height: 1)
         
         self.present(vc, animated: true, completion: nil)

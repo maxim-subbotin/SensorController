@@ -27,7 +27,7 @@ class ColorScheme {
     public var spotHeaderBackgroundColor = UIColor(hexString: "#1B1E2E")
     public var spotHeaderTextColor = UIColor(hexString: "#84899C")
     
-    public var selectorMenuBackgroundColor = UIColor(hexString: "#1B1E2E")
+    public var selectorMenuBackgroundColor = UIColor(hexString: "#33374D")
     public var selectorMenuTextColor = UIColor.white
     public var selectorCheckboxBorderColor = UIColor(hexString: "#84899C")
     public var selectorCheckboxBackgroundColor = UIColor.white

@@ -13,6 +13,7 @@ class SpotCardView: UIView {
     private var indicatorView = SpotIndicatorView()
     private var lblTitle = UILabel()
     private var lblDetail = UILabel()
+    private var viewDots = UIImageView()
     private var _spot: Spot?
     public var spot: Spot? {
         get {
@@ -74,6 +75,17 @@ class SpotCardView: UIView {
         let hC2 = lblDetail.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
         let rC2 = lblDetail.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -indicatorOffset)
         NSLayoutConstraint.activate([lC2, tC2, hC2, rC2])
+        
+        self.addSubview(viewDots)
+        viewDots.image = UIImage(named: "three_dots")?.withRenderingMode(.alwaysTemplate)
+        viewDots.tintColor = UIColor(hexString: "#333752")
+        viewDots.contentMode = .scaleAspectFit
+        viewDots.translatesAutoresizingMaskIntoConstraints = false
+        let lC3 = viewDots.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 5)
+        let tC3 = viewDots.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        let hC3 = viewDots.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        let rC3 = viewDots.widthAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([lC3, tC3, hC3, rC3])
         
         self.addSubview(lblDetail)
     }

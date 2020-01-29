@@ -280,7 +280,7 @@ class SpotFanSpeedParameterViewCell: SpotParameterViewCell, UIPopoverPresentatio
         vc.modalPresentationStyle = .popover
         let popover = vc.popoverPresentationController
         popover?.backgroundColor = .clear
-        vc.preferredContentSize = CGSize(width: 300, height: 220)
+        vc.preferredContentSize = CGSize(width: 350, height: 300)
         popover?.delegate = self
         popover?.sourceView = self.paramView
         popover?.sourceRect = CGRect(x: self.paramView.frame.width - 30, y: self.paramView.frame.height / 2, width: 1, height: 1)

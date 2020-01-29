@@ -36,17 +36,25 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     override func viewDidLoad() {
         let varmann = Spot(withSSid: "Varmann", andPassword: "Varmann12345678")
-        varmann.name = "Test device"
+        varmann.name = "Varmann device"
         
-        let snp = Spot(withSSid: "Snappii_618", andPassword: "snapp11app")
-        snp.name = "Snappii Network"
+        let snp = Spot(withSSid: "garage_ntwrk", andPassword: "snapp11app")
+        snp.name = "Garage"
         
-        let gb = Spot(withSSid: "Guest Baza", andPassword: "12345678")
-        gb.name = "Random network"
+        let gb = Spot(withSSid: "lvng_rm", andPassword: "12345678")
+        gb.name = "Living room"
+        
+        let brn = Spot(withSSid: "barn", andPassword: "12345678")
+        brn.name = "Barn"
+        
+        let grn = Spot(withSSid: "grn_house", andPassword: "12345678")
+        grn.name = "Greenhouse"
         
         spots.append(varmann)
         spots.append(snp)
         spots.append(gb)
+        spots.append(brn)
+        spots.append(grn)
         
         super.viewDidLoad()
         
@@ -61,8 +69,8 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         let btnAdd = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(onAddAction))
         self.navigationItem.rightBarButtonItem = btnAdd
         
-        let btnRefresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(onRefreshAction))
-        self.navigationItem.leftBarButtonItem = btnRefresh
+        //let btnRefresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(onRefreshAction))
+        //self.navigationItem.leftBarButtonItem = btnRefresh
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -174,7 +182,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        openDemoSpot()
+        openDemoSpot(indexPath)
         return
         
         let spot = spots[indexPath.row]
@@ -237,9 +245,10 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func openDemoSpot() {
+    func openDemoSpot(_ indexPath: IndexPath) {
+        let spt = spots[indexPath.row]
         let vc = SpotViewController()
-        vc.spot = Spot.demo
+        vc.spot = spt
         vc.spotState = SpotState.demo
         self.navigationController?.pushViewController(vc, animated: true)
     }

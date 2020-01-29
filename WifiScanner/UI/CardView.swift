@@ -140,6 +140,29 @@ class CardPanelView: CardView {
     }
 }
 
+class ValveStateCardView: CardPanelView {
+    private var lblState = UILabel()
+    
+    override func applyUI() {
+        super.applyUI()
+        
+        self.addSubview(lblState)
+        lblState.backgroundColor = UIColor(hexString: "#0C3B4F")
+        lblState.text = "COLD"
+        lblState.textAlignment = .center
+        lblState.textColor = .white
+        lblState.font = UIFont.boldSystemFont(ofSize: 20)
+        lblState.translatesAutoresizingMaskIntoConstraints = false
+        let cxC = lblState.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        let tC = lblState.centerYAnchor.constraint(equalTo: lblValue.centerYAnchor)
+        let wC = lblState.widthAnchor.constraint(equalToConstant: 120)
+        let hC = lblState.heightAnchor.constraint(equalToConstant: 40)
+        lblState.layer.cornerRadius = 20
+        lblState.clipsToBounds = true
+        NSLayoutConstraint.activate([cxC, tC, wC, hC])
+    }
+}
+
 class RegulatorStateCardView: CardPanelView {
     private var lblStatus = UILabel()
     public var onStateColor = UIColor(hexString: "#56AB7B")
