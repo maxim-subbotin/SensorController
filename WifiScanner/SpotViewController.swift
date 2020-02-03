@@ -110,7 +110,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
             if let wifiIP = Tools.getWifiAddredd(byCurrentAddress: ip) {
                 connector.idAddress = wifiIP
                 connector.delegate = self
-                connector.getYear()
+                connector.getAllData()
             }
         }
     }
@@ -473,6 +473,9 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     }
     
     func onCommandSuccess(_ connector: Connector, command: ConnectorCommand, data: [AnyObject]) {
+        if command == .allData {
+            spotState = SpotState.parseData(data as! [Int])
+        }
         if command == .yearMonth {
             let i = data.first as! Int
             let bytes = i.twoBytes

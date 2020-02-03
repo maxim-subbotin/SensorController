@@ -69,6 +69,67 @@ class SpotState {
         
         return state
     }
+    
+    public static func parseData(_ data: [Int]) -> SpotState {
+        let spotState = SpotState()
+        
+        var year = 0
+        var month = 0
+        var day = 0
+        var hour = 0
+        var minute = 0
+        var second = 0
+        
+        var i = 0
+        for d in data {
+            if i == 0 { // year and month
+                let bytes = d.twoBytes
+                
+                year = Int(bytes[0])
+                month = Int(bytes[1])
+            }
+            if i == 1 { // day and hour
+                let bytes = d.twoBytes
+                
+                day = Int(bytes[0])
+                hour = Int(bytes[1])
+            }
+            if i == 2 { // minutes and second
+                let bytes = d.twoBytes
+                
+                minute = Int(bytes[0])
+                second = Int(bytes[1])
+                
+                var dateComponents = DateComponents()
+                dateComponents.year = year
+                dateComponents.month = month
+                dateComponents.day = day
+                dateComponents.hour = hour
+                dateComponents.minute = minute
+                dateComponents.second = second
+                
+                spotState.date = Calendar.current.date(from: dateComponents) ?? Date()
+            }
+            if i == 3 { // temperature
+                spotState.temperatureDevice = Double(d) * 0.1
+            }
+            if i == 4 { // current temperature
+                spotState.temperatureCurrent = Double(d) * 0.1
+            }
+            if i == 5 { // fan speed current
+                spotState.fanSpeedCurrent = Double(d) * 0.1
+            }
+            if i == 6 { // valve state
+                // 0x0001 - cold
+                // 0x0100 - hot
+                spotState.valveState = i
+            }
+            
+            i += 1
+        }
+        
+        return spotState
+    }
 }
 
 enum SpotAdditionalParamType: Int {

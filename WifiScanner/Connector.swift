@@ -20,6 +20,7 @@ enum ConnectorCommand: Int32 {
     case fanMode = 0x1018               // 0 - auto, 1 - manual
     case regulatorState = 0x1019        // 0 - OFF, 1 - ON
     case param1 = 0x1020                // ...0x102D
+    case allData = 0x8080
 }
 
 enum FanMode: Int {
@@ -68,6 +69,28 @@ class Connector {
     }
     
     //MARK: - get commands
+    // start address:   0x1010 = 4112
+    // end address:     0x102D = 4141
+    // block size:      29 bytes
+    func getAllData() {
+        connect()
+        self.modbus.readRegistersFrom(startAddress: 0x1010, count: 7, success: {objects in
+            print("Data was received successfully: \(objects)")
+            self.delegate?.onCommandSuccess(self, command: .allData, data: objects)
+        }, failure: {error in
+            print("Error on data receiving")
+            self.delegate?.onCommandFail(self, command: .allData, error: error)
+        })
+    }
+    
+    func getAllData2() {
+        connect()
+        self.modbus.readRegistersFrom(startAddress: 0x1018, count: 7, success: {objects in
+            print("Data was received successfully: \(objects)")
+        }, failure: {error in
+            print("Error on data receiving: \(error.code) - \(error.localizedDescription)")
+        })
+    }
     
     func getYear() {
         connect()
