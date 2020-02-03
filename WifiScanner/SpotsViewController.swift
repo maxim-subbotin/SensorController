@@ -84,6 +84,9 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         let bC = collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0)
         let wC = collectionView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
         NSLayoutConstraint.activate([cxC, tC, bC, wC])
+        
+        let btnDemo = UIBarButtonItem(title: "Demo", style: .done, target: self, action: #selector(onDemo))
+        self.navigationItem.leftBarButtonItem = btnDemo
     }
 
     @objc func onAddAction() {
@@ -94,79 +97,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     @objc func onRefreshAction() {
         self.collectionView.reloadData()
     }
-    
-    //MARK: - table delegates
-    
-    /*override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return spots.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "spotCell") as! SpotViewCell
-        let spot = spots[indexPath.row]
-        cell.spot = spot
-        cell.selectionStyle = .none
-        if spot.ssid == currentSsid {
-            cell.iconTintColor = UIColor(hexString: "#00629B")
-        } else {
-            cell.iconTintColor = UIColor(hexString: "#AEB4A9")
-        }
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let spot = spots[indexPath.row]
-        if spot.ssid == currentSsid {
-            openSpot(spot)
-            return
-        }
 
-        if #available(iOS 11.0, *) {
-            let hotspotConfig = NEHotspotConfiguration(ssid: spot.ssid, passphrase: spot.password, isWEP: false)
-            NEHotspotConfigurationManager.shared.apply(hotspotConfig, completionHandler: { (error) in
-                if error != nil {
-                    let msg = error!.localizedDescription
-                    let alert = UIAlertController(title: "Connection error", message: msg, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                } else {
-                    self.openSpot(spot)
-                }
-                self.tableView.reloadData()
-            })
-        } else {
-            openSpot(spot)
-        }
-    }
-    
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let spot = spots[indexPath.row]
-        
-        let deleteAction = UITableViewRowAction(style: .normal, title: "Delete", handler: { action, index in
-            self.onSpotDelete(spot)
-            self.tableView.reloadData()
-        })
-        deleteAction.backgroundColor = UIColor(hexString: "#DB2B39")
-        
-        let editAction = UITableViewRowAction(style: .normal, title: "Edit", handler: { action, index in
-            self.onSpotEdit(spot)
-        })
-        editAction.backgroundColor = UIColor(hexString: "#00A9E0")
-        
-        /*let reorderAction = UITableViewRowAction(style: .normal, title: "Reorder", handler: { action, index in
-         self.fieldListView.isEditing = true
-         self.fieldListView.reloadData()
-         })
-         reorderAction.backgroundColor = UIColor(hexString: "#1FD19B")*/
-        
-        return [editAction, deleteAction]
-    }
- */
-    
     //MARK: - collection delegates
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -178,13 +109,11 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         cell.stopAnimation()
         let spot = spots[indexPath.row]
         cell.spot = spot
+        cell.isCurrentNetwork = spot.ssid == currentSsid
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        openDemoSpot(indexPath)
-        return
-        
         let spot = spots[indexPath.row]
         if spot.ssid == currentSsid {
             openSpot(spot)
@@ -208,13 +137,14 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
                     return
                 }
                 
-                if let ip = Tools.getIPAddress() {
-                    print("Connected to network \(spot.ssid) successfully. IP: \(ip)")
-                    self.openSpot(spot)
+                if self.currentSsid == spot.ssid {
+                    if let ip = Tools.getIPAddress() {
+                        print("Connected to network \(spot.ssid) successfully. IP: \(ip)")
+                        self.openSpot(spot)
+                    }
                 } else {
                     print("Unable to connect: \(spot.ssid)")
                 }
-                
                 
                 self.collectionView.reloadData()
             })
@@ -282,5 +212,18 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
         
         flowLayout.invalidateLayout()*/
+    }
+    
+    //MARK: - demo action
+    
+    @objc func onDemo() {
+        let spot = Spot(withSSid: "garage_ntwrk", andPassword: "snapp11app")
+        spot.name = "Garage"
+        
+        let vc = SpotViewController()
+        vc.mode = .demo
+        vc.spot = spot
+        vc.spotState = SpotState.demo
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

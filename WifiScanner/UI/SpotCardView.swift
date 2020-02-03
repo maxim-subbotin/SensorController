@@ -25,6 +25,16 @@ class SpotCardView: UIView {
             lblDetail.text = _spot?.ssid
         }
     }
+    private var _isCurrentNetwork = false
+    public var isCurrentNetwork: Bool {
+        get {
+            return _isCurrentNetwork
+        }
+        set {
+            _isCurrentNetwork = newValue
+            self.indicatorView.lineColor = newValue ? ColorScheme.current.spotCellIndicatorEnableColor : ColorScheme.current.spotCellIndicatorDisableColor
+        }
+    }
     
     private var indicatorOffset = CGFloat(10)
     
@@ -109,6 +119,14 @@ class SpotCollectionViewCell: UICollectionViewCell {
         set {
             _spot = newValue
             spotView.spot = _spot
+        }
+    }
+    public var isCurrentNetwork: Bool {
+        get {
+            return spotView.isCurrentNetwork
+        }
+        set {
+            spotView.isCurrentNetwork = newValue
         }
     }
     

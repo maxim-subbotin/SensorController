@@ -54,6 +54,12 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let param = parameters[indexPath.row]
         let value = getExtraParamValue(byType: param.type)
+        if value == nil {
+            let cell = (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
+            cell.type = param
+            cell.backgroundColor = ColorScheme.current.backgroundColor
+            return cell
+        }
         var cell: SpotParameterViewCell?
         if param.type == .controlSequence || param.type == .regulatorBehaviourInShutdown || param.type == .fanWorkModeInShutdown || param.type == .ventilationMode || param.type == .autoFanSpeedGraph || param.type == .buttonBlockMode || param.type == .brightnessDimmingOnSleep || param.type == .temperatureStepInSleepMode || param.type == .weekProgramMode || param.type == .defaultSettings {
             cell = tableView.dequeueReusableCell(withIdentifier: "enumCell") as! SpotEnumParameterViewCell

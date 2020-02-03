@@ -23,6 +23,11 @@ enum CellType: Int {
     case unknown
 }
 
+enum SpotViewMode {
+    case demo
+    case prod
+}
+
 class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDelegate,
                             UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate,
                             UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate,
@@ -36,6 +41,8 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     private var hour: Int = -1
     private var minute: Int = -1
     private var second: Int = -1
+    
+    public var mode = SpotViewMode.prod
     
     private var _spotState = SpotState()
     public var spotState: SpotState {
@@ -589,6 +596,9 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let param = parameters[indexPath.row]
         let value = getExtraParamValue(byType: param.type)
+        if value == nil {
+            return (tableView.dequeueReusableCell(withIdentifier: "paramCell") as! SpotParameterViewCell)
+        }
         var cell: SpotParameterViewCell?
         if param.type == .controlSequence || param.type == .regulatorBehaviourInShutdown || param.type == .fanWorkModeInShutdown || param.type == .ventilationMode || param.type == .autoFanSpeedGraph || param.type == .buttonBlockMode || param.type == .brightnessDimmingOnSleep || param.type == .temperatureStepInSleepMode || param.type == .weekProgramMode || param.type == .defaultSettings {
             cell = tableView.dequeueReusableCell(withIdentifier: "enumCell") as! SpotEnumParameterViewCell
