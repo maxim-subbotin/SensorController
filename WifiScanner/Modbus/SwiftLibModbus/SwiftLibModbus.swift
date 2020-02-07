@@ -274,6 +274,7 @@ class SwiftLibModbus: NSObject {
     
     private func buildNSError(errno: Int32) -> NSError {
         let errorString = NSString(utf8String: modbus_strerror(errno))
+        print("Modbus error: \(errorString ?? "--")")
         return self.buildNSError(errno: errno, errorString: errorString!)
     }
     

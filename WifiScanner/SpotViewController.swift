@@ -88,7 +88,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     
     private var tblData = UITableView()
     
-    private var connector = Connector()
+    private var connector: Connector?
     
     private var cells = [CellType]()
     
@@ -112,9 +112,10 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         if let ip = Tools.getIPAddress() {
             print("Current ip address: \(ip)")
             if let wifiIP = Tools.getWifiAddredd(byCurrentAddress: ip) {
-                connector.idAddress = wifiIP
-                connector.delegate = self
-                connector.getAllData()
+                connector = Connector()
+                connector?.idAddress = wifiIP
+                connector?.delegate = self
+                connector?.getAllData()
             }
         }
     }
@@ -478,7 +479,16 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     
     func onCommandSuccess(_ connector: Connector, command: ConnectorCommand, data: [AnyObject]) {
         if command == .allData {
-            spotState = SpotState.parseData(data as! [Int])
+            DispatchQueue.main.async {
+                self.spotState = SpotState.parseData(data as! [Int])
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                self.refreshData()
+            })
+        }
+        if command == .additionalData {
+            print("Add data OK")
         }
         if command == .yearMonth {
             let i = data.first as! Int
@@ -591,7 +601,29 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     }
     
     func onCommandFail(_ connector: Connector, command: ConnectorCommand, error: NSError) {
-        //
+        if command == .additionalData {
+            print("Add data FAIL")
+            return
+        }
+        
+        self.connector?.delegate = nil
+        self.connector = nil
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            // reset connection if peer reseting
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                if let ip = Tools.getIPAddress() {
+                    print("Current ip address: \(ip)")
+                    if let wifiIP = Tools.getWifiAddredd(byCurrentAddress: ip) {
+                        self.connector = Connector()
+                        self.connector?.idAddress = wifiIP
+                        self.connector?.delegate = self
+                        self.connector?.getAllData()
+                    }
+                }
+            })
+
+        })
     }
     
     //MARK: - table delegates
@@ -719,17 +751,17 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         if command == .temperatureDevice {
             let temp = value as! Double
             print("Temperature was changed: \(temp)")
-            connector.setTemperature(temp * 10)
+            connector?.setTemperature(temp * 10)
         }
         if command == .fanSpeedCurrent {
             let speed = value as! Double
             print("Fan speed was changed: \(speed)")
-            connector.setFanSpeed(speed * 10)
+            connector?.setFanSpeed(speed * 10)
         }
         if command == .date || command == .time {
             let date = value as! Date
             print("Attemption to set date: \(date)")
-            connector.setDate(date)
+            connector?.setDate(date)
         }
     }
     
@@ -1091,6 +1123,16 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         let vc = SpotAdditionalParametersViewController()
         vc.spotState = self.spotState
         self.navigationController?.pushViewController(vc, animated: true)
+        
+        if !(connector?.isBusy ?? false) {
+            connector?.getAdditionalData()
+        }
+    }
+    
+    //MARK: - connection
+    
+    @objc func refreshData() {
+        connector?.getAllData()
     }
 }
 

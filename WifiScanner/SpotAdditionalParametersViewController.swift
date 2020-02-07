@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class SpotAdditionalParametersViewController: UITableViewController, SpotEnumParameterViewCellDelegate, BrightnessSensorViewDelegate,
-                                              SpotCalibrationParameterViewCellDelegate, SpotFanSpeedParameterViewCellDelegate, ReactionTimeViewDelegate {
+                                              SpotCalibrationParameterViewCellDelegate, SpotFanSpeedParameterViewCellDelegate, ReactionTimeViewDelegate, ConnectorDelegate {
     private var _spotState = SpotState()
     public var spotState: SpotState {
         get {
@@ -24,6 +24,7 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
     }
     private var paramHeight = CGFloat(55)
     private var parameters = ParameterType.allTypes
+    public var connector: Connector?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,18 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
         tableView.register(SpotReactionTimeParameterViewCell.self, forCellReuseIdentifier: "reactionCell")
         //tableView.delegate = self
         //tableView.dataSource = self
+        
+        /*if connector == nil {
+            if let ip = Tools.getIPAddress() {
+                print("Current ip address: \(ip)")
+                if let wifiIP = Tools.getWifiAddredd(byCurrentAddress: ip) {
+                    connector = Connector()
+                    connector?.idAddress = wifiIP
+                    connector?.delegate = self
+                    connector?.getAdditionalData()
+                }
+            }
+        }*/
     }
     
     //MARK: - table delegates
@@ -352,5 +365,23 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
     
     func onTimeChange(inSeconds sec: Int) {
         self.spotState.additionalParams[.reactionTimeOnTemperature] = sec
+    }
+    
+    //MARK: - modbus connections
+    
+    func onSuccessConnection(_ connector: Connector) {
+        
+    }
+    
+    func onFailConnection(_ connector: Connector) {
+        
+    }
+    
+    func onCommandSuccess(_ connector: Connector, command: ConnectorCommand, data: [AnyObject]) {
+        
+    }
+    
+    func onCommandFail(_ connector: Connector, command: ConnectorCommand, error: NSError) {
+        
     }
 }

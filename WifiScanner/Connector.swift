@@ -20,7 +20,9 @@ enum ConnectorCommand: Int32 {
     case fanMode = 0x1018               // 0 - auto, 1 - manual
     case regulatorState = 0x1019        // 0 - OFF, 1 - ON
     case param1 = 0x1020                // ...0x102D
+    
     case allData = 0x8080
+    case additionalData = 0x9090
 }
 
 enum FanMode: Int {
@@ -58,6 +60,11 @@ class Connector {
         modbus.disconnect()
     }
     
+    func free() {
+        modbus.disconnect()
+        modbus_free(modbus.mb)
+    }
+    
     func connect() {
         modbus.connect(success: {() in
             print("Modbus is connected")
@@ -68,27 +75,38 @@ class Connector {
         })
     }
     
+    public var isBusy = false
+    
     //MARK: - get commands
     // start address:   0x1010 = 4112
     // end address:     0x102D = 4141
     // block size:      29 bytes
     func getAllData() {
+        isBusy = true
         connect()
         self.modbus.readRegistersFrom(startAddress: 0x1010, count: 10, success: {objects in
+            self.isBusy = false
             print("Data was received successfully: \(objects)")
             self.delegate?.onCommandSuccess(self, command: .allData, data: objects)
         }, failure: {error in
+            self.isBusy = false
             print("Error on data receiving")
             self.delegate?.onCommandFail(self, command: .allData, error: error)
         })
+        self.modbus.disconnect()
     }
     
-    func getAllData2() {
+    func getAdditionalData() {
+        isBusy = true
         connect()
-        self.modbus.readRegistersFrom(startAddress: 0x1018, count: 7, success: {objects in
+        self.modbus.readRegistersFrom(startAddress: 0x1020, count: 1, success: {objects in
+            self.isBusy = false
             print("Data was received successfully: \(objects)")
+            self.delegate?.onCommandSuccess(self, command: .additionalData, data: objects)
         }, failure: {error in
+            self.isBusy = false
             print("Error on data receiving: \(error.code) - \(error.localizedDescription)")
+            self.delegate?.onCommandFail(self, command: .additionalData, error: error)
         })
     }
     
