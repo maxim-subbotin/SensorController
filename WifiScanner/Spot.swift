@@ -122,7 +122,16 @@ class SpotState {
             if i == 6 { // valve state
                 // 0x0001 - cold
                 // 0x0100 - hot
-                spotState.valveState = i
+                spotState.valveState = d
+            }
+            if i == 7 { // fan speed device
+                spotState.fanSpeed = Double(d) * 0.1
+            }
+            if i == 8 { // fan mode
+                spotState.fanMode = d == 0 ? .auto : .manual
+            }
+            if i == 9 { // regulator state
+                spotState.regulatorState = d == 0 ? .off : .on
             }
             
             i += 1

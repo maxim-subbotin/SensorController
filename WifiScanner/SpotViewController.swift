@@ -52,16 +52,16 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         set {
             _spotState = newValue
             
-            cardTemp.value = "\(_spotState.temperatureCurrent)°"
-            cardFanSpeed.value = "\(_spotState.fanSpeedCurrent)%"
+            cardTemp.value = String(format: "%.1f°", _spotState.temperatureCurrent)
+            cardFanSpeed.value = String(format: "%.0f%%", _spotState.fanSpeedCurrent)
             cardRegState.state = _spotState.regulatorState
             
             let formatter = DateFormatter()
             formatter.dateStyle = .short
             formatter.timeStyle = .short
             paramDateView.value = formatter.string(from: _spotState.date)
-            paramDevTempView.value = "\(_spotState.temperatureDevice)°"
-            paramFanSpeedView.value = "\(_spotState.fanSpeed)%"
+            paramDevTempView.value = String(format: "%.1f°", _spotState.temperatureDevice)
+            paramFanSpeedView.value = String(format: "%.0f%%", _spotState.fanSpeed)
             paramFanMode.value = (_spotState.fanMode == .auto ? "Auto" : "Manual")
             
             addParamsTableView.reloadData()
@@ -104,6 +104,10 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ColorScheme.current.navigationTextColor]
         
         initUI()
+        
+        if mode == .demo {
+            return
+        }
         
         if let ip = Tools.getIPAddress() {
             print("Current ip address: \(ip)")

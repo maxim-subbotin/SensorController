@@ -74,7 +74,7 @@ class Connector {
     // block size:      29 bytes
     func getAllData() {
         connect()
-        self.modbus.readRegistersFrom(startAddress: 0x1010, count: 7, success: {objects in
+        self.modbus.readRegistersFrom(startAddress: 0x1010, count: 10, success: {objects in
             print("Data was received successfully: \(objects)")
             self.delegate?.onCommandSuccess(self, command: .allData, data: objects)
         }, failure: {error in
