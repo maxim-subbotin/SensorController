@@ -354,6 +354,8 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
     
     func onBrightnessLevel(_ level: Int) {
         spotState.additionalParams[.displayBrightness] = level
+        
+        connector?.setDisplayBrightness(level)
     }
     
     //MARK: - temperature calibration
