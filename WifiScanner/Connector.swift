@@ -291,6 +291,17 @@ class Connector {
         self.modbus.disconnect()
     }
     
+    func setFanMode(_ mode: FanMode) {
+        connect()
+        let i = mode.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.fanMode.rawValue, numberArray: [i], success: {
+            print("Fan mode were updated successfully")
+        }, failure: {(error) in
+            print("Error on fan mode updating")
+        })
+        self.modbus.disconnect()
+    }
+    
     /*func test() {
         let ip = Tools.getIPAddress()
         

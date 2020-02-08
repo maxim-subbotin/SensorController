@@ -1073,6 +1073,8 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         if val.value is FanMode {
             spotState.fanMode = val.value as! FanMode
             paramFanMode.value = val.title
+            
+            connector?.setFanMode(spotState.fanMode)
         }
     }
     
