@@ -227,6 +227,7 @@ class FanSpeedViewController: UIViewController, FanSpeedViewDelegate {
         }
     }
     public weak var delegate: FanSpeedViewDelegate?
+    public var propagateChangesImmediately = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -249,7 +250,16 @@ class FanSpeedViewController: UIViewController, FanSpeedViewDelegate {
     }
     
     func onFanSpeedChanged(_ val: CGFloat) {
-        delegate?.onFanSpeedChanged(val)
+        if propagateChangesImmediately {
+            delegate?.onFanSpeedChanged(val)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if !propagateChangesImmediately {
+            delegate?.onFanSpeedChanged(fanSpeedView.value)
+        }
     }
 }
 

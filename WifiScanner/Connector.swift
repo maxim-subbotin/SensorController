@@ -244,18 +244,6 @@ class Connector {
         self.modbus.disconnect()
     }*/
     
-    func setFanSpeed(_ fanSpeed: Double) {
-        connect()
-        let i = Int32(fanSpeed)
-        self.modbus.writeRegister(address: ConnectorCommand.fanSpeedCurrent.rawValue, value: i, success: {
-            print("Fan speed was changed successfully")
-        }, failure: {(error) in
-            print("Fan speed changing was failed: \(error.localizedDescription)")
-            print(error.userInfo)
-        })
-        self.modbus.disconnect()
-    }
-    
     func setDate(_ date: Date) {
         let calendarDate = Calendar.current.dateComponents([.day, .year, .month, .hour, .minute, .second], from: date)
         if  let year = calendarDate.year,
@@ -282,19 +270,23 @@ class Connector {
     
     func setDeviceTemperature(_ t: Double) {
         let i = Int(t * 10)
-        /*connect()
-        self.modbus.writeRegister(address: ConnectorCommand.temperatureDevice.rawValue, value: Int32(i), success: {
-            print("Device temperature was updated successfully")
+
+        connect()
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureDevice.rawValue, numberArray: [i], success: {
+            print("Device temperature were updated successfully")
         }, failure: {(error) in
             print("Error on device temperature updating")
         })
-        self.modbus.disconnect()*/
-        
+        self.modbus.disconnect()
+    }
+    
+    func setFanSpeed(_ fanSpeed: Double) {
         connect()
-        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureDevice.rawValue, numberArray: [i], success: {
-            print("Date & time were updated successfully")
+        let i = Int(fanSpeed * 10)
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.fanSpeedDevice.rawValue, numberArray: [i], success: {
+            print("Fan speed were updated successfully")
         }, failure: {(error) in
-            print("Error on date & time updating")
+            print("Error on fan speed updating")
         })
         self.modbus.disconnect()
     }

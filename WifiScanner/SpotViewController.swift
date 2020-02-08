@@ -1114,7 +1114,10 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     
     func onFanSpeedChanged(_ val: CGFloat) {
         self.paramFanSpeedView.value = "\(String(format: "%.0f", val))%"
-        self.spotState.fanSpeed = Double(Int(val))
+        let d = Double(Int(val))
+        self.spotState.fanSpeed = d
+        
+        connector?.setFanSpeed(d)
     }
     
     func onFanSpeedCellChange(_ value: CGFloat) {
