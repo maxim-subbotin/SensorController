@@ -24,7 +24,7 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
     }
     private var paramHeight = CGFloat(55)
     private var parameters = ParameterType.allTypes
-    public var connector: Connector?
+    public weak var connector: Connector?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -340,6 +340,10 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
                     paramCell.valueTitle = item(forType: param.type, andValue: val.value)?.title
                 }
             }
+        }
+        
+        if param.type == .controlSequence {
+            connector?.setControlSequence(val.value as! ControlSequenceType)
         }
     }
     

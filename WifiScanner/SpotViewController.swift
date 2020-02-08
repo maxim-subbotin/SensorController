@@ -153,6 +153,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         cardPanelView.addSubview(cardFanSpeed)
         cardPanelView.addSubview(cardValveState)
         cardPanelView.addSubview(cardRegState)
+        cardPanelView.isUserInteractionEnabled = true
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             applyCardPanelForiPad()
@@ -218,7 +219,11 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         let wC4 = cardRegState.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.25, constant: -cardOffset * 1.25)
         let hC4 = cardRegState.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor)
         cardRegState.layer.cornerRadius = 5
+        cardRegState.isUserInteractionEnabled = true
         NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
+        
+        let regStateCardGesture = UITapGestureRecognizer(target: self, action: #selector(onRegulatorState))
+        cardRegState.addGestureRecognizer(regStateCardGesture)
     }
     
     func applyCardPanelForiPhone() {
@@ -269,7 +274,11 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         let wC4 = cardRegState.widthAnchor.constraint(equalTo: cardPanelView.widthAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
         let hC4 = cardRegState.heightAnchor.constraint(equalTo: cardPanelView.heightAnchor, multiplier: 0.5, constant: -cardOffset * 1.3333)
         cardRegState.layer.cornerRadius = 5
+        cardRegState.isUserInteractionEnabled = true
         NSLayoutConstraint.activate([lC4, tC4, wC4, hC4])
+        
+        let regStateCardGesture = UITapGestureRecognizer(target: self, action: #selector(onRegulatorState))
+        cardRegState.addGestureRecognizer(regStateCardGesture)
     }
     
     //MARK: - params panel
@@ -492,6 +501,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
             
             DispatchQueue.main.async {
                 let vc = SpotAdditionalParametersViewController()
+                vc.connector = self.connector
                 vc.spotState = self.spotState
                 self.navigationController?.pushViewController(vc, animated: true)
             }
@@ -1148,6 +1158,16 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     
     @objc func refreshData() {
         connector?.getAllData()
+    }
+    
+    //MARK: - regulator state
+    
+    @objc func onRegulatorState() {
+        let curVal = spotState.regulatorState
+        let newVal: RegulatorState = curVal == .on ? .off : .on
+        spotState.regulatorState = newVal
+        connector?.setRegulatorState(newVal)
+        cardRegState.state = newVal
     }
 }
 

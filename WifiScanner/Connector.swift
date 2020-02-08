@@ -19,7 +19,8 @@ enum ConnectorCommand: Int32 {
     case fanSpeedDevice = 0x1017        // % x 10
     case fanMode = 0x1018               // 0 - auto, 1 - manual
     case regulatorState = 0x1019        // 0 - OFF, 1 - ON
-    case param1 = 0x1020                // ...0x102D
+    
+    case controlSequence = 0x1020                // ...0x102D
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -273,7 +274,7 @@ class Connector {
 
         connect()
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureDevice.rawValue, numberArray: [i], success: {
-            print("Device temperature were updated successfully")
+            print("Device temperature was updated successfully")
         }, failure: {(error) in
             print("Error on device temperature updating")
         })
@@ -284,7 +285,7 @@ class Connector {
         connect()
         let i = Int(fanSpeed * 10)
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.fanSpeedDevice.rawValue, numberArray: [i], success: {
-            print("Fan speed were updated successfully")
+            print("Fan speed was updated successfully")
         }, failure: {(error) in
             print("Error on fan speed updating")
         })
@@ -295,29 +296,32 @@ class Connector {
         connect()
         let i = mode.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.fanMode.rawValue, numberArray: [i], success: {
-            print("Fan mode were updated successfully")
+            print("Fan mode was updated successfully")
         }, failure: {(error) in
             print("Error on fan mode updating")
         })
         self.modbus.disconnect()
     }
     
-    /*func test() {
-        let ip = Tools.getIPAddress()
-        
-        let modbus = SwiftLibModbus(ipAddress: "192.168.4.1", port: self.port, device: 1)
-        modbus.connect(success: {() in
-            print("OK")
-            
+    func setRegulatorState(_ state: RegulatorState) {
+        connect()
+        let i = state.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.regulatorState.rawValue, numberArray: [i], success: {
+            print("Regulator state was updated successfully")
         }, failure: {(error) in
-
-            print("ERROR")
+            print("Error on regulator state updating")
         })
-        
-        modbus.readRegistersFrom(startAddress: 0x1010, count: 1, success: {objects in
-            print("OK")
-        }, failure: {error in
-            print("ERROR")
+        self.modbus.disconnect()
+    }
+    
+    func setControlSequence(_ val: ControlSequenceType) {
+        connect()
+        let i = val.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.controlSequence.rawValue, numberArray: [i], success: {
+            print("Control sequence was updated successfully")
+        }, failure: {(error) in
+            print("Error on regulator control sequence updating")
         })
-    }*/
+        self.modbus.disconnect()
+    }
 }
