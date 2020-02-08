@@ -757,7 +757,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         if command == .temperatureDevice {
             let temp = value as! Double
             print("Temperature was changed: \(temp)")
-            connector?.setTemperature(temp * 10)
+            //connector?.setTemperature(temp * 10)
         }
         if command == .fanSpeedCurrent {
             let speed = value as! Double
@@ -1106,6 +1106,8 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     func onTemperatureChange(_ val: CGFloat) {
         self.paramDevTempView.value = "\(val)°"
         self.spotState.temperatureDevice = Double(val)
+        
+        connector?.setDeviceTemperature(Double(val))
     }
     
     //MARK: - device fan speed changing

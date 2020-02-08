@@ -232,7 +232,7 @@ class Connector {
     
     //MAARK: - set commands
     
-    func setTemperature(_ temp: Double) {
+    /*func setTemperature(_ temp: Double) {
         connect()
         let i = Int32(temp)
         self.modbus.writeRegister(address: ConnectorCommand.temperatureDevice.rawValue, value: i, success: {
@@ -242,7 +242,7 @@ class Connector {
             print(error.userInfo)
         })
         self.modbus.disconnect()
-    }
+    }*/
     
     func setFanSpeed(_ fanSpeed: Double) {
         connect()
@@ -272,13 +272,31 @@ class Connector {
             
             connect()
             self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.yearMonth.rawValue, numberArray: [yearMonth, dayHour, minuteSecond], success: {
-                print("success")
+                print("Date & time were updated successfully")
             }, failure: {(error) in
-                print("fail")
+                print("Error on date & time updating")
             })
             self.modbus.disconnect()
         }
+    }
+    
+    func setDeviceTemperature(_ t: Double) {
+        let i = Int(t * 10)
+        /*connect()
+        self.modbus.writeRegister(address: ConnectorCommand.temperatureDevice.rawValue, value: Int32(i), success: {
+            print("Device temperature was updated successfully")
+        }, failure: {(error) in
+            print("Error on device temperature updating")
+        })
+        self.modbus.disconnect()*/
         
+        connect()
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureDevice.rawValue, numberArray: [i], success: {
+            print("Date & time were updated successfully")
+        }, failure: {(error) in
+            print("Error on date & time updating")
+        })
+        self.modbus.disconnect()
     }
     
     /*func test() {

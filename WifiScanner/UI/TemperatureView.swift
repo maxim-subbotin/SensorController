@@ -142,6 +142,7 @@ class TemperatureViewController: CalibratorViewController {
         }
     }
     public weak var temperatureDelegate: TemperatureViewControllerDelegate?
+    public var propagateChangeImmediately = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,7 +165,16 @@ class TemperatureViewController: CalibratorViewController {
     }
     
     override func onCalibrationScaleChange(_ val: CGFloat) {
-        self.temperatureDelegate?.onTemperatureChange(val)
+        if propagateChangeImmediately {
+            self.temperatureDelegate?.onTemperatureChange(val)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if !propagateChangeImmediately {
+            self.temperatureDelegate?.onTemperatureChange(temperatureView.value)
+        }
     }
     
     
