@@ -345,6 +345,9 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
         if param.type == .controlSequence {
             connector?.setControlSequence(val.value as! ControlSequenceType)
         }
+        if param.type == .regulatorBehaviourInShutdown {
+            connector?.setRegulatorShutdownMode(val.value as! RegulatorShutdownWorkType)
+        }
     }
     
     //MARK: - brightness sensor delegate

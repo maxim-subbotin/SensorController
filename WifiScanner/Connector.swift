@@ -21,6 +21,7 @@ enum ConnectorCommand: Int32 {
     case regulatorState = 0x1019        // 0 - OFF, 1 - ON
     
     case controlSequence = 0x1020                // ...0x102D
+    case regulatorShutdownMode = 0x1021
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -320,7 +321,18 @@ class Connector {
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.controlSequence.rawValue, numberArray: [i], success: {
             print("Control sequence was updated successfully")
         }, failure: {(error) in
-            print("Error on regulator control sequence updating")
+            print("Error on control sequence updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setRegulatorShutdownMode(_ val: RegulatorShutdownWorkType) {
+        connect()
+        let i = val.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.regulatorShutdownMode.rawValue, numberArray: [i], success: {
+            print("Regulator shutdown mode was updated successfully")
+        }, failure: {(error) in
+            print("Error on regulator shutdown mode updating")
         })
         self.modbus.disconnect()
     }
