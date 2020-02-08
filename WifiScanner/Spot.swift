@@ -70,6 +70,62 @@ class SpotState {
         return state
     }
     
+    public static func parseAdditionalData(_ data: [Int]) -> [SpotAdditionalParamType: Any]{
+        var dict = [SpotAdditionalParamType: Any]()
+        
+        var i = 0
+        for d in data {
+            if i == 0 {
+                let v = ControlSequenceType(rawValue: d) ?? .onlyHeat
+                dict[.controlSequence] = v
+            }
+            if i == 1 {
+                let v = RegulatorShutdownWorkType(rawValue: d) ?? .partialShutdown
+                dict[.regulatorBehaviourInShutdown] = v
+            }
+            if i == 2 {
+                dict[.displayBrightness] = d
+            }
+            if i == 3 { // 65486 - why???
+                dict[.temperatureSensorCalibration] = Double(0)
+            }
+            if i == 4 {
+                dict[.fanWorkModeInShutdown] = FanShutdownWorkType(rawValue: d) ?? .valveClosed
+            }
+            if i == 5 {
+                dict[.ventilationMode] = VentilationMode(rawValue: d) ?? .turnOff
+            }
+            if i == 6 {
+                dict[.autoFanSpeedGraph] = AutoFanSpeedGraphType(rawValue: d) ?? .graph1
+            }
+            if i == 7 {
+                dict[.reactionTimeOnTemperature] = d
+            }
+            if i == 8 {
+                dict[.maxFanSpeedLimit] = d
+            }
+            if i == 9 {
+                dict[.buttonBlockMode] = ButtonBlockMode(rawValue: d) ?? .manual
+            }
+            if i == 10 {
+                dict[.brightnessDimmingOnSleep] = BrightnessDimmingOnSleepType(rawValue: d) ?? .no
+            }
+            if i == 11 {
+                dict[.temperatureStepInSleepMode] = d
+            }
+            if i == 12 {
+                dict[.weekProgramMode] = WeekProgramMode(rawValue: d) ?? .disabled
+            }
+            if i == 13 {
+                dict[.defaultSettings] = DefaultSettingsType(rawValue: d) ?? .no
+            }
+            
+            i += 1
+        }
+        
+        return dict
+    }
+    
     public static func parseData(_ data: [Int]) -> SpotState {
         let spotState = SpotState()
         

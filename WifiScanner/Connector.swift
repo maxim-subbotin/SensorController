@@ -99,7 +99,7 @@ class Connector {
     func getAdditionalData() {
         isBusy = true
         connect()
-        self.modbus.readRegistersFrom(startAddress: 0x1020, count: 1, success: {objects in
+        self.modbus.readRegistersFrom(startAddress: 0x1020, count: 14, success: {objects in
             self.isBusy = false
             print("Data was received successfully: \(objects)")
             self.delegate?.onCommandSuccess(self, command: .additionalData, data: objects)
@@ -108,6 +108,7 @@ class Connector {
             print("Error on data receiving: \(error.code) - \(error.localizedDescription)")
             self.delegate?.onCommandFail(self, command: .additionalData, error: error)
         })
+        self.modbus.disconnect()
     }
     
     func getYear() {

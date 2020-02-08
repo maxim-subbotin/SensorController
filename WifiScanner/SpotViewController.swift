@@ -483,12 +483,18 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
                 self.spotState = SpotState.parseData(data as! [Int])
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            /*DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 self.refreshData()
-            })
+            })*/
         }
         if command == .additionalData {
-            print("Add data OK")
+            self.spotState.additionalParams = SpotState.parseAdditionalData(data as! [Int])
+            
+            DispatchQueue.main.async {
+                let vc = SpotAdditionalParametersViewController()
+                vc.spotState = self.spotState
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
         if command == .yearMonth {
             let i = data.first as! Int
@@ -1120,9 +1126,9 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     //MARK: - opening of additional params
     
     @objc func openAdditionalParamsView() {
-        let vc = SpotAdditionalParametersViewController()
-        vc.spotState = self.spotState
-        self.navigationController?.pushViewController(vc, animated: true)
+        //let vc = SpotAdditionalParametersViewController()
+        //vc.spotState = self.spotState
+        //self.navigationController?.pushViewController(vc, animated: true)
         
         if !(connector?.isBusy ?? false) {
             connector?.getAdditionalData()
