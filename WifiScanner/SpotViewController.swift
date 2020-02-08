@@ -1097,6 +1097,8 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         paramDateView.value = formatter.string(from: _spotState.date)
+        
+        connector?.setDate(date)
     }
     
     //MARK: - device temperature changing

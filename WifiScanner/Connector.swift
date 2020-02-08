@@ -266,24 +266,15 @@ class Connector {
             let second = calendarDate.second {
             
             let y = year - Int(round(Double(year) * 0.01)) * 100
-            let yearMonth = y + month * 256
-            
-            connect()
-            self.modbus.writeRegister(address: ConnectorCommand.yearMonth.rawValue, value: Int32(yearMonth), success: {
-                print("Device year/month was changed successfully")
-            }, failure: {(error) in
-                print("Device year/month changing was failed: \(error.localizedDescription)")
-                print(error.userInfo)
-            })
-            self.modbus.disconnect()
-            
+            let yearMonth = y * 256 + month
             let dayHour = day * 256 + hour
+            let minuteSecond = minute * 256 + second
+            
             connect()
-            self.modbus.writeRegister(address: ConnectorCommand.yearMonth.rawValue, value: Int32(dayHour), success: {
-                print("Device day/hour was changed successfully")
+            self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.yearMonth.rawValue, numberArray: [yearMonth, dayHour, minuteSecond], success: {
+                print("success")
             }, failure: {(error) in
-                print("Device day/hour changing was failed: \(error.localizedDescription)")
-                print(error.userInfo)
+                print("fail")
             })
             self.modbus.disconnect()
         }
