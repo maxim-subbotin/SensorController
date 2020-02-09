@@ -25,6 +25,7 @@ enum ConnectorCommand: Int32 {
     case displayBrightness = 0x1022
     case temperatureSensorCalibration = 0x1023
     case valveShutdownMode = 0x1024
+    case ventilationMode = 0x1025
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -368,6 +369,17 @@ class Connector {
             print("Valve shutdown mode was updated successfully")
         }, failure: {(error) in
             print("Error on valve shutdown mode updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setVentilationMode(_ val: VentilationMode) {
+        connect()
+        let i = val.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.ventilationMode.rawValue, numberArray: [i], success: {
+            print("Ventilation mode was updated successfully")
+        }, failure: {(error) in
+            print("Error on ventilation mode updating")
         })
         self.modbus.disconnect()
     }
