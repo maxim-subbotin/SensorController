@@ -10,6 +10,7 @@
 		D608674B23E200850013044A /* SpotAdditionalParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D608674A23E200850013044A /* SpotAdditionalParametersViewController.swift */; };
 		D60EC82A23D0F39500D81289 /* SpotParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60EC82923D0F39500D81289 /* SpotParameterView.swift */; };
 		D60F251F23CF9FC700C4570B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60F251E23CF9FC700C4570B /* CardView.swift */; };
+		D6302EA023F067700041531A /* UITextFieldExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6302E9F23F067700041531A /* UITextFieldExt.swift */; };
 		D639840C23D4A37100C02F43 /* ValueSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D639840B23D4A37100C02F43 /* ValueSelectionView.swift */; };
 		D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B023335A17009D2D4C /* PingConfiguration.swift */; };
 		D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B123335A17009D2D4C /* SwiftPing.swift */; };
@@ -59,6 +60,7 @@
 		D608674A23E200850013044A /* SpotAdditionalParametersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotAdditionalParametersViewController.swift; sourceTree = "<group>"; };
 		D60EC82923D0F39500D81289 /* SpotParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotParameterView.swift; sourceTree = "<group>"; };
 		D60F251E23CF9FC700C4570B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		D6302E9F23F067700041531A /* UITextFieldExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExt.swift; sourceTree = "<group>"; };
 		D639840B23D4A37100C02F43 /* ValueSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueSelectionView.swift; sourceTree = "<group>"; };
 		D674F1B023335A17009D2D4C /* PingConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingConfiguration.swift; sourceTree = "<group>"; };
 		D674F1B123335A17009D2D4C /* SwiftPing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPing.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				D6F2046223DA2749002BFE0D /* TemperatureView.swift */,
 				D695920023DDC91300CEDB4F /* FanSpeedView.swift */,
 				D695920223DDE11E00CEDB4F /* ReactionTimeView.swift */,
+				D6302E9F23F067700041531A /* UITextFieldExt.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */,
 				D695920323DDE11E00CEDB4F /* ReactionTimeView.swift in Sources */,
 				D674F1B723335A17009D2D4C /* Shared.swift in Sources */,
+				D6302EA023F067700041531A /* UITextFieldExt.swift in Sources */,
 				D60EC82A23D0F39500D81289 /* SpotParameterView.swift in Sources */,
 				D67DFA612334A96400760D92 /* Color.swift in Sources */,
 				D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */,

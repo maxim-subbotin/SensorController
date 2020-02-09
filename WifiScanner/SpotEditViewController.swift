@@ -11,13 +11,13 @@ import UIKit
 
 class SpotEditViewController: UIViewController {
     private var lblName = UILabel()
-    private var txtName = UITextField()
+    private var txtName = UITextFieldExt()
     private var lblSsid = UILabel()
-    private var txtSsid = UITextField()
+    private var txtSsid = UITextFieldExt()
     private var lblPassword = UILabel()
-    private var txtPassword = UITextField()
+    private var txtPassword = UITextFieldExt()
     private var lblPort = UILabel()
-    private var txtPort = UITextField()
+    private var txtPort = UITextFieldExt()
     private var lblDescription = UILabel()
     private var txtDescription = UITextView()
     public var isModal = false
@@ -26,10 +26,10 @@ class SpotEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = (spot != nil && spot!.name != nil) ? spot!.name : "New spot"
-        self.view.backgroundColor = UIColor(hexString: "#EDEDED")
-        self.navigationController?.navigationBar.barTintColor = UIColor(hexString: "#C1CAD6")
-        self.navigationController?.navigationBar.tintColor = UIColor(hexString: "#404040")
-        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor(hexString: "#404040")]
+        self.view.backgroundColor = ColorScheme.current.backgroundColor
+        self.navigationController?.navigationBar.barTintColor = ColorScheme.current.navigationBarColor
+        self.navigationController?.navigationBar.tintColor = ColorScheme.current.navigationTextColor
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: ColorScheme.current.navigationTextColor]
         
         initUI()
         
@@ -61,26 +61,26 @@ class SpotEditViewController: UIViewController {
             var h = CGFloat(30)
             if v is UILabel {
                 h = lblHeight
-                (v as! UILabel).textColor = UIColor(hexString: "#202020")
+                (v as! UILabel).textColor = ColorScheme.current.spotCellDetailColor
             }
-            if v is UITextField {
+            if v is UITextFieldExt {
                 h = txtHeight
-                v.backgroundColor = .white
+                v.backgroundColor = ColorScheme.current.spotCellBackgroundColor
                 v.layer.cornerRadius = 5
                 v.layer.borderWidth = 1
-                v.layer.borderColor = UIColor(hexString: "#BDBDBD").cgColor
-                //(v as! UITextField).padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-                (v as! UITextField).textColor = UIColor(hexString: "#404040")
+                v.layer.borderColor = ColorScheme.current.spotCellDetailColor.cgColor
+                (v as! UITextFieldExt).padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+                (v as! UITextField).textColor = ColorScheme.current.spotCellTitleColor
                 //(v as! UITextField).valueDelegate = self
             }
             if v is UITextView {
                 h = txtHeight * 3
-                v.backgroundColor = .white
+                v.backgroundColor = ColorScheme.current.spotCellBackgroundColor
                 v.layer.cornerRadius = 5
                 v.layer.borderWidth = 1
-                v.layer.borderColor = UIColor(hexString: "#BDBDBD").cgColor
+                v.layer.borderColor = ColorScheme.current.spotCellDetailColor.cgColor
                 //(v as! UITextField).padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-                (v as! UITextView).textColor = UIColor(hexString: "#404040")
+                (v as! UITextView).textColor = ColorScheme.current.spotCellTitleColor
                 (v as! UITextView).font = UIFont.systemFont(ofSize: 17)
             }
             
