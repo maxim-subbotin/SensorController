@@ -32,6 +32,8 @@ enum ConnectorCommand: Int32 {
     case buttonsBlockMode = 0x1029
     case brightnessDimming = 0x102A
     case temperatureStepSleepMode = 0x102B
+    case weekProgrammingMode = 0x102C
+    case defaultSettings = 0x102D
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -446,6 +448,17 @@ class Connector {
     func setTemperatureStepSleepMode(_ val: Int) {
         connect()
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureStepSleepMode.rawValue, numberArray: [val], success: {
+            print("Temperature step sleep mode was updated successfully")
+        }, failure: {(error) in
+            print("Error on temperature step sleep mode updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setWeekProgrammingMode(_ val: WeekProgramMode) {
+        connect()
+        let i = val.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.weekProgrammingMode.rawValue, numberArray: [i], success: {
             print("Temperature step sleep mode was updated successfully")
         }, failure: {(error) in
             print("Error on temperature step sleep mode updating")

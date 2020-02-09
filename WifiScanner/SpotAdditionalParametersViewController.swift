@@ -366,6 +366,9 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
         if param.type == .temperatureStepInSleepMode {
             connector?.setTemperatureStepSleepMode(val.value as! Int )
         }
+        if param.type == .weekProgramMode {
+            connector?.setWeekProgrammingMode(val.value as! WeekProgramMode)
+        }
     }
     
     //MARK: - brightness sensor delegate
