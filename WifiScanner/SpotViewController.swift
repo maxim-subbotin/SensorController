@@ -32,7 +32,8 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
                             UITableViewDataSource, SpotDataCellDelegate, SpotEnumParameterViewCellDelegate,
                             UIPopoverPresentationControllerDelegate, ValueSelectionViewDelegate, BrightnessSensorViewDelegate,
                             SpotCalibrationParameterViewCellDelegate, DatetimeViewDelegate, TemperatureViewControllerDelegate,
-                            FanSpeedViewDelegate, SpotFanSpeedParameterViewCellDelegate, ReactionTimeViewDelegate {
+                            FanSpeedViewDelegate, SpotFanSpeedParameterViewCellDelegate, ReactionTimeViewDelegate,
+                            UIScrollViewDelegate {
     public var spot:Spot? = nil
     
     private var year: Int = -1
@@ -88,6 +89,8 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     
     private var tblData = UITableView()
     
+    private var spinner = SpotIndicatorView()
+    
     private var connector: Connector?
     
     private var cells = [CellType]()
@@ -128,12 +131,25 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     
     override func loadView() {
         self.view = UIScrollView()
+        (self.view as! UIScrollView).delegate = self
     }
     
     func initUI() {
         applyCardPanel()
         applyParamsPanel()
         applyAdditionalParamsView()
+        
+        let w = CGFloat(80)
+        self.view.addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        let cxC = spinner.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        let bC = spinner.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20)
+        let wC = spinner.widthAnchor.constraint(equalToConstant: w)
+        let hC = spinner.heightAnchor.constraint(equalToConstant: w)
+        NSLayoutConstraint.activate([cxC, bC, wC, hC])
+        spinner.lineColor = ColorScheme.current.spotCellIndicatorDisableColor
+        spinner.animateColor = ColorScheme.current.spotCellIndicatorAnimationColor
+        spinner.alpha = 0
     }
     
     //MARK: - card panel
@@ -1168,6 +1184,24 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         spotState.regulatorState = newVal
         connector?.setRegulatorState(newVal)
         cardRegState.state = newVal
+    }
+    
+    //MARK: - scroll delegate
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -110 {
+            let d = abs(scrollView.contentOffset.y) - 110
+            let k = min(0.6, d / 50)
+            spinner.alpha = k
+            if !spinner.isAnimation {
+                spinner.animate()
+            }
+        } else {
+            spinner.alpha = 0
+            if spinner.isAnimation {
+                spinner.stopAnimate()
+            }
+        }
     }
 }
 

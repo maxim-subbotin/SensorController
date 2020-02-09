@@ -24,7 +24,7 @@ class SpotIndicatorView: UIView {
         }
     }
     public var animateColor: UIColor = .white
-    private var isAnimation = false
+    public var isAnimation = false
     private var animatePhase = 0
     private var animateStep = 0.25
     private var timer: Timer?

@@ -9,6 +9,16 @@
 import Foundation
 import UIKit
 
+protocol SpotEditViewControllerDelegate: class {
+    func onSpotEditing(_ spot: Spot)
+    func onSpotAdding(_ spot: Spot)
+}
+
+enum EditMode {
+    case add
+    case edit
+}
+
 class SpotEditViewController: UIViewController {
     private var lblName = UILabel()
     private var txtName = UITextFieldExt()
@@ -22,6 +32,8 @@ class SpotEditViewController: UIViewController {
     private var txtDescription = UITextView()
     public var isModal = false
     public var spot: Spot? = nil
+    public weak var delegate: SpotEditViewControllerDelegate?
+    public var mode: EditMode = .add
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,6 +112,35 @@ class SpotEditViewController: UIViewController {
     }
     
     @objc func onActionOK() {
+        if  (txtName.text?.isEmpty ?? true) ||
+            (txtSsid.text?.isEmpty ?? true) ||
+            (txtPassword.text?.isEmpty ?? true) ||
+            (txtPort.text?.isEmpty ?? true) {
+            return
+        }
+        
+        let id = spot?.id
+        
+        spot = Spot()
+        spot?.name = txtName.text
+        spot?.password = txtPassword.text!
+        spot?.ssid = txtSsid.text!
+        let strPort = txtPort.text
+        if let num = Int(strPort!) {
+            spot?.port = num
+        } else {
+            return
+        }
+        spot?.description = txtDescription.text
+        
+        if mode == .add {
+            self.delegate?.onSpotAdding(spot!)
+        } else {
+            spot?.id = id!
+            self.delegate?.onSpotEditing(spot!)
+        }
+
+        
         if isModal {
             self.dismiss(animated: true, completion: nil)
         } else {

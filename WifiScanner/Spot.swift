@@ -9,13 +9,21 @@
 import Foundation
 
 class Spot {
+    public var id: Int
     public var name: String?
     public var ssid: String
     public var password: String
     public var description: String?
     public var port: Int = -1
     
+    public init() {
+        self.id = Int.random(in: 100...100000)
+        self.ssid = ""
+        self.password = ""
+    }
+    
     public init(withSSid s: String, andPassword p: String) {
+        self.id = Int.random(in: 100...100000)
         self.ssid = s
         self.password = p
     }

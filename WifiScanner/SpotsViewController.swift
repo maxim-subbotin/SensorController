@@ -11,7 +11,7 @@ import UIKit
 import NetworkExtension
 import SystemConfiguration
 
-class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SpotEditViewControllerDelegate {
     private var collectionView = SpotsCollectionView()
     private var spots = [Spot]()
     public var currentSsid: String {
@@ -91,6 +91,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
 
     @objc func onAddAction() {
         let vc = SpotEditViewController()
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -225,5 +226,16 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         vc.spot = spot
         vc.spotState = SpotState.demo
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    //MARK: - spot add & edit
+    
+    func onSpotEditing(_ spot: Spot) {
+        
+    }
+    
+    func onSpotAdding(_ spot: Spot) {
+        self.spots.append(spot)
+        self.collectionView.reloadData()
     }
 }
