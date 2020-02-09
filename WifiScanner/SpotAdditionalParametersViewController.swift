@@ -360,6 +360,9 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
         if param.type == .buttonBlockMode {
             connector?.setButtonsBlockMode(val.value as! ButtonBlockMode)
         }
+        if param.type == .brightnessDimmingOnSleep {
+            connector?.setBrightnessDimming(val.value as! BrightnessDimmingOnSleepType)
+        }
     }
     
     //MARK: - brightness sensor delegate
