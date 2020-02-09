@@ -26,6 +26,7 @@ enum ConnectorCommand: Int32 {
     case temperatureSensorCalibration = 0x1023
     case valveShutdownMode = 0x1024
     case ventilationMode = 0x1025
+    case autoRegulationGraph = 0x1026
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -380,6 +381,17 @@ class Connector {
             print("Ventilation mode was updated successfully")
         }, failure: {(error) in
             print("Error on ventilation mode updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setAutoRegulationGraph(_ val: AutoFanSpeedGraphType) {
+        connect()
+        let i = val.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.autoRegulationGraph.rawValue, numberArray: [i], success: {
+            print("Auto regulation graph was updated successfully")
+        }, failure: {(error) in
+            print("Error on auto regulation graph updating")
         })
         self.modbus.disconnect()
     }
