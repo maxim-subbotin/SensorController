@@ -214,6 +214,7 @@ class CalibratorViewController: UIViewController, CalibratorViewDelegate {
         }
     }
     public weak var delegate: CalibratorViewControllerDelegate?
+    public var propagateChangesImmediately = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -236,7 +237,16 @@ class CalibratorViewController: UIViewController, CalibratorViewDelegate {
     }
     
     func onCalibrationScaleChange(_ val: CGFloat) {
-        delegate?.onCalibrationChange(val)
+        if propagateChangesImmediately {
+            delegate?.onCalibrationChange(val)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if !propagateChangesImmediately {
+            delegate?.onCalibrationChange(calibratorView.value)
+        }
     }
 }
 

@@ -362,6 +362,8 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
     
     func onCalibrationChange(_ value: CGFloat) {
         spotState.additionalParams[.temperatureSensorCalibration] = Double(value)
+        
+        connector?.setTemperatureSensorCalibration(Double(value))
     }
     
     //MARK: - device fan speed changing

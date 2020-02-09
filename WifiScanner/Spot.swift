@@ -87,7 +87,7 @@ class SpotState {
                 dict[.displayBrightness] = d
             }
             if i == 3 { // 65486 - why???
-                dict[.temperatureSensorCalibration] = Double(0)
+                dict[.temperatureSensorCalibration] = Double(d)
             }
             if i == 4 {
                 dict[.fanWorkModeInShutdown] = FanShutdownWorkType(rawValue: d) ?? .valveClosed

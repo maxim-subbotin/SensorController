@@ -23,6 +23,7 @@ enum ConnectorCommand: Int32 {
     case controlSequence = 0x1020                // ...0x102D
     case regulatorShutdownMode = 0x1021
     case displayBrightness = 0x1022
+    case temperatureSensorCalibration = 0x1023
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -344,6 +345,17 @@ class Connector {
             print("Display brightness was updated successfully")
         }, failure: {(error) in
             print("Error on display brightness updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setTemperatureSensorCalibration(_ val: Double) {
+        connect()
+        let i = Int(val)
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureSensorCalibration.rawValue, numberArray: [i], success: {
+            print("Temperature sensor calibration was updated successfully")
+        }, failure: {(error) in
+            print("Error on temperature sensor calibration  updating")
         })
         self.modbus.disconnect()
     }
