@@ -465,4 +465,15 @@ class Connector {
         })
         self.modbus.disconnect()
     }
+    
+    func setDefaultSettings(_ val: DefaultSettingsType) {
+        connect()
+        let i = val.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.defaultSettings.rawValue, numberArray: [i], success: {
+            print("Default settings was updated successfully")
+        }, failure: {(error) in
+            print("Error on default settings updating")
+        })
+        self.modbus.disconnect()
+    }
 }

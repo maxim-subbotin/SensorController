@@ -369,6 +369,9 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
         if param.type == .weekProgramMode {
             connector?.setWeekProgrammingMode(val.value as! WeekProgramMode)
         }
+        if param.type == .defaultSettings {
+            connector?.setDefaultSettings(val.value as! DefaultSettingsType)
+        }
     }
     
     //MARK: - brightness sensor delegate
