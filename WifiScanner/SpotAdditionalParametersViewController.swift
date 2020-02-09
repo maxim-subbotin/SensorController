@@ -379,6 +379,8 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
     
     func onFanSpeedCellChange(_ value: CGFloat) {
         self.spotState.additionalParams[.maxFanSpeedLimit] = Int(value)
+        
+        connector?.setMaxFanSpeedLimit(Int(round(value)))
     }
     
     //MARK: - func onTimeChange(inSeconds sec: Int)

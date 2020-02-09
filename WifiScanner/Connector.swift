@@ -28,6 +28,7 @@ enum ConnectorCommand: Int32 {
     case ventilationMode = 0x1025
     case autoRegulationGraph = 0x1026
     case temperatureReactionTime = 0x1027
+    case maxFanSpeedLimit = 0x1028
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -403,6 +404,16 @@ class Connector {
             print("Temperature reaction time was updated successfully")
         }, failure: {(error) in
             print("Error on temperature reaction time updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setMaxFanSpeedLimit(_ val: Int) {
+        connect()
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.maxFanSpeedLimit.rawValue, numberArray: [val], success: {
+            print("Max fan speed limit was updated successfully")
+        }, failure: {(error) in
+            print("Error on max fan speed limit updating")
         })
         self.modbus.disconnect()
     }
