@@ -348,6 +348,9 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
         if param.type == .regulatorBehaviourInShutdown {
             connector?.setRegulatorShutdownMode(val.value as! RegulatorShutdownWorkType)
         }
+        if param.type == .fanWorkModeInShutdown {
+            connector?.setValveShutdownMode(val.value as! FanShutdownWorkType)
+        }
     }
     
     //MARK: - brightness sensor delegate
