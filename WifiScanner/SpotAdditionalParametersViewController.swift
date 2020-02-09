@@ -357,6 +357,9 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
         if param.type == .autoFanSpeedGraph {
             connector?.setAutoRegulationGraph(val.value as! AutoFanSpeedGraphType)
         }
+        if param.type == .buttonBlockMode {
+            connector?.setButtonsBlockMode(val.value as! ButtonBlockMode)
+        }
     }
     
     //MARK: - brightness sensor delegate

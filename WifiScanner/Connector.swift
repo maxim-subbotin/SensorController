@@ -29,6 +29,7 @@ enum ConnectorCommand: Int32 {
     case autoRegulationGraph = 0x1026
     case temperatureReactionTime = 0x1027
     case maxFanSpeedLimit = 0x1028
+    case buttonsBlockMode = 0x1029
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -414,6 +415,17 @@ class Connector {
             print("Max fan speed limit was updated successfully")
         }, failure: {(error) in
             print("Error on max fan speed limit updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setButtonsBlockMode(_ val: ButtonBlockMode) {
+        connect()
+        let i = val.rawValue
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.buttonsBlockMode.rawValue, numberArray: [i], success: {
+            print("Buttons block mode was updated successfully")
+        }, failure: {(error) in
+            print("Error on buttons block mode updating")
         })
         self.modbus.disconnect()
     }
