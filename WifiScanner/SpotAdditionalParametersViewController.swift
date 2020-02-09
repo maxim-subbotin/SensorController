@@ -385,6 +385,8 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
     
     func onTimeChange(inSeconds sec: Int) {
         self.spotState.additionalParams[.reactionTimeOnTemperature] = sec
+        
+        connector?.setTemperatureReactionTime(sec)
     }
     
     //MARK: - modbus connections

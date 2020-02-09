@@ -134,6 +134,7 @@ class ReactionTimeViewController: UIViewController, ReactionTimeViewDelegate {
         }
     }
     public weak var delegate: ReactionTimeViewDelegate?
+    public var propagateChangesImmediately = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,7 +162,16 @@ class ReactionTimeViewController: UIViewController, ReactionTimeViewDelegate {
     }
     
     func onTimeChange(inSeconds sec: Int) {
-        delegate?.onTimeChange(inSeconds: sec)
+        if propagateChangesImmediately {
+            delegate?.onTimeChange(inSeconds: sec)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if !propagateChangesImmediately {
+            delegate?.onTimeChange(inSeconds: timeView.time ?? 10)
+        }
     }
 }
 

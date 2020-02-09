@@ -27,6 +27,7 @@ enum ConnectorCommand: Int32 {
     case valveShutdownMode = 0x1024
     case ventilationMode = 0x1025
     case autoRegulationGraph = 0x1026
+    case temperatureReactionTime = 0x1027
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -392,6 +393,16 @@ class Connector {
             print("Auto regulation graph was updated successfully")
         }, failure: {(error) in
             print("Error on auto regulation graph updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setTemperatureReactionTime(_ val: Int) {
+        connect()
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureReactionTime.rawValue, numberArray: [val], success: {
+            print("Temperature reaction time was updated successfully")
+        }, failure: {(error) in
+            print("Error on temperature reaction time updating")
         })
         self.modbus.disconnect()
     }
