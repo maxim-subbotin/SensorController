@@ -363,6 +363,9 @@ class SpotAdditionalParametersViewController: UITableViewController, SpotEnumPar
         if param.type == .brightnessDimmingOnSleep {
             connector?.setBrightnessDimming(val.value as! BrightnessDimmingOnSleepType)
         }
+        if param.type == .temperatureStepInSleepMode {
+            connector?.setTemperatureStepSleepMode(val.value as! Int )
+        }
     }
     
     //MARK: - brightness sensor delegate

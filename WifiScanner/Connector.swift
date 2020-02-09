@@ -31,6 +31,7 @@ enum ConnectorCommand: Int32 {
     case maxFanSpeedLimit = 0x1028
     case buttonsBlockMode = 0x1029
     case brightnessDimming = 0x102A
+    case temperatureStepSleepMode = 0x102B
     
     case allData = 0x8080
     case additionalData = 0x9090
@@ -438,6 +439,16 @@ class Connector {
             print("Brightness dimming was updated successfully")
         }, failure: {(error) in
             print("Error on brightness dimming updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setTemperatureStepSleepMode(_ val: Int) {
+        connect()
+        self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureStepSleepMode.rawValue, numberArray: [val], success: {
+            print("Temperature step sleep mode was updated successfully")
+        }, failure: {(error) in
+            print("Error on temperature step sleep mode updating")
         })
         self.modbus.disconnect()
     }
