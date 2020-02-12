@@ -495,7 +495,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     //MARK: - connection delegate
     
     func onSuccessConnection(_ connector: Connector) {
-        //
+        print("Sensor was connected successfully")
     }
     
     func onFailConnection(_ connector: Connector) {
@@ -598,7 +598,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         }
         if command == .valveState {
             let i = data.first as! Int
-            spotState.valveState = i
+            spotState.valveState = ValveState(rawValue: i) ?? .cold
             
             connector.getFanSpeed()
             

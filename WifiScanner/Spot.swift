@@ -40,7 +40,7 @@ class SpotState {
     public var temperatureDevice: Double = 0
     public var temperatureCurrent: Double = 0
     public var fanSpeedCurrent: Double = 0
-    public var valveState: Int = 0
+    public var valveState: ValveState = .cold
     public var fanSpeed: Double = 0
     public var fanMode: FanMode = .auto
     public var regulatorState: RegulatorState = .off
@@ -53,7 +53,7 @@ class SpotState {
         state.temperatureCurrent = 27
         state.fanSpeedCurrent = 70
         state.fanSpeed = 72
-        state.valveState = 1
+        state.valveState = .cold
         state.fanMode = .auto
         state.regulatorState = .on
         
@@ -186,7 +186,7 @@ class SpotState {
             if i == 6 { // valve state
                 // 0x0001 - cold
                 // 0x0100 - hot
-                spotState.valveState = d
+                spotState.valveState = ValveState(rawValue: d) ?? .cold
             }
             if i == 7 { // fan speed device
                 spotState.fanSpeed = Double(d) * 0.1

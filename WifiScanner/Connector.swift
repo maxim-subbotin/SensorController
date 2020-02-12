@@ -49,6 +49,11 @@ enum RegulatorState: Int {
     case on = 1
 }
 
+enum ValveState: Int {
+    case cold = 1
+    case hot = 256
+}
+
 protocol ConnectorDelegate: class {
     func onSuccessConnection(_ connector: Connector)
     func onFailConnection(_ connector: Connector)
