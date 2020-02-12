@@ -10,6 +10,7 @@ import Foundation
 
 class Spot {
     public var id: Int
+    public var order: Int = 0
     public var name: String?
     public var ssid: String
     public var password: String
@@ -28,10 +29,58 @@ class Spot {
         self.password = p
     }
     
+    public init(withDict dict: [String: Any]) {
+        self.id = dict["id"] as! Int
+        if dict["order"] != nil {
+            self.order = dict["order"] as! Int
+        }
+        if dict["name"] != nil {
+            self.name = dict["name"] as? String
+        }
+        self.ssid = dict["ssid"] as! String
+        self.password = dict["password"] as! String
+        self.description = dict["description"] as? String
+        self.port = dict["port"] as! Int
+    }
+    
     public static var demo: Spot {
         let spot = Spot(withSSid: "Demo", andPassword: "1234")
         spot.name = "Demo device"
         return spot
+    }
+    
+    func toDict() -> [String: Any] {
+        var dict = ["id": id, "ssid": ssid, "password": password, "port": port, "order": order] as [String : Any]
+        if name != nil {
+            dict["name"] = name!
+        }
+        if description != nil {
+            dict["description"] = description!
+        }
+        return dict
+    }
+    
+    func save() {
+        if let data = UserDefaults.standard.data(forKey: "spots") {
+            var array = NSKeyedUnarchiver.unarchiveObject(with: data) as! [[String:Any]]
+            array.append(self.toDict())
+            let newData = NSKeyedArchiver.archivedData(withRootObject: array)
+            UserDefaults.standard.set(newData, forKey: "spots")
+            UserDefaults.standard.synchronize()
+        } else {
+            let array = [self.toDict()]
+            let data = NSKeyedArchiver.archivedData(withRootObject: array)
+            UserDefaults.standard.set(data, forKey: "spots")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    public static func getSavedSpots() -> [Spot] {
+        if let data = UserDefaults.standard.data(forKey: "spots") {
+            let array = NSKeyedUnarchiver.unarchiveObject(with: data) as! [[String:Any]]
+            return array.map({ Spot(withDict: $0) })
+        }
+        return [Spot]()
     }
 }
 

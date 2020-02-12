@@ -11,7 +11,7 @@ import UIKit
 import NetworkExtension
 import SystemConfiguration
 
-class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SpotEditViewControllerDelegate {
+class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SpotEditViewControllerDelegate, SpotCollectionViewCellDelegate {
     private var collectionView = SpotsCollectionView()
     private var spots = [Spot]()
     public var currentSsid: String {
@@ -35,7 +35,9 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     override func viewDidLoad() {
-        let varmann = Spot(withSSid: "Varmann", andPassword: "Varmann12345678")
+        spots = Spot.getSavedSpots().sorted(by: { $0.order < $1.order })
+        
+        /*let varmann = Spot(withSSid: "Varmann", andPassword: "Varmann12345678")
         varmann.name = "Varmann device"
         
         let snp = Spot(withSSid: "garage_ntwrk", andPassword: "snapp11app")
@@ -50,11 +52,17 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         let grn = Spot(withSSid: "grn_house", andPassword: "12345678")
         grn.name = "Greenhouse"
         
+        var i = 0
+        for s in [varmann, snp, gb, brn, grn] {
+            s.order = i
+            i += 1
+        }
+        
         spots.append(varmann)
         spots.append(snp)
         spots.append(gb)
         spots.append(brn)
-        spots.append(grn)
+        spots.append(grn)*/
         
         super.viewDidLoad()
         
@@ -111,6 +119,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         let spot = spots[indexPath.row]
         cell.spot = spot
         cell.isCurrentNetwork = spot.ssid == currentSsid
+        cell.delegate = self
         return cell
     }
     
@@ -235,7 +244,42 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     func onSpotAdding(_ spot: Spot) {
+        var maxCount = 0
+        for spot in spots {
+            maxCount = max(spot.order, maxCount)
+        }
+        
+        spot.order = maxCount + 1
+        spot.save()
         self.spots.append(spot)
         self.collectionView.reloadData()
+    }
+    
+    //MARK: - spot cell menu
+    
+    func onMenuTap(forView view: UIView) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "Edit", style: .default , handler:{ (UIAlertAction)in
+            print("edit")
+        }))
+
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive , handler:{ (UIAlertAction)in
+            print("delete")
+        }))
+        
+        if UIDevice.current.isiPad {
+            alert.popoverPresentationController?.sourceView = view
+            alert.popoverPresentationController?.sourceRect = CGRect(x: view.frame.width - 20, y: view.frame.height / 2, width: 1, height: 1)
+            
+        } else {
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction)in
+                print("cancel")
+            }))
+        }
+        
+        self.present(alert, animated: true, completion: {
+            //
+        })
     }
 }

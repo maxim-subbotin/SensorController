@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol SpotCardViewDelegate: class {
+    func onMenuTap()
+}
+
 class SpotCardView: UIView {
     private var indicatorView = SpotIndicatorView()
     private var lblTitle = UILabel()
@@ -35,6 +39,7 @@ class SpotCardView: UIView {
             self.indicatorView.lineColor = newValue ? ColorScheme.current.spotCellIndicatorEnableColor : ColorScheme.current.spotCellIndicatorDisableColor
         }
     }
+    public weak var delegate: SpotCardViewDelegate?
     
     private var indicatorOffset = CGFloat(10)
     
@@ -87,6 +92,7 @@ class SpotCardView: UIView {
         NSLayoutConstraint.activate([lC2, tC2, hC2, rC2])
         
         self.addSubview(viewDots)
+        viewDots.isUserInteractionEnabled = true
         viewDots.image = UIImage(named: "three_dots")?.withRenderingMode(.alwaysTemplate)
         viewDots.tintColor = UIColor(hexString: "#333752")
         viewDots.contentMode = .scaleAspectFit
@@ -96,6 +102,9 @@ class SpotCardView: UIView {
         let hC3 = viewDots.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
         let rC3 = viewDots.widthAnchor.constraint(equalToConstant: 30)
         NSLayoutConstraint.activate([lC3, tC3, hC3, rC3])
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onMenuTap))
+        viewDots.addGestureRecognizer(tapGesture)
         
         self.addSubview(lblDetail)
     }
@@ -107,9 +116,17 @@ class SpotCardView: UIView {
     func stopAnimation() {
         self.indicatorView.stopAnimate()
     }
+    
+    @objc func onMenuTap() {
+        self.delegate?.onMenuTap()
+    }
 }
 
-class SpotCollectionViewCell: UICollectionViewCell {
+protocol SpotCollectionViewCellDelegate: class {
+    func onMenuTap(forView view: UIView)
+}
+
+class SpotCollectionViewCell: UICollectionViewCell, SpotCardViewDelegate {
     private var spotView = SpotCardView()
     private var _spot: Spot?
     public var spot: Spot? {
@@ -129,6 +146,7 @@ class SpotCollectionViewCell: UICollectionViewCell {
             spotView.isCurrentNetwork = newValue
         }
     }
+    public weak var delegate: SpotCollectionViewCellDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -151,6 +169,8 @@ class SpotCollectionViewCell: UICollectionViewCell {
         spotView.backgroundColor = ColorScheme.current.spotCellBackgroundColor
         spotView.layer.cornerRadius = 5
         spotView.clipsToBounds = true
+        spotView.isUserInteractionEnabled = true
+        spotView.delegate = self
     }
     
     func startAnimation() {
@@ -159,6 +179,10 @@ class SpotCollectionViewCell: UICollectionViewCell {
     
     func stopAnimation() {
         spotView.stopAnimation()
+    }
+    
+    func onMenuTap() {
+        self.delegate?.onMenuTap(forView: self.spotView)
     }
 }
 
