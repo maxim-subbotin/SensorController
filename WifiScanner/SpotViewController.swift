@@ -499,7 +499,13 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     }
     
     func onFailConnection(_ connector: Connector) {
-        //
+        let alert = UIAlertController(title: "Connection error", message: "Unfortunately, we can not establish the connection to sensor right now. Please try to connect again.", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: {action in
+            self.presentedViewController?.dismiss(animated: true, completion: {
+                self.navigationController?.popViewController(animated: true)
+            })
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func onCommandSuccess(_ connector: Connector, command: ConnectorCommand, data: [AnyObject]) {
@@ -1189,8 +1195,8 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
     //MARK: - scroll delegate
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -110 {
-            let d = abs(scrollView.contentOffset.y) - 110
+        if scrollView.contentOffset.y < -150 {
+            let d = abs(scrollView.contentOffset.y) - 150
             let k = min(0.6, d / 50)
             spinner.alpha = k
             if !spinner.isAnimation {
@@ -1201,6 +1207,12 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
             if spinner.isAnimation {
                 spinner.stopAnimate()
             }
+        }
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if scrollView.contentOffset.y < 150 {
+            connector?.getAllData()
         }
     }
 }
