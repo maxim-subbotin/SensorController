@@ -455,7 +455,7 @@ class SpotViewController:   UIViewController, ConnectorDelegate, UITableViewDele
         
         self.addParamsHeaderView.isUserInteractionEnabled = true
         self.addParamsHeaderView.addSubview(addParamsHeaderLabel)
-        addParamsHeaderLabel.textColor = .white
+        addParamsHeaderLabel.textColor = ColorScheme.current.spotParameterValueColor
         addParamsHeaderLabel.font = UIFont.boldSystemFont(ofSize: 20)
         addParamsHeaderLabel.textAlignment = .center
         addParamsHeaderLabel.text = "Additional parameters"

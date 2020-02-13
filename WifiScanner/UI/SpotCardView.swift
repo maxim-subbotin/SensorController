@@ -94,7 +94,7 @@ class SpotCardView: UIView {
         self.addSubview(viewDots)
         viewDots.isUserInteractionEnabled = true
         viewDots.image = UIImage(named: "three_dots")?.withRenderingMode(.alwaysTemplate)
-        viewDots.tintColor = UIColor(hexString: "#333752")
+        viewDots.tintColor = ColorScheme.current.spotCellMenuButtonColor
         viewDots.contentMode = .scaleAspectFit
         viewDots.translatesAutoresizingMaskIntoConstraints = false
         let lC3 = viewDots.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 5)

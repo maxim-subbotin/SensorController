@@ -20,6 +20,7 @@ class ColorScheme {
     public var spotCellIndicatorDisableColor = UIColor(hexString: "#868A9E")
     public var spotCellIndicatorEnableColor = UIColor(hexString: "#5FC688")
     public var spotCellIndicatorAnimationColor = UIColor(hexString: "#E4DFDA")
+    public var spotCellMenuButtonColor = UIColor(hexString: "#333752")
     
     public var spotParameterBackgroundColor = UIColor(hexString: "#1B1E2E")
     public var spotParameterTitleColor = UIColor(hexString: "#838A9E")
@@ -41,5 +42,25 @@ class ColorScheme {
     public var datePickerInputBackgroundColor = UIColor(hexString: "#596880")
     public var datePickerInputTextColor = UIColor(hexString: "#F6F7EB")
     
-    public static var current = ColorScheme()
+    public static var current: ColorScheme {
+        return ColorScheme()
+    }
+    
+    public static var light: ColorScheme {
+        let scheme = ColorScheme()
+        scheme.navigationBarColor = UIColor(hexString: "#F4F4F4")
+        scheme.navigationTextColor = UIColor(hexString: "#0A0807")
+        scheme.backgroundColor = .white
+        
+        scheme.spotCellBackgroundColor = UIColor(hexString: "#DEDAD6")
+        scheme.spotCellTitleColor = UIColor(hexString: "#28464B")
+        scheme.spotCellDetailColor = UIColor(hexString: "#326771")
+        scheme.spotCellMenuButtonColor = UIColor(hexString: "#F7F9F9")
+        
+        scheme.spotParameterBackgroundColor = UIColor(hexString: "#DEDAD6")
+        scheme.spotParameterTitleColor = UIColor(hexString: "#73706F")
+        scheme.spotParameterValueColor = UIColor(hexString: "#0E1116")
+        scheme.spotHeaderBackgroundColor = UIColor(hexString: "#DEDAD6")
+        return scheme
+    }
 }
