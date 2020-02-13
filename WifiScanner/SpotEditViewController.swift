@@ -49,6 +49,16 @@ class SpotEditViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = btnOK
         
         self.preferredContentSize = CGSize(width: 480, height: 480)
+        
+        if mode == .edit && spot != nil {
+            txtName.text = spot?.name
+            txtSsid.text = spot?.ssid
+            txtPassword.text = spot?.password
+            if let port = spot?.port {
+                txtPort.text = "\(port)"
+            }
+            txtDescription.text = spot?.description
+        }
     }
     
     func initUI() {
@@ -120,6 +130,7 @@ class SpotEditViewController: UIViewController {
         }
         
         let id = spot?.id
+        let order = spot?.order
         
         spot = Spot()
         spot?.name = txtName.text
@@ -137,6 +148,7 @@ class SpotEditViewController: UIViewController {
             self.delegate?.onSpotAdding(spot!)
         } else {
             spot?.id = id!
+            spot?.order = order!
             self.delegate?.onSpotEditing(spot!)
         }
 

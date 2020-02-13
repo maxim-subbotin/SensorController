@@ -123,7 +123,7 @@ class SpotCardView: UIView {
 }
 
 protocol SpotCollectionViewCellDelegate: class {
-    func onMenuTap(forView view: UIView)
+    func onMenuTap(forView view: UIView, andSpot spot: Spot)
 }
 
 class SpotCollectionViewCell: UICollectionViewCell, SpotCardViewDelegate {
@@ -182,7 +182,9 @@ class SpotCollectionViewCell: UICollectionViewCell, SpotCardViewDelegate {
     }
     
     func onMenuTap() {
-        self.delegate?.onMenuTap(forView: self.spotView)
+        if spot != nil {
+            self.delegate?.onMenuTap(forView: self.spotView, andSpot: spot!)
+        }
     }
 }
 

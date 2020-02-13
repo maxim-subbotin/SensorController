@@ -240,7 +240,11 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     //MARK: - spot add & edit
     
     func onSpotEditing(_ spot: Spot) {
-        
+        spot.save()
+        if let index = spots.firstIndex(where: { $0.id == spot.id }) {
+            spots[index] = spot
+        }
+        self.collectionView.reloadData()
     }
     
     func onSpotAdding(_ spot: Spot) {
@@ -257,15 +261,15 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     //MARK: - spot cell menu
     
-    func onMenuTap(forView view: UIView) {
+    func onMenuTap(forView view: UIView, andSpot spot: Spot) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(title: "Edit", style: .default , handler:{ (UIAlertAction)in
-            print("edit")
+            self.onSpotEditAction(spot)
         }))
 
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive , handler:{ (UIAlertAction)in
-            print("delete")
+            self.onSpotDeleteAction(spot)
         }))
         
         if UIDevice.current.isiPad {
@@ -281,5 +285,21 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         self.present(alert, animated: true, completion: {
             //
         })
+    }
+    
+    func onSpotEditAction(_ spot: Spot) {
+        let vc = SpotEditViewController()
+        vc.mode = .edit
+        vc.spot = spot
+        vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func onSpotDeleteAction(_ spot: Spot) {
+        spot.delete()
+        if let index = spots.firstIndex(where: { $0.id == spot.id }) {
+            spots.remove(at: index)
+        }
+        self.collectionView.reloadData()
     }
 }

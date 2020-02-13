@@ -63,7 +63,11 @@ class Spot {
     func save() {
         if let data = UserDefaults.standard.data(forKey: "spots") {
             var array = NSKeyedUnarchiver.unarchiveObject(with: data) as! [[String:Any]]
-            array.append(self.toDict())
+            if let index = array.firstIndex(where: { $0["id"] != nil && ($0["id"] as! Int) == self.id }) {
+                array[index] = self.toDict()
+            } else {
+                array.append(self.toDict())
+            }
             let newData = NSKeyedArchiver.archivedData(withRootObject: array)
             UserDefaults.standard.set(newData, forKey: "spots")
             UserDefaults.standard.synchronize()
@@ -71,6 +75,18 @@ class Spot {
             let array = [self.toDict()]
             let data = NSKeyedArchiver.archivedData(withRootObject: array)
             UserDefaults.standard.set(data, forKey: "spots")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    func delete() {
+        if let data = UserDefaults.standard.data(forKey: "spots") {
+            var array = NSKeyedUnarchiver.unarchiveObject(with: data) as! [[String:Any]]
+            if let index = array.firstIndex(where: { $0["id"] != nil && ($0["id"] as! Int) == self.id }) {
+                array.remove(at: index)
+            }
+            let newData = NSKeyedArchiver.archivedData(withRootObject: array)
+            UserDefaults.standard.set(newData, forKey: "spots")
             UserDefaults.standard.synchronize()
         }
     }
