@@ -228,13 +228,21 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     @objc func onDemo() {
         let spot = Spot(withSSid: "garage_ntwrk", andPassword: "snapp11app")
-        spot.name = "Garage"
+        spot.name = "Qtech - Гараж"
+        
+        let vc = ConvectorViewController()
+        vc.spot = spot
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .pageSheet
+        self.present(vc, animated: true, completion: nil)
+        
+        /*
         
         let vc = SpotViewController()
         vc.mode = .demo
         vc.spot = spot
         vc.spotState = SpotState.demo
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true)*/
     }
     
     //MARK: - spot add & edit

@@ -2,7 +2,7 @@
 //  UITextFieldExt.swift
 //  WifiScanner
 //
-//  Created by Snappii on 2/9/20.
+//  Created on 2/9/20.
 //  Copyright © 2020 Max Subbotin. All rights reserved.
 //
 
