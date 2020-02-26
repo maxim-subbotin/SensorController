@@ -23,6 +23,9 @@
 		D67944292406F56300863E39 /* font_2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D67944272406F56300863E39 /* font_2.ttf */; };
 		D679442B2406F61600863E39 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D679442A2406F61600863E39 /* UIHelper.swift */; };
 		D679442D2406F74000863E39 /* ConvectorDateTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D679442C2406F74000863E39 /* ConvectorDateTimeView.swift */; };
+		D679442F2406FACE00863E39 /* ConvectorBottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D679442E2406FACE00863E39 /* ConvectorBottomPanel.swift */; };
+		D67944312406FD9F00863E39 /* convector.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D67944302406FD9F00863E39 /* convector.xcassets */; };
+		D6794433240708E200863E39 /* ConvectorManualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6794432240708E200863E39 /* ConvectorManualView.swift */; };
 		D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA5E2334A83F00760D92 /* SpotsViewController.swift */; };
 		D67DFA612334A96400760D92 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA602334A96400760D92 /* Color.swift */; };
 		D67DFA632334AC0400760D92 /* Spot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA622334AC0400760D92 /* Spot.swift */; };
@@ -80,6 +83,9 @@
 		D67944272406F56300863E39 /* font_2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = font_2.ttf; sourceTree = "<group>"; };
 		D679442A2406F61600863E39 /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		D679442C2406F74000863E39 /* ConvectorDateTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvectorDateTimeView.swift; sourceTree = "<group>"; };
+		D679442E2406FACE00863E39 /* ConvectorBottomPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvectorBottomPanel.swift; sourceTree = "<group>"; };
+		D67944302406FD9F00863E39 /* convector.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = convector.xcassets; sourceTree = "<group>"; };
+		D6794432240708E200863E39 /* ConvectorManualView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvectorManualView.swift; sourceTree = "<group>"; };
 		D67DFA5E2334A83F00760D92 /* SpotsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotsViewController.swift; sourceTree = "<group>"; };
 		D67DFA602334A96400760D92 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		D67DFA622334AC0400760D92 /* Spot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spot.swift; sourceTree = "<group>"; };
@@ -172,6 +178,9 @@
 				D67944232406F21D00863E39 /* ConvectorViewController.swift */,
 				D679442A2406F61600863E39 /* UIHelper.swift */,
 				D679442C2406F74000863E39 /* ConvectorDateTimeView.swift */,
+				D679442E2406FACE00863E39 /* ConvectorBottomPanel.swift */,
+				D6794432240708E200863E39 /* ConvectorManualView.swift */,
+				D67944302406FD9F00863E39 /* convector.xcassets */,
 			);
 			path = UIv2;
 			sourceTree = "<group>";
@@ -391,6 +400,7 @@
 				D67DFA87233519D700760D92 /* .gitignore in Resources */,
 				D6F1DCB22330B16E007248AC /* LaunchScreen.storyboard in Resources */,
 				D67DFA8C233519D700760D92 /* COPYING.LESSER in Resources */,
+				D67944312406FD9F00863E39 /* convector.xcassets in Resources */,
 				D67DFA8E233519D700760D92 /* NEWS in Resources */,
 				D6F1DCAF2330B16E007248AC /* Assets.xcassets in Resources */,
 				D67944292406F56300863E39 /* font_2.ttf in Resources */,
@@ -425,6 +435,7 @@
 				D6AC45A123D793EF00779652 /* CalibratorView.swift in Sources */,
 				D674F1B923335A17009D2D4C /* PingResponse.swift in Sources */,
 				D6F1DCBE2330B404007248AC /* SwiftWifiIotPlugin.swift in Sources */,
+				D6794433240708E200863E39 /* ConvectorManualView.swift in Sources */,
 				D695920123DDC91300CEDB4F /* FanSpeedView.swift in Sources */,
 				D679442D2406F74000863E39 /* ConvectorDateTimeView.swift in Sources */,
 				D639840C23D4A37100C02F43 /* ValueSelectionView.swift in Sources */,
@@ -441,6 +452,7 @@
 				D6F1DCA82330B16C007248AC /* AppDelegate.swift in Sources */,
 				D6F2046323DA2749002BFE0D /* TemperatureView.swift in Sources */,
 				D608674B23E200850013044A /* SpotAdditionalParametersViewController.swift in Sources */,
+				D679442F2406FACE00863E39 /* ConvectorBottomPanel.swift in Sources */,
 				D674F1BE23336C4F009D2D4C /* BDHost.m in Sources */,
 				D6C9998D23D63D25003A938D /* BrightnessSensorView.swift in Sources */,
 				D67DFA6B2335176800760D92 /* SpotViewController.swift in Sources */,
