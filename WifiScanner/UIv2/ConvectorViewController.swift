@@ -9,11 +9,12 @@
 import Foundation
 import UIKit
 
-class ConvectorViewController: UIViewController {
+class ConvectorViewController: UIViewController, SelectedButtonDelegate, ConvectorBottomPanelDelegate, ConvectorManualViewDelegate {
     private var lblTitle = UILabel()
     private var dateView = ConvectorDateTimeView()
     private var bottomPanel = ConvectorBottomPanel()
-    private var manualView = ConvectorManualView()
+    private var temperatureView = ConvectorManualView()
+    private var fanView = ConvectorManualView()
     private var btnFan = ConvectorBottomButton()
     private var btnTemperature = ConvectorBottomButton()
     public var spot = Spot()
@@ -51,6 +52,7 @@ class ConvectorViewController: UIViewController {
         dateView.date = spotState.date
         
         self.view.addSubview(bottomPanel)
+        bottomPanel.delegate = self
         bottomPanel.translatesAutoresizingMaskIntoConstraints = false
         let tC2 = bottomPanel.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -5)
         let cxC2 = bottomPanel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
@@ -58,17 +60,32 @@ class ConvectorViewController: UIViewController {
         let hC2 = bottomPanel.heightAnchor.constraint(equalToConstant: UIDevice.current.isiPad ? 60 : 50)
         NSLayoutConstraint.activate([tC2, cxC2, wC2, hC2])
         
-        self.view.addSubview(manualView)
-        manualView.translatesAutoresizingMaskIntoConstraints = false
-        let tC3 = manualView.topAnchor.constraint(equalTo: self.dateView.bottomAnchor, constant: 15)
-        let cxC3 = manualView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        let wC3 = manualView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40)
-        let bC3 = manualView.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor, constant: -90)
+        self.view.addSubview(temperatureView)
+        temperatureView.delegate = self
+        temperatureView.translatesAutoresizingMaskIntoConstraints = false
+        let tC3 = temperatureView.topAnchor.constraint(equalTo: self.dateView.bottomAnchor, constant: 15)
+        let cxC3 = temperatureView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        let wC3 = temperatureView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40)
+        let bC3 = temperatureView.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor, constant: -90)
         NSLayoutConstraint.activate([tC3, cxC3, wC3, bC3])
-        //manualView.backgroundColor = UIColor(hexString: "#22FFFFFF")
-        manualView.postfix = "°"
-        manualView.mainTitle = String(format: "%.f", spotState.temperatureCurrent)
-        manualView.detailText = String(format: "%.f", spotState.temperatureDevice)
+        temperatureView.postfix = "°"
+        temperatureView.mainTitle = String(format: "%.f", spotState.temperatureCurrent)
+        temperatureView.detailText = String(format: "%.f", spotState.temperatureDevice)
+        
+        self.view.addSubview(fanView)
+        fanView.delegate = self
+        fanView.translatesAutoresizingMaskIntoConstraints = false
+        let tC6 = fanView.topAnchor.constraint(equalTo: self.dateView.bottomAnchor, constant: 15)
+        let cxC6 = fanView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        let wC6 = fanView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40)
+        let bC6 = fanView.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor, constant: -90)
+        NSLayoutConstraint.activate([tC6, cxC6, wC6, bC6])
+        fanView.firstValue = CGFloat(0)
+        fanView.lastValue = CGFloat(100)
+        fanView.postfix = "%"
+        fanView.mainTitle = String(format: "%.f", spotState.fanSpeedCurrent)
+        fanView.detailText = String(format: "%.f", spotState.fanSpeed)
+        fanView.alpha = 0
         
         let btnOffset = CGFloat(UIDevice.current.isiPad ? 15 : 15)
         
@@ -79,6 +96,7 @@ class ConvectorViewController: UIViewController {
         btnFan.unselectImage = UIImage(named: "fan_icon_hollow")
         btnFan.type = .fan
         btnFan.translatesAutoresizingMaskIntoConstraints = false
+        btnFan.delegate = self
         let lC4 = btnFan.leftAnchor.constraint(equalTo: self.bottomPanel.leftAnchor, constant: -btnOffset)
         let bC4 = btnFan.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor, constant: -48)
         let wC4 = btnFan.widthAnchor.constraint(equalToConstant: btnH)
@@ -91,6 +109,8 @@ class ConvectorViewController: UIViewController {
         btnTemperature.unselectImage = UIImage(named: "temperature_icon_hollow")
         btnTemperature.type = .temperature
         btnTemperature.translatesAutoresizingMaskIntoConstraints = false
+        btnTemperature.delegate = self
+        btnTemperature.selected = true
         let lC5 = btnTemperature.rightAnchor.constraint(equalTo: self.bottomPanel.rightAnchor, constant: btnOffset)
         let bC5 = btnTemperature.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor, constant: -48)
         let wC5 = btnTemperature.widthAnchor.constraint(equalToConstant: btnH)
@@ -99,4 +119,74 @@ class ConvectorViewController: UIViewController {
         NSLayoutConstraint.activate([bC5, lC5, wC5, hC5])
     }
     
+    //MARK: - fan/temp button delegates
+    
+    func onButtonSelection(_ selectedButton: SelectedButton) {
+        let cButton = selectedButton as! ConvectorBottomButton
+        if cButton.type == .fan {
+            btnTemperature.selected = !cButton.selected
+            if btnTemperature.selected {
+                showTempView()
+            } else {
+                showFanView()
+            }
+        }
+        if cButton.type == .temperature {
+            btnFan.selected = !cButton.selected
+            if btnFan.selected {
+                showFanView()
+            } else {
+                showTempView()
+            }
+        }
+    }
+    
+    func showTempView() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.temperatureView.alpha = 1.0
+            self.fanView.alpha = 0
+        })
+    }
+    
+    func showFanView() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.temperatureView.alpha = 0.0
+            self.fanView.alpha = 1
+        })
+    }
+    
+    //MARK: - bottom panel delegate
+    
+    func onBottomPanelAction(_ action: ConvectorBottomButtomType) {
+        if action == .exit {
+            self.view.backgroundColor = UIColor(hexString: "#DADADA")
+        } else {
+            self.view.backgroundColor = UIColor(hexString: "#009CDF")
+        }
+    }
+    
+    //MARK: - fan/temp changes
+    
+    func onManualValueChanged(_ view: ConvectorManualView) {
+        if view == temperatureView {
+            let val = view.value
+            let d = (val - 5.0) / 40
+            //009CDF -> 0, 156, 223
+            //FFA621 -> 255, 166, 33
+            //DF3600 -> 223, 54, 0
+            if d <= 0.5 {
+                let r = 2 * d * 255
+                let g = 156 + d * (166 - 156) * 2
+                let b = 223 + d * (33 - 223) * 2
+                let c = UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
+                self.view.backgroundColor = c
+            } else {
+                let r = 255 + (d - 0.5) * (223 - 255) * 2
+                let g = 166 + (d - 0.5) * (54 - 166) * 2
+                let b = 33 + (d - 0.5) * (0 - 33) * 2
+                let c = UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
+                self.view.backgroundColor = c
+            }
+        }
+    }
 }

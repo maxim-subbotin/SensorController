@@ -70,9 +70,15 @@ class SelectedImageButton: SelectedButton {
     }*/
 }
 
+protocol SelectedButtonDelegate: class {
+    func onButtonSelection(_ selectedButton: SelectedButton)
+}
+
 class SelectedButton: UIImageView {
     public var selectColor = UIColor.blue
     public var unselectColor = UIColor.white
+    public weak var delegate: SelectedButtonDelegate?
+    public var selectOnly = true
     
     internal var _selected = false
     public var selected: Bool {
@@ -112,7 +118,11 @@ class SelectedButton: UIImageView {
     }
     
     @objc private func onTap() {
+        if selectOnly && self.selected {
+            return
+        }
         self.selected = !self.selected
+        self.delegate?.onButtonSelection(self)
     }
 }
 
@@ -120,8 +130,13 @@ class ConvectorBottomButton: SelectedImageButton {
     public var type: ConvectorBottomButtomType = .exit
 }
 
-class ConvectorBottomPanel: UIView {
+protocol ConvectorBottomPanelDelegate: class {
+    func onBottomPanelAction(_ action: ConvectorBottomButtomType)
+}
+
+class ConvectorBottomPanel: UIView, SelectedButtonDelegate {
     private var buttons = [ConvectorBottomButton]()
+    public weak var delegate: ConvectorBottomPanelDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -156,6 +171,7 @@ class ConvectorBottomPanel: UIView {
             button.unselectImage = b.unselectedImage
             button.type = b.type
             button.refresh()
+            button.delegate = self
             buttons.append(button)
             self.addSubview(button)
             
@@ -167,6 +183,15 @@ class ConvectorBottomPanel: UIView {
             NSLayoutConstraint.activate([tC, lC, wC, hC])
             
             prevView = button
+        }
+    }
+    
+    func onButtonSelection(_ selectedButton: SelectedButton) {
+        delegate?.onBottomPanelAction((selectedButton as! ConvectorBottomButton).type)
+        for btn in buttons {
+            if btn.type != (selectedButton as! ConvectorBottomButton).type {
+                btn.selected = false
+            }
         }
     }
 }

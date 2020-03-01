@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol ConvectorManualViewDelegate: class {
+    func onManualValueChanged(_ view: ConvectorManualView)
+}
+
 class ConvectorManualView: UIView {
     private var lblMainTitle = UILabel()
     private var lblDetailTitle = UILabel()
@@ -16,6 +20,7 @@ class ConvectorManualView: UIView {
     private var pinView = ConvectorManualPinView()
     private let pinSize = CGFloat(45)
     public var postfix: String?
+    public weak var delegate: ConvectorManualViewDelegate?
     
     public var mainTitle: String? {
         get {
@@ -164,6 +169,9 @@ class ConvectorManualView: UIView {
         }
         
         let v = firstValue + (lastValue - firstValue) * val / 4.711
+        _value = v
+        
+        self.delegate?.onManualValueChanged(self)
         
         self.mainTitle = String(format: "%.0f", v)
         
