@@ -14,6 +14,8 @@ class ConvectorViewController: UIViewController {
     private var dateView = ConvectorDateTimeView()
     private var bottomPanel = ConvectorBottomPanel()
     private var manualView = ConvectorManualView()
+    private var btnFan = ConvectorBottomButton()
+    private var btnTemperature = ConvectorBottomButton()
     public var spot = Spot()
     public var spotState = SpotState.demo
     
@@ -52,8 +54,8 @@ class ConvectorViewController: UIViewController {
         bottomPanel.translatesAutoresizingMaskIntoConstraints = false
         let tC2 = bottomPanel.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -5)
         let cxC2 = bottomPanel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        let wC2 = UIDevice.current.isiPad ? bottomPanel.widthAnchor.constraint(equalToConstant: 400) : bottomPanel.widthAnchor.constraint(equalTo: self.view.widthAnchor)
-        let hC2 = bottomPanel.heightAnchor.constraint(equalToConstant: UIDevice.current.isiPad ? 60 : 40)
+        let wC2 = UIDevice.current.isiPad ? bottomPanel.widthAnchor.constraint(equalToConstant: 400) : bottomPanel.widthAnchor.constraint(equalToConstant: 280)
+        let hC2 = bottomPanel.heightAnchor.constraint(equalToConstant: UIDevice.current.isiPad ? 60 : 50)
         NSLayoutConstraint.activate([tC2, cxC2, wC2, hC2])
         
         self.view.addSubview(manualView)
@@ -63,7 +65,38 @@ class ConvectorViewController: UIViewController {
         let wC3 = manualView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -40)
         let bC3 = manualView.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor, constant: -90)
         NSLayoutConstraint.activate([tC3, cxC3, wC3, bC3])
-        manualView.backgroundColor = UIColor(hexString: "#22FFFFFF")
+        //manualView.backgroundColor = UIColor(hexString: "#22FFFFFF")
+        manualView.postfix = "°"
+        manualView.mainTitle = String(format: "%.f", spotState.temperatureCurrent)
+        manualView.detailText = String(format: "%.f", spotState.temperatureDevice)
+        
+        let btnOffset = CGFloat(UIDevice.current.isiPad ? 15 : 15)
+        
+        let btnH = CGFloat(UIDevice.current.isiPad ? 80 : 60)
+        self.view.addSubview(btnFan)
+        //btnFan.backgroundColor = .red
+        btnFan.selectImage = UIImage(named: "fan_icon_solid")
+        btnFan.unselectImage = UIImage(named: "fan_icon_hollow")
+        btnFan.type = .fan
+        btnFan.translatesAutoresizingMaskIntoConstraints = false
+        let lC4 = btnFan.leftAnchor.constraint(equalTo: self.bottomPanel.leftAnchor, constant: -btnOffset)
+        let bC4 = btnFan.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor, constant: -48)
+        let wC4 = btnFan.widthAnchor.constraint(equalToConstant: btnH)
+        let hC4 = btnFan.heightAnchor.constraint(equalToConstant: btnH)
+        btnFan.refresh()
+        NSLayoutConstraint.activate([bC4, lC4, wC4, hC4])
+        
+        self.view.addSubview(btnTemperature)
+        btnTemperature.selectImage = UIImage(named: "temperature_icon_solid")
+        btnTemperature.unselectImage = UIImage(named: "temperature_icon_hollow")
+        btnTemperature.type = .temperature
+        btnTemperature.translatesAutoresizingMaskIntoConstraints = false
+        let lC5 = btnTemperature.rightAnchor.constraint(equalTo: self.bottomPanel.rightAnchor, constant: btnOffset)
+        let bC5 = btnTemperature.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor, constant: -48)
+        let wC5 = btnTemperature.widthAnchor.constraint(equalToConstant: btnH)
+        let hC5 = btnTemperature.heightAnchor.constraint(equalToConstant: btnH)
+        btnTemperature.refresh()
+        NSLayoutConstraint.activate([bC5, lC5, wC5, hC5])
     }
     
 }
