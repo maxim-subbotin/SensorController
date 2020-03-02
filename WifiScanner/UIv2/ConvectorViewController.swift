@@ -17,6 +17,8 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
     private var fanView = ConvectorManualView()
     private var btnFan = ConvectorBottomButton()
     private var btnTemperature = ConvectorBottomButton()
+    private var parametersView = ConvectorParametersView()
+    private var lblAuto = UILabel()
     public var spot = Spot()
     public var spotState = SpotState.demo
     
@@ -91,7 +93,6 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         
         let btnH = CGFloat(UIDevice.current.isiPad ? 80 : 60)
         self.view.addSubview(btnFan)
-        //btnFan.backgroundColor = .red
         btnFan.selectImage = UIImage(named: "fan_icon_solid")
         btnFan.unselectImage = UIImage(named: "fan_icon_hollow")
         btnFan.type = .fan
@@ -117,6 +118,49 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         let hC5 = btnTemperature.heightAnchor.constraint(equalToConstant: btnH)
         btnTemperature.refresh()
         NSLayoutConstraint.activate([bC5, lC5, wC5, hC5])
+        
+        self.view.addSubview(lblAuto)
+        lblAuto.text = "Auto"
+        lblAuto.backgroundColor = UIColor(hexString: "#009CDF")
+        lblAuto.clipsToBounds = true
+        lblAuto.layer.cornerRadius = 7
+        lblAuto.layer.borderWidth = 2
+        lblAuto.layer.borderColor = UIColor.white.cgColor
+        lblAuto.font = UIFont.customFont(bySize: 35)
+        lblAuto.textColor = .white
+        lblAuto.textAlignment = .center
+        lblAuto.translatesAutoresizingMaskIntoConstraints = false
+        let cxC7 = lblAuto.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0)
+        let cyC7 = lblAuto.centerYAnchor.constraint(equalTo: self.fanView.bottomAnchor, constant: 0)
+        cyC7.identifier = "auto_center_y"
+        let wC7 = lblAuto.widthAnchor.constraint(equalToConstant: 72)
+        let hC7 = lblAuto.heightAnchor.constraint(equalToConstant: 40)
+        NSLayoutConstraint.activate([cxC7, cyC7, wC7, hC7])
+        lblAuto.isHidden = true
+        
+        self.view.addSubview(parametersView)
+        parametersView.translatesAutoresizingMaskIntoConstraints = false
+        let cxC8 = parametersView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0)
+        let tC8 = parametersView.topAnchor.constraint(equalTo: self.lblTitle.bottomAnchor, constant: 0)
+        let wC8 = parametersView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 0)
+        let bC8 = parametersView.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor)
+        NSLayoutConstraint.activate([bC8, cxC8, wC8, tC8])
+        parametersView.backgroundColor = UIColor(hexString: "#009CDF")
+        parametersView.isHidden = true
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let fr = fanView.frame
+        let r = min(fr.width, fr.height) - 60
+        let dY = (fr.height - r) / 2
+        var cyC = lblAuto.constraints.filter({ $0.identifier == "auto_center_y" }).first
+        if cyC == nil {
+            cyC = self.view.constraints.first(where: { $0.identifier == "auto_center_y" })
+        }
+        cyC?.constant = -dY
+        lblAuto.layoutIfNeeded()
+        self.view.layoutIfNeeded()
     }
     
     //MARK: - fan/temp button delegates
@@ -145,6 +189,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         UIView.animate(withDuration: 0.5, animations: {
             self.temperatureView.alpha = 1.0
             self.fanView.alpha = 0
+            self.lblAuto.isHidden = true
         })
     }
     
@@ -152,6 +197,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         UIView.animate(withDuration: 0.5, animations: {
             self.temperatureView.alpha = 0.0
             self.fanView.alpha = 1
+            self.lblAuto.isHidden = false
         })
     }
     
@@ -163,6 +209,8 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         } else {
             self.view.backgroundColor = UIColor(hexString: "#009CDF")
         }
+        
+        self.parametersView.isHidden = (action != .settings)
     }
     
     //MARK: - fan/temp changes
@@ -174,19 +222,23 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
             //009CDF -> 0, 156, 223
             //FFA621 -> 255, 166, 33
             //DF3600 -> 223, 54, 0
+            var color: UIColor?
             if d <= 0.5 {
                 let r = 2 * d * 255
                 let g = 156 + d * (166 - 156) * 2
                 let b = 223 + d * (33 - 223) * 2
-                let c = UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
-                self.view.backgroundColor = c
+                color = UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
             } else {
                 let r = 255 + (d - 0.5) * (223 - 255) * 2
                 let g = 166 + (d - 0.5) * (54 - 166) * 2
                 let b = 33 + (d - 0.5) * (0 - 33) * 2
-                let c = UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
-                self.view.backgroundColor = c
+                color = UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
             }
+            
+            self.view.backgroundColor = color
+            parametersView.backgroundColor = color
         }
     }
+    
+    //MARK: - auto
 }

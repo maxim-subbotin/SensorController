@@ -11,6 +11,7 @@
 		D60EC82A23D0F39500D81289 /* SpotParameterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60EC82923D0F39500D81289 /* SpotParameterView.swift */; };
 		D60F251F23CF9FC700C4570B /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60F251E23CF9FC700C4570B /* CardView.swift */; };
 		D6302EA023F067700041531A /* UITextFieldExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6302E9F23F067700041531A /* UITextFieldExt.swift */; };
+		D6310FA1240D89E7004733A2 /* ConvectotParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6310FA0240D89E7004733A2 /* ConvectotParametersView.swift */; };
 		D639840C23D4A37100C02F43 /* ValueSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D639840B23D4A37100C02F43 /* ValueSelectionView.swift */; };
 		D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B023335A17009D2D4C /* PingConfiguration.swift */; };
 		D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B123335A17009D2D4C /* SwiftPing.swift */; };
@@ -69,6 +70,7 @@
 		D60EC82923D0F39500D81289 /* SpotParameterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotParameterView.swift; sourceTree = "<group>"; };
 		D60F251E23CF9FC700C4570B /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		D6302E9F23F067700041531A /* UITextFieldExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExt.swift; sourceTree = "<group>"; };
+		D6310FA0240D89E7004733A2 /* ConvectotParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvectotParametersView.swift; sourceTree = "<group>"; };
 		D639840B23D4A37100C02F43 /* ValueSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueSelectionView.swift; sourceTree = "<group>"; };
 		D674F1B023335A17009D2D4C /* PingConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingConfiguration.swift; sourceTree = "<group>"; };
 		D674F1B123335A17009D2D4C /* SwiftPing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPing.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				D679442C2406F74000863E39 /* ConvectorDateTimeView.swift */,
 				D679442E2406FACE00863E39 /* ConvectorBottomPanel.swift */,
 				D6794432240708E200863E39 /* ConvectorManualView.swift */,
+				D6310FA0240D89E7004733A2 /* ConvectotParametersView.swift */,
 				D67944302406FD9F00863E39 /* convector.xcassets */,
 			);
 			path = UIv2;
@@ -457,6 +460,7 @@
 				D6C9998D23D63D25003A938D /* BrightnessSensorView.swift in Sources */,
 				D67DFA6B2335176800760D92 /* SpotViewController.swift in Sources */,
 				D6E22533235C97B100E0D800 /* Tools.swift in Sources */,
+				D6310FA1240D89E7004733A2 /* ConvectotParametersView.swift in Sources */,
 				D674F1B823335A17009D2D4C /* ICMP.swift in Sources */,
 				D67DFA85233519D700760D92 /* SwiftLibModbus.swift in Sources */,
 			);
