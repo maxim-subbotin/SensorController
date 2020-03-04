@@ -25,11 +25,15 @@ import UIKit
  types.append(ParameterType(withType: .defaultSettings, andTitle: "Default settings"))
  */
 
-class ConvectorParametersView: UIView {
+class ConvectorParametersView: UIScrollView {
     private var lblParams = UILabel()
     private var fanModeView = ConvectorFanModeParamView()
     private var controlSequenceView = ConvectorCheckboxSetView()
     private var regulatorShutdownModeView = ConvectorCheckboxSetView()
+    private var valveShutdownModeView = ConvectorCheckboxSetView()
+    private var ventilationModeView = ConvectorSliderView()
+    private var fanSpeedGraphView = ConvectorCheckboxSetView()
+    private var temperatureReactionTime = ConvectorTrackBarView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,6 +45,8 @@ class ConvectorParametersView: UIView {
     }
     
     func applyUI() {
+        self.clipsToBounds = true
+        
         self.isUserInteractionEnabled = true
         
         self.addSubview(lblParams)
@@ -74,7 +80,7 @@ class ConvectorParametersView: UIView {
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
         
         self.addSubview(controlSequenceView)
-        controlSequenceView.title = "Control sequence"
+        controlSequenceView.title = "Control sequence:"
         controlSequenceView.translatesAutoresizingMaskIntoConstraints = false
         let tC3 = controlSequenceView.topAnchor.constraint(equalTo: fanModeView.bottomAnchor, constant: 35)
         let lC3 = controlSequenceView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -87,7 +93,7 @@ class ConvectorParametersView: UIView {
          ValueSelectorItem(withTitle: "Heat and cold", andValue: ControlSequenceType.heatAndCold)]
         
         self.addSubview(regulatorShutdownModeView)
-        regulatorShutdownModeView.title = "Regulator shutdown mode"
+        regulatorShutdownModeView.title = "Regulator shutdown mode:"
         regulatorShutdownModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC4 = regulatorShutdownModeView.topAnchor.constraint(equalTo: controlSequenceView.bottomAnchor, constant: 35)
         let lC4 = regulatorShutdownModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -96,6 +102,52 @@ class ConvectorParametersView: UIView {
         NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
         regulatorShutdownModeView.items = [ValueSelectorItem(withTitle: "Full shutdown", andValue: RegulatorShutdownWorkType.fullShutdown),
         ValueSelectorItem(withTitle: "Partial shutdown", andValue: RegulatorShutdownWorkType.fullShutdown)]
+        
+        self.addSubview(valveShutdownModeView)
+        valveShutdownModeView.title = "Valve shutdown mode:"
+        valveShutdownModeView.translatesAutoresizingMaskIntoConstraints = false
+        let tC5 = valveShutdownModeView.topAnchor.constraint(equalTo: regulatorShutdownModeView.bottomAnchor, constant: 35)
+        let lC5 = valveShutdownModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC5 = valveShutdownModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC5 = valveShutdownModeView.heightAnchor.constraint(equalToConstant: 120)
+        NSLayoutConstraint.activate([tC5, lC5, wC5, hC5])
+        valveShutdownModeView.items = [ValueSelectorItem(withTitle: "Full shutdown", andValue: RegulatorShutdownWorkType.fullShutdown),
+        ValueSelectorItem(withTitle: "Partial shutdown", andValue: RegulatorShutdownWorkType.fullShutdown)]
+        
+        self.addSubview(ventilationModeView)
+        ventilationModeView.title = "Ventilation mode:"
+        ventilationModeView.translatesAutoresizingMaskIntoConstraints = false
+        let tC6 = ventilationModeView.topAnchor.constraint(equalTo: valveShutdownModeView.bottomAnchor, constant: 35)
+        let lC6 = ventilationModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC6 = ventilationModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC6 = ventilationModeView.heightAnchor.constraint(equalToConstant: 50)
+        NSLayoutConstraint.activate([tC6, lC6, wC6, hC6])
+        
+        self.addSubview(fanSpeedGraphView)
+        fanSpeedGraphView.title = "Valve shutdown mode:"
+        fanSpeedGraphView.translatesAutoresizingMaskIntoConstraints = false
+        let tC7 = fanSpeedGraphView.topAnchor.constraint(equalTo: ventilationModeView.bottomAnchor, constant: 35)
+        let lC7 = fanSpeedGraphView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC7 = fanSpeedGraphView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC7 = fanSpeedGraphView.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([tC7, lC7, wC7, hC7])
+        fanSpeedGraphView.items = [ValueSelectorItem(withTitle: "Graph 1", andValue: AutoFanSpeedGraphType.graph1),
+                                   ValueSelectorItem(withTitle: "Graph 2", andValue: AutoFanSpeedGraphType.graph2),
+                                   ValueSelectorItem(withTitle: "Graph 3", andValue: AutoFanSpeedGraphType.graph3)]
+        
+        self.addSubview(temperatureReactionTime)
+        temperatureReactionTime.title = "Temperature reaction time:"
+        temperatureReactionTime.translatesAutoresizingMaskIntoConstraints = false
+        let tC8 = temperatureReactionTime.topAnchor.constraint(equalTo: fanSpeedGraphView.bottomAnchor, constant: 35)
+        let lC8 = temperatureReactionTime.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC8 = temperatureReactionTime.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC8 = temperatureReactionTime.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([tC8, lC8, wC8, hC8])
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.contentSize = CGSize(width: self.frame.width, height: 1200)
     }
 }
 
@@ -325,5 +377,177 @@ class ConvectorCheckboxSetView: UIView {
             
             prevView = checkbox
         }
+    }
+}
+
+class ConvectorSliderView: UIView {
+    private var lblTitle = UILabel()
+    private var lblDetail = UILabel()
+    private var slider = UISwitch()
+    public var title: String? {
+        get {
+            return lblTitle.text
+        }
+        set {
+            lblTitle.text = newValue
+        }
+    }
+    private var _enabled = false
+    public var enabled: Bool {
+        get {
+            return _enabled
+        }
+        set {
+            _enabled = newValue
+            slider.isOn = _enabled
+        }
+    }
+    public var positiveTitle = "Enabled"
+    public var negativeTitle = "Disabled"
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        applyUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func applyUI() {
+        self.addSubview(lblTitle)
+        lblTitle.text = ""
+        lblTitle.textColor = .white
+        lblTitle.font = UIFont.customFont(bySize: 21)
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 0)
+        let lC = lblTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
+        let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: 0)
+        let hC = lblTitle.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        NSLayoutConstraint.activate([tC, lC, wC, hC])
+        
+        self.addSubview(lblDetail)
+        lblDetail.text = negativeTitle
+        lblDetail.textColor = UIColor(hexString: "#DADADA")
+        lblDetail.font = UIFont.customFont(bySize: 18)
+        lblDetail.translatesAutoresizingMaskIntoConstraints = false
+        let tC1 = lblDetail.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 0)
+        let lC1 = lblDetail.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
+        let wC1 = lblDetail.widthAnchor.constraint(equalTo: self.widthAnchor, constant: 0)
+        let hC1 = lblDetail.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        
+        self.addSubview(slider)
+        //slider.thumbTintColor = .red
+        //slider.tintColor = .yellow
+        //lblDetail.text = "Disabled"
+        //lblDetail.textColor = UIColor(hexString: "#DADADA")
+        //lblDetail.font = UIFont.customFont(bySize: 18)
+        slider.onTintColor = UIColor(hexString: "#31221F1F")
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        let tC2 = slider.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
+        let lC2 = slider.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0)
+        let wC2 = slider.widthAnchor.constraint(equalToConstant: 50)
+        let hC2 = slider.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
+        slider.addTarget(self, action: #selector(onSwitchChange), for: .valueChanged)
+    }
+    
+    @objc func onSwitchChange() {
+        _enabled = slider.isOn
+        lblDetail.text = _enabled ? positiveTitle : negativeTitle
+    }
+}
+
+class ConvectorPlusMinusView: UIView {
+    private var btnPlus = UIButton()
+    private var btnMinus = UIButton()
+    private var label = UILabel()
+    public var postfix = "sec"
+    private var _value = 0
+    public var value: Int {
+        get {
+            return _value
+        }
+        set {
+            _value = newValue
+            label.text = "\(_value) \(postfix)"
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        applyUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func applyUI() {
+        self.isUserInteractionEnabled = true
+        
+        self.addSubview(btnMinus)
+        btnMinus.setImage(UIImage(named: "minus_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        btnMinus.tintColor = .white
+        btnMinus.translatesAutoresizingMaskIntoConstraints = false
+        let tC = btnMinus.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
+        let lC = btnMinus.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
+        let wC = btnMinus.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        let hC = btnMinus.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        NSLayoutConstraint.activate([tC, lC, wC, hC])
+        
+        self.addSubview(btnPlus)
+        btnPlus.setImage(UIImage(named: "plus_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        btnPlus.tintColor = .white
+        btnPlus.translatesAutoresizingMaskIntoConstraints = false
+        let tC1 = btnPlus.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
+        let lC1 = btnPlus.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0)
+        let wC1 = btnPlus.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        let hC1 = btnPlus.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
+        NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+    }
+}
+
+class ConvectorTrackBarView: UIView {
+    private var lblTitle = UILabel()
+    private var plusBar = ConvectorPlusMinusView()
+    public var title: String? {
+        get {
+            return lblTitle.text
+        }
+        set {
+            lblTitle.text = newValue
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        applyUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func applyUI() {
+        self.addSubview(lblTitle)
+        lblTitle.text = ""
+        lblTitle.textColor = .white
+        lblTitle.font = UIFont.customFont(bySize: 21)
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 0)
+        let lC = lblTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
+        let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: 0)
+        let hC = lblTitle.heightAnchor.constraint(equalToConstant: 24)
+        NSLayoutConstraint.activate([tC, lC, wC, hC])
+        
+        self.addSubview(plusBar)
+        plusBar.translatesAutoresizingMaskIntoConstraints = false
+        let tC1 = plusBar.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 15)
+        let lC1 = plusBar.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC1 = plusBar.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -60)
+        let hC1 = plusBar.heightAnchor.constraint(equalToConstant: 60)
+        NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
     }
 }
