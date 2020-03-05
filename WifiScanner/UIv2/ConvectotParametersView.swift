@@ -31,7 +31,7 @@ class ConvectorParametersView: UIScrollView {
     private var controlSequenceView = ConvectorCheckboxSetView()
     private var regulatorShutdownModeView = ConvectorCheckboxSetView()
     private var valveShutdownModeView = ConvectorCheckboxSetView()
-    private var ventilationModeView = ConvectorSliderView()
+    private var ventilationModeView = ConvectorSwitchView()
     private var fanSpeedGraphView = ConvectorCheckboxSetView()
     private var temperatureReactionTime = ConvectorTrackBarView()
     
@@ -143,6 +143,7 @@ class ConvectorParametersView: UIScrollView {
         let wC8 = temperatureReactionTime.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
         let hC8 = temperatureReactionTime.heightAnchor.constraint(equalToConstant: 160)
         NSLayoutConstraint.activate([tC8, lC8, wC8, hC8])
+        temperatureReactionTime.value = 5
     }
     
     override func layoutSubviews() {
@@ -380,7 +381,7 @@ class ConvectorCheckboxSetView: UIView {
     }
 }
 
-class ConvectorSliderView: UIView {
+class ConvectorSwitchView: UIView {
     private var lblTitle = UILabel()
     private var lblDetail = UILabel()
     private var slider = UISwitch()
@@ -462,7 +463,7 @@ class ConvectorSliderView: UIView {
 class ConvectorPlusMinusView: UIView {
     private var btnPlus = UIButton()
     private var btnMinus = UIButton()
-    private var label = UILabel()
+    private var lblTitle = UILabel()
     public var postfix = "sec"
     private var _value = 0
     public var value: Int {
@@ -471,7 +472,7 @@ class ConvectorPlusMinusView: UIView {
         }
         set {
             _value = newValue
-            label.text = "\(_value) \(postfix)"
+            lblTitle.text = "\(_value) \(postfix)"
         }
     }
     
@@ -496,6 +497,7 @@ class ConvectorPlusMinusView: UIView {
         let wC = btnMinus.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
         let hC = btnMinus.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
         NSLayoutConstraint.activate([tC, lC, wC, hC])
+        btnMinus.addTarget(self, action: #selector(onMinus), for: .touchUpInside)
         
         self.addSubview(btnPlus)
         btnPlus.setImage(UIImage(named: "plus_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
@@ -506,18 +508,111 @@ class ConvectorPlusMinusView: UIView {
         let wC1 = btnPlus.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
         let hC1 = btnPlus.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        btnPlus.addTarget(self, action: #selector(onPlus), for: .touchUpInside)
+        
+        self.addSubview(lblTitle)
+        lblTitle.text = ""
+        lblTitle.textColor = .white
+        lblTitle.font = UIFont.customFont(bySize: 50)
+        lblTitle.textAlignment = .center
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let tC2 = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 0)
+        let lC2 = lblTitle.leftAnchor.constraint(equalTo: btnMinus.rightAnchor, constant: 0)
+        let wC2 = lblTitle.rightAnchor.constraint(equalTo: btnPlus.leftAnchor, constant: 0)
+        let hC2 = lblTitle.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1)
+        NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
     }
+    
+    @objc func onPlus() {
+        self.value += 1
+    }
+    
+    @objc func onMinus() {
+        self.value -= 1
+    }
+}
+
+class ConvectorPinView: UIView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.isOpaque = false
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        let w = CGFloat(12)
+        let path = UIBezierPath(ovalIn: CGRect(x: rect.width / 2 - w / 2, y: rect.height / 2 - w / 2, width: w, height: w))
+        UIColor.white.setFill()
+        path.fill()
+    }
+}
+
+class ConvectorSliderView: UIView {
+    private var pinView = ConvectorPinView()
+    private var _value = CGFloat(0.5)
+    public var value: CGFloat {
+        get {
+            return _value
+        }
+        set {
+            _value = newValue
+            setNeedsDisplay()
+        }
+    }
+    public var activeColor = UIColor.white
+    public var inactiveColor = UIColor(hexString: "#50FFFFFF")
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.isUserInteractionEnabled = true
+        self.isOpaque = false
+        
+        self.addSubview(pinView)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        let width = CGFloat(2)
+        let path1 = UIBezierPath(roundedRect: CGRect(x: 0, y: rect.height / 2 - width / 2, width: rect.width * _value, height: width), cornerRadius: width / 2)
+        activeColor.setFill()
+        path1.fill()
+        
+        let path2 = UIBezierPath(roundedRect: CGRect(x: rect.width * _value, y: rect.height / 2 - width / 2, width: rect.width * (1 - _value), height: width), cornerRadius: width / 2)
+        inactiveColor.setFill()
+        path2.fill()
+        
+        let w = rect.height
+        pinView.frame = CGRect(x: rect.width / 2 - w / 2, y: 0, width: w, height: w)
+    }
+    
 }
 
 class ConvectorTrackBarView: UIView {
     private var lblTitle = UILabel()
     private var plusBar = ConvectorPlusMinusView()
+    private var slider = ConvectorSliderView()
     public var title: String? {
         get {
             return lblTitle.text
         }
         set {
             lblTitle.text = newValue
+        }
+    }
+    public var value: Int {
+        get {
+            return plusBar.value
+        }
+        set {
+            plusBar.value = newValue
         }
     }
     
@@ -549,5 +644,17 @@ class ConvectorTrackBarView: UIView {
         let wC1 = plusBar.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -60)
         let hC1 = plusBar.heightAnchor.constraint(equalToConstant: 60)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        
+        self.addSubview(slider)
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        let tC2 = slider.topAnchor.constraint(equalTo: plusBar.bottomAnchor, constant: 15)
+        let lC2 = slider.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC2 = slider.widthAnchor.constraint(equalTo: self.widthAnchor, constant: 0)
+        let hC2 = slider.heightAnchor.constraint(equalToConstant: 40)
+        NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
+    }
+    
+    func onDragAction(_ gesture: UIPanGestureRecognizer) {
+        
     }
 }
