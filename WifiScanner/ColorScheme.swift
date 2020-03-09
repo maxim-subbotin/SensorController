@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 
 class ColorScheme {
+    public static var changeBackgroundColor: Notification.Name {
+        return Notification.Name("on_background_color_change")
+    }
+    
     public var navigationBarColor = UIColor(hexString: "#191919")
     public var navigationTextColor = UIColor.white
     public var backgroundColor = UIColor(hexString: "#111523")

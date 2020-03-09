@@ -21,6 +21,9 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
     private var lblAuto = UILabel()
     public var spot = Spot()
     public var spotState = SpotState.demo
+    public var lblTurnedOff = UILabel()
+    
+    private var prevColor = UIColor(hexString: "#009CDF")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,6 +150,19 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         NSLayoutConstraint.activate([bC8, cxC8, wC8, tC8])
         parametersView.backgroundColor = UIColor(hexString: "#009CDF")
         parametersView.isHidden = true
+        
+        self.view.addSubview(lblTurnedOff)
+        lblTurnedOff.text = "TURNED OFF"
+        lblTurnedOff.textAlignment = .center
+        lblTurnedOff.textColor = UIColor(hexString: "#DADADA")
+        lblTurnedOff.font = UIFont.customFont(bySize: 35)
+        lblTurnedOff.translatesAutoresizingMaskIntoConstraints = false
+        let cxC9 = lblTurnedOff.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0)
+        let tC9 = lblTurnedOff.centerYAnchor.constraint(equalTo: self.fanView.centerYAnchor, constant: 0)
+        let wC9 = lblTurnedOff.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 0)
+        let bC9 = lblTurnedOff.heightAnchor.constraint(equalToConstant: 100)
+        NSLayoutConstraint.activate([bC9, cxC9, wC9, tC9])
+        lblTurnedOff.isHidden = true
     }
     
     override func viewDidLayoutSubviews() {
@@ -204,10 +220,28 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
     //MARK: - bottom panel delegate
     
     func onBottomPanelAction(_ action: ConvectorBottomButtomType) {
+        if bottomPanel.prevAction == nil || bottomPanel.prevAction! != .exit {
+            prevColor = self.view.backgroundColor ?? UIColor(hexString: "#DADADA")
+        }
         if action == .exit {
+            prevColor = self.view.backgroundColor ?? UIColor(hexString: "#DADADA")
             self.view.backgroundColor = UIColor(hexString: "#DADADA")
+            fanView.showContent(false)
+            temperatureView.showContent(false)
+            lblAuto.isHidden = true
+            lblTurnedOff.isHidden = false
+            btnFan.isUserInteractionEnabled = false
+            btnTemperature.isUserInteractionEnabled = false
+            NotificationCenter.default.post(name: ColorScheme.changeBackgroundColor, object: UIColor(hexString: "#DADADA"))
         } else {
-            self.view.backgroundColor = UIColor(hexString: "#009CDF")
+            self.view.backgroundColor = prevColor
+            fanView.showContent(true)
+            temperatureView.showContent(true)
+            lblAuto.isHidden = false
+            lblTurnedOff.isHidden = true
+            btnFan.isUserInteractionEnabled = true
+            btnTemperature.isUserInteractionEnabled = true
+            NotificationCenter.default.post(name: ColorScheme.changeBackgroundColor, object: prevColor)
         }
         
         self.parametersView.isHidden = (action != .settings)
@@ -237,6 +271,8 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
             
             self.view.backgroundColor = color
             parametersView.backgroundColor = color
+            lblAuto.backgroundColor = color
+            NotificationCenter.default.post(name: ColorScheme.changeBackgroundColor, object: color)
         }
     }
     

@@ -54,6 +54,10 @@ class ConvectorManualView: UIView {
         }
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.isOpaque = false
@@ -106,6 +110,8 @@ class ConvectorManualView: UIView {
         let wC2 = indicatorPanel.widthAnchor.constraint(equalToConstant: 100)
         let hC2 = indicatorPanel.heightAnchor.constraint(equalToConstant: 25)
         NSLayoutConstraint.activate([bC2, lC2, wC2, hC2])
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onColorNotification(_:)), name: ColorScheme.changeBackgroundColor, object: nil)
     }
     
     override func draw(_ rect: CGRect) {
@@ -178,12 +184,37 @@ class ConvectorManualView: UIView {
         pinView.frame = CGRect(x: self.frame.width / 2 + x - pinSize / 2, y: self.frame.height / 2 + y - pinSize / 2, width: pinSize, height: pinSize)
             
     }
+    
+    func showContent(_ show: Bool) {
+        lblMainTitle.isHidden = !show
+        lblDetailTitle.isHidden = !show
+        indicatorPanel.isHidden = !show
+        isUserInteractionEnabled = show
+    }
+    
+    @objc func onColorNotification(_ notification: Notification) {
+        if notification.object != nil && notification.object is UIColor {
+            let color = notification.object as! UIColor
+            self.pinView.borderColor = color
+            lblMainTitle.textColor = color
+        }
+    }
 }
 
 class ConvectorManualPinView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyUI()
+    }
+    private var _borderColor = UIColor(hexString: "#009CDF")
+    public var borderColor: UIColor {
+        get {
+            return _borderColor
+        }
+        set {
+            _borderColor = newValue
+            self.layer.borderColor = _borderColor.cgColor
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -198,7 +229,7 @@ class ConvectorManualPinView: UIView {
     func applyUI() {
         self.isUserInteractionEnabled = true
         self.clipsToBounds = true
-        self.layer.borderColor = UIColor(hexString: "#009CDF").cgColor
+        self.layer.borderColor = _borderColor.cgColor
         self.layer.borderWidth = 5
         self.backgroundColor = .white
     }

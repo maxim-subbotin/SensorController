@@ -27,7 +27,7 @@ import UIKit
 
 class ConvectorParametersView: UIScrollView {
     private var lblParams = UILabel()
-    private var fanModeView = ConvectorFanModeParamView()
+    private var fanModeView = ConvectorTwoValParamView()
     private var controlSequenceView = ConvectorCheckboxSetView()
     private var regulatorShutdownModeView = ConvectorCheckboxSetView()
     private var valveShutdownModeView = ConvectorCheckboxSetView()
@@ -83,6 +83,9 @@ class ConvectorParametersView: UIScrollView {
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
         
         self.addSubview(fanModeView)
+        fanModeView.title = "Fan control mode:"
+        fanModeView.param1Name = "Manual"
+        fanModeView.param2Name = "Auto"
         fanModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC2 = fanModeView.topAnchor.constraint(equalTo: separator.topAnchor, constant: 35)
         let lC2 = fanModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -358,6 +361,25 @@ class ConvectorTwoValParamView: UIView {
             lblTitle.text = newValue
         }
     }
+    private var selectionIndex = 0 // 0 or 1
+    private var _buttonTintColor = UIColor(hexString: "#009CDF")
+    public var buttonTintColor: UIColor {
+        get {
+            return _buttonTintColor
+        }
+        set {
+            _buttonTintColor = newValue
+            if selectionIndex == 0 {
+                btnManual.setTitleColor(_buttonTintColor, for: .normal)
+            } else {
+                btnAuto.setTitleColor(_buttonTintColor, for: .normal)
+            }
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -384,7 +406,7 @@ class ConvectorTwoValParamView: UIView {
         btnManual.translatesAutoresizingMaskIntoConstraints = false
         btnManual.layer.cornerRadius = 15
         btnManual.backgroundColor = .white
-        btnManual.setTitleColor(UIColor(hexString: "#009CDF"), for: .normal)
+        btnManual.setTitleColor(buttonTintColor, for: .normal)
         btnManual.setTitle("", for: .normal)
         btnManual.titleLabel?.font = UIFont.customFont(bySize: 21)
         btnManual.clipsToBounds = true
@@ -411,13 +433,17 @@ class ConvectorTwoValParamView: UIView {
         let hC2 = btnAuto.heightAnchor.constraint(equalToConstant: 30)
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
         btnAuto.addTarget(self, action: #selector(onButtonTap(_:)), for: .touchUpInside)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onColorNotification(_:)), name: ColorScheme.changeBackgroundColor, object: nil)
     }
     
     @objc func onButtonTap(_ button: UIButton) {
         if button == btnManual {
+            selectionIndex = 0
             selectButton(btnManual)
             deselectButton(btnAuto)
         } else {
+            selectionIndex = 1
             selectButton(btnAuto)
             deselectButton(btnManual)
         }
@@ -425,7 +451,7 @@ class ConvectorTwoValParamView: UIView {
     
     func selectButton(_ button: UIButton) {
         button.backgroundColor = .white
-        button.setTitleColor(UIColor(hexString: "#009CDF"), for: .normal)
+        button.setTitleColor(buttonTintColor, for: .normal)
     }
     
     func deselectButton(_ button: UIButton) {
@@ -433,6 +459,13 @@ class ConvectorTwoValParamView: UIView {
         button.layer.borderWidth = 2
         button.backgroundColor = .clear
         button.setTitleColor(UIColor.white, for: .normal)
+    }
+    
+    @objc func onColorNotification(_ notification: Notification) {
+        if notification.object != nil && notification.object is UIColor {
+            let color = notification.object as! UIColor
+            self.buttonTintColor = color
+        }
     }
 }
 
@@ -518,6 +551,10 @@ class ConvectorFanModeParamView: UIView {
     }
 }
 
+protocol ConvectorCheckboxViewDelegate: class {
+    func onCheckboxChange(_ checkbox: ConvectorCheckboxView, value: Bool)
+}
+
 class ConvectorCheckboxView: UIView {
     private var _selected = false
     public var selected: Bool {
@@ -529,10 +566,16 @@ class ConvectorCheckboxView: UIView {
             self.setNeedsDisplay()
         }
     }
+    public weak var delegate: ConvectorCheckboxViewDelegate?
+    public var allowToClear = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.isOpaque = false
+        self.isUserInteractionEnabled = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapAction(_:)))
+        self.addGestureRecognizer(tapGesture)
     }
     
     required init?(coder: NSCoder) {
@@ -548,11 +591,30 @@ class ConvectorCheckboxView: UIView {
         path.lineWidth = width
         UIColor.white.setStroke()
         path.stroke()
+        
+        if _selected {
+            let r1 = r - 4
+            let path1 = UIBezierPath(ovalIn: CGRect(x: self.frame.width / 2 - r1, y: self.frame.height / 2 - r1, width: 2 * r1, height: 2 * r1))
+            UIColor.white.setFill()
+            path1.fill()
+        }
     }
+    
+    @objc func onTapAction(_ gesture: UITapGestureRecognizer) {
+        if !allowToClear && _selected {
+            return
+        }
+        self.selected = !self.selected
+        self.delegate?.onCheckboxChange(self, value: self.selected)
+    }
+    
 }
 
 class ConvectorCheckboxLabeledView: UIView {
-    private var cbxValue = ConvectorCheckboxView()
+    private var _cbxValue = ConvectorCheckboxView()
+    public var checkboxView: ConvectorCheckboxView {
+        return _cbxValue
+    }
     private var label = UILabel()
     public var title: String? {
         get {
@@ -560,6 +622,22 @@ class ConvectorCheckboxLabeledView: UIView {
         }
         set {
             label.text = newValue
+        }
+    }
+    public weak var delegate: ConvectorCheckboxViewDelegate? {
+        get {
+            return _cbxValue.delegate
+        }
+        set {
+            _cbxValue.delegate = newValue
+        }
+    }
+    public var selected: Bool {
+        get {
+            return _cbxValue.selected
+        }
+        set {
+            _cbxValue.selected = newValue
         }
     }
     
@@ -584,17 +662,17 @@ class ConvectorCheckboxLabeledView: UIView {
         let hC = label.heightAnchor.constraint(equalTo: self.heightAnchor)
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         
-        self.addSubview(cbxValue)
-        cbxValue.translatesAutoresizingMaskIntoConstraints = false
-        let tC1 = cbxValue.topAnchor.constraint(equalTo: self.topAnchor, constant: 0)
-        let lC1 = cbxValue.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0)
-        let wC1 = cbxValue.widthAnchor.constraint(equalTo: self.heightAnchor, constant: 0)
-        let hC1 = cbxValue.heightAnchor.constraint(equalTo: self.heightAnchor)
+        self.addSubview(_cbxValue)
+        _cbxValue.translatesAutoresizingMaskIntoConstraints = false
+        let tC1 = _cbxValue.topAnchor.constraint(equalTo: self.topAnchor, constant: 0)
+        let lC1 = _cbxValue.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0)
+        let wC1 = _cbxValue.widthAnchor.constraint(equalTo: self.heightAnchor, constant: 0)
+        let hC1 = _cbxValue.heightAnchor.constraint(equalTo: self.heightAnchor)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
     }
 }
 
-class ConvectorCheckboxSetView: UIView {
+class ConvectorCheckboxSetView: UIView, ConvectorCheckboxViewDelegate {
     private var lblTitle = UILabel()
     public var title: String? {
         get {
@@ -614,6 +692,7 @@ class ConvectorCheckboxSetView: UIView {
             applyItems(_items)
         }
     }
+    public var checkboxes = [ConvectorCheckboxLabeledView]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -650,7 +729,8 @@ class ConvectorCheckboxSetView: UIView {
         for item in _items {
             let checkbox = ConvectorCheckboxLabeledView()
             checkbox.title = item.title
-            //checkbox.backgroundColor = .yellow
+            checkbox.delegate = self
+            checkboxes.append(checkbox)
             
             self.addSubview(checkbox)
             checkbox.translatesAutoresizingMaskIntoConstraints = false
@@ -661,6 +741,16 @@ class ConvectorCheckboxSetView: UIView {
             NSLayoutConstraint.activate([tC, lC, wC, hC])
             
             prevView = checkbox
+        }
+    }
+    
+    func onCheckboxChange(_ checkbox: ConvectorCheckboxView, value: Bool) {
+        if value {
+            for check in checkboxes {
+                if check.checkboxView != checkbox {
+                    check.selected = false
+                }
+            }
         }
     }
 }

@@ -137,6 +137,7 @@ protocol ConvectorBottomPanelDelegate: class {
 class ConvectorBottomPanel: UIView, SelectedButtonDelegate {
     private var buttons = [ConvectorBottomButton]()
     public weak var delegate: ConvectorBottomPanelDelegate?
+    public var prevAction: ConvectorBottomButtomType?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -188,6 +189,7 @@ class ConvectorBottomPanel: UIView, SelectedButtonDelegate {
     
     func onButtonSelection(_ selectedButton: SelectedButton) {
         delegate?.onBottomPanelAction((selectedButton as! ConvectorBottomButton).type)
+        prevAction = (selectedButton as! ConvectorBottomButton).type
         for btn in buttons {
             if btn.type != (selectedButton as! ConvectorBottomButton).type {
                 btn.selected = false
