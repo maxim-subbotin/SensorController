@@ -34,6 +34,17 @@ class ConvectorParametersView: UIScrollView {
     private var ventilationModeView = ConvectorSwitchView()
     private var fanSpeedGraphView = ConvectorCheckboxSetView()
     private var temperatureReactionTime = ConvectorTrackBarView()
+    private var maxFanSpeedView = ConvectorTrackBarView()
+    private var tempStepSleepModeView = ConvectorTrackBarView()
+    private var weekProgramModeView = ConvectorCheckboxSetView()
+    private var lblIndicationModes = UILabel()
+    private var displayBrightnessView = ConvectorTrackBarView()
+    private var brightDimmingView = ConvectorTwoValParamView()
+    private var lblOther = UILabel()
+    private var sensorCalibrationView = ConvectorTrackBarView()
+    private var blockModeView = ConvectorCheckboxSetView()
+    private var lblDefault = UILabel()
+    private var btnDefault = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -146,11 +157,282 @@ class ConvectorParametersView: UIScrollView {
         temperatureReactionTime.minValue = 1
         temperatureReactionTime.maxValue = 300
         temperatureReactionTime.value = 5
+        temperatureReactionTime.postfix = "sec"
+        
+        self.addSubview(maxFanSpeedView)
+        maxFanSpeedView.postfix = "%"
+        maxFanSpeedView.title = "Max fan speed limit:"
+        maxFanSpeedView.translatesAutoresizingMaskIntoConstraints = false
+        let tC9 = maxFanSpeedView.topAnchor.constraint(equalTo: temperatureReactionTime.bottomAnchor, constant: 35)
+        let lC9 = maxFanSpeedView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC9 = maxFanSpeedView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC9 = maxFanSpeedView.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([tC9, lC9, wC9, hC9])
+        maxFanSpeedView.minValue = 40
+        maxFanSpeedView.maxValue = 100
+        maxFanSpeedView.value = 45
+        
+        self.addSubview(tempStepSleepModeView)
+        tempStepSleepModeView.postfix = "°"
+        tempStepSleepModeView.title = "Temperature step for Sleep mode:"
+        tempStepSleepModeView.translatesAutoresizingMaskIntoConstraints = false
+        let tC10 = tempStepSleepModeView.topAnchor.constraint(equalTo: maxFanSpeedView.bottomAnchor, constant: 35)
+        let lC10 = tempStepSleepModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC10 = tempStepSleepModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC10 = tempStepSleepModeView.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([tC10, lC10, wC10, hC10])
+        tempStepSleepModeView.minValue = 3
+        tempStepSleepModeView.maxValue = 10
+        tempStepSleepModeView.value = 5
+        
+        self.addSubview(weekProgramModeView)
+        weekProgramModeView.title = "Week programming mode:"
+        weekProgramModeView.translatesAutoresizingMaskIntoConstraints = false
+        let tC11 = weekProgramModeView.topAnchor.constraint(equalTo: tempStepSleepModeView.bottomAnchor, constant: 35)
+        let lC11 = weekProgramModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC11 = weekProgramModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC11 = weekProgramModeView.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([tC11, lC11, wC11, hC11])
+        weekProgramModeView.items = [ValueSelectorItem(withTitle: "Disabled", andValue: WeekProgramMode.disabled),
+                                    ValueSelectorItem(withTitle: "By fan speed", andValue: WeekProgramMode.byFanSpeed),
+                                    ValueSelectorItem(withTitle: "By air temperature", andValue: WeekProgramMode.byAirTemperature)]
+        
+        self.addSubview(lblIndicationModes)
+        lblIndicationModes.text = "Indication modes"
+        lblIndicationModes.textColor = .white
+        lblIndicationModes.font = UIFont.customFont(bySize: 25)
+        lblIndicationModes.translatesAutoresizingMaskIntoConstraints = false
+        let tC12 = lblIndicationModes.topAnchor.constraint(equalTo: weekProgramModeView.bottomAnchor, constant: 25)
+        let lC12 = lblIndicationModes.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 38)
+        let wC12 = lblIndicationModes.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(38 + 38))
+        let hC12 = lblIndicationModes.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC12, lC12, wC12, hC12])
+        
+        let separator2 = UIView()
+        self.addSubview(separator2)
+        separator2.backgroundColor = .white
+        separator2.alpha = 0.5
+        separator2.translatesAutoresizingMaskIntoConstraints = false
+        let tC13 = separator2.topAnchor.constraint(equalTo: lblIndicationModes.bottomAnchor, constant: 15)
+        let lC13 = separator2.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC13 = separator2.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: -20)
+        let hC13 = separator2.heightAnchor.constraint(equalToConstant: 2)
+        NSLayoutConstraint.activate([tC13, lC13, wC13, hC13])
+        
+        self.addSubview(displayBrightnessView)
+        displayBrightnessView.postfix = ""
+        displayBrightnessView.title = "Display brightness:"
+        displayBrightnessView.translatesAutoresizingMaskIntoConstraints = false
+        let tC14 = displayBrightnessView.topAnchor.constraint(equalTo: separator2.bottomAnchor, constant: 35)
+        let lC14 = displayBrightnessView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC14 = displayBrightnessView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC14 = displayBrightnessView.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([tC14, lC14, wC14, hC14])
+        displayBrightnessView.minValue = 1
+        displayBrightnessView.maxValue = 5
+        displayBrightnessView.value = 3
+        
+        self.addSubview(brightDimmingView)
+        brightDimmingView.title = "Brightness dimming"
+        brightDimmingView.param1Name = "Enabled"
+        brightDimmingView.param2Name = "Disabled"
+        brightDimmingView.translatesAutoresizingMaskIntoConstraints = false
+        let tC15 = brightDimmingView.topAnchor.constraint(equalTo: displayBrightnessView.bottomAnchor, constant: 35)
+        let lC15 = brightDimmingView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC15 = brightDimmingView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC15 = brightDimmingView.heightAnchor.constraint(equalToConstant: 80)
+        NSLayoutConstraint.activate([tC15, lC15, wC15, hC15])
+        
+        self.addSubview(lblOther)
+        lblOther.text = "Others"
+        lblOther.textColor = .white
+        lblOther.font = UIFont.customFont(bySize: 25)
+        lblOther.translatesAutoresizingMaskIntoConstraints = false
+        let tC16 = lblOther.topAnchor.constraint(equalTo: brightDimmingView.bottomAnchor, constant: 25)
+        let lC16 = lblOther.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 38)
+        let wC16 = lblOther.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(38 + 38))
+        let hC16 = lblOther.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC16, lC16, wC16, hC16])
+        
+        let separator3 = UIView()
+        self.addSubview(separator3)
+        separator3.backgroundColor = .white
+        separator3.alpha = 0.5
+        separator3.translatesAutoresizingMaskIntoConstraints = false
+        let tC17 = separator3.topAnchor.constraint(equalTo: lblOther.bottomAnchor, constant: 15)
+        let lC17 = separator3.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC17 = separator3.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: -20)
+        let hC17 = separator3.heightAnchor.constraint(equalToConstant: 2)
+        NSLayoutConstraint.activate([tC17, lC17, wC17, hC17])
+
+        self.addSubview(sensorCalibrationView)
+        sensorCalibrationView.postfix = "°"
+        sensorCalibrationView.title = "Temperature sensor calibration:"
+        sensorCalibrationView.translatesAutoresizingMaskIntoConstraints = false
+        let tC18 = sensorCalibrationView.topAnchor.constraint(equalTo: separator3.bottomAnchor, constant: 35)
+        let lC18 = sensorCalibrationView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC18 = sensorCalibrationView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC18 = sensorCalibrationView.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([tC18, lC18, wC18, hC18])
+        sensorCalibrationView.minValue = -5
+        sensorCalibrationView.maxValue = 5
+        sensorCalibrationView.value = 0
+        
+        self.addSubview(blockModeView)
+        blockModeView.title = "Buttons block mode:"
+        blockModeView.translatesAutoresizingMaskIntoConstraints = false
+        let tC19 = blockModeView.topAnchor.constraint(equalTo: sensorCalibrationView.bottomAnchor, constant: 35)
+        let lC19 = blockModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC19 = blockModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
+        let hC19 = blockModeView.heightAnchor.constraint(equalToConstant: 160)
+        NSLayoutConstraint.activate([tC19, lC19, wC19, hC19])
+        blockModeView.items = [ValueSelectorItem(withTitle: "Disabled", andValue: WeekProgramMode.disabled),
+                            ValueSelectorItem(withTitle: "By fan speed", andValue: WeekProgramMode.byFanSpeed),
+                            ValueSelectorItem(withTitle: "By air temperature", andValue: WeekProgramMode.byAirTemperature)]
+        
+        self.addSubview(lblDefault)
+        lblDefault.text = "Default settings"
+        lblDefault.textColor = .white
+        lblDefault.font = UIFont.customFont(bySize: 21)
+        lblDefault.translatesAutoresizingMaskIntoConstraints = false
+        let tC20 = lblDefault.topAnchor.constraint(equalTo: blockModeView.bottomAnchor, constant: 25)
+        let lC20 = lblDefault.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 38)
+        let wC20 = lblDefault.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(38 + 38))
+        let hC20 = lblDefault.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC20, lC20, wC20, hC20])
+        
+        self.addSubview(btnDefault)
+        btnDefault.translatesAutoresizingMaskIntoConstraints = false
+        btnDefault.layer.cornerRadius = 15
+        btnDefault.setTitle("Reset", for: .normal)
+        btnDefault.setTitleColor(UIColor(hexString: "#F0F0F0"), for: .highlighted)
+        btnDefault.titleLabel?.font = UIFont.customFont(bySize: 21)
+        btnDefault.clipsToBounds = true
+        btnDefault.layer.borderColor = UIColor.white.cgColor
+        btnDefault.layer.borderWidth = 2
+        btnDefault.backgroundColor = .clear
+        btnDefault.setTitleColor(UIColor.white, for: .normal)
+        let tC21 = btnDefault.topAnchor.constraint(equalTo: lblDefault.bottomAnchor, constant: 15)
+        let lC21 = btnDefault.leftAnchor.constraint(equalTo: lblDefault.leftAnchor, constant: 0)
+        let wC21 = btnDefault.widthAnchor.constraint(equalToConstant: 150)
+        let hC21 = btnDefault.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC21, lC21, wC21, hC21])
+        //btnDefault.addTarget(self, action: #selector(onButtonTap(_:)), for: .touchUpInside)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.contentSize = CGSize(width: self.frame.width, height: 1200)
+        self.contentSize = CGSize(width: self.frame.width, height: 2800)
+    }
+}
+
+class ConvectorTwoValParamView: UIView {
+    private var lblTitle = UILabel()
+    private var btnManual = UIButton()
+    private var btnAuto = UIButton()
+    private var _param1Name = ""
+    public var param1Name: String {
+        get {
+            return _param1Name
+        }
+        set {
+            _param1Name = newValue
+            btnManual.setTitle(_param1Name, for: .normal)
+        }
+    }
+    private var _param2Name = ""
+    public var param2Name: String {
+        get {
+            return _param2Name
+        }
+        set {
+            _param2Name = newValue
+            btnAuto.setTitle(_param2Name, for: .normal)
+        }
+    }
+    public var title: String? {
+        get {
+            return lblTitle.text
+        }
+        set {
+            lblTitle.text = newValue
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        applyUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    func applyUI() {
+        self.addSubview(lblTitle)
+        lblTitle.text = ""
+        lblTitle.textColor = .white
+        lblTitle.font = UIFont.customFont(bySize: 21)
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 5)
+        let lC = lblTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
+        let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: 0)
+        let hC = lblTitle.heightAnchor.constraint(equalToConstant: 25)
+        NSLayoutConstraint.activate([tC, lC, wC, hC])
+        
+        self.addSubview(btnManual)
+        btnManual.translatesAutoresizingMaskIntoConstraints = false
+        btnManual.layer.cornerRadius = 15
+        btnManual.backgroundColor = .white
+        btnManual.setTitleColor(UIColor(hexString: "#009CDF"), for: .normal)
+        btnManual.setTitle("", for: .normal)
+        btnManual.titleLabel?.font = UIFont.customFont(bySize: 21)
+        btnManual.clipsToBounds = true
+        let tC1 = btnManual.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 15)
+        let lC1 = btnManual.leftAnchor.constraint(equalTo: lblTitle.leftAnchor, constant: 0)
+        let wC1 = btnManual.widthAnchor.constraint(equalTo: lblTitle.widthAnchor, multiplier: 0.5, constant: -10)
+        let hC1 = btnManual.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        btnManual.addTarget(self, action: #selector(onButtonTap(_:)), for: .touchUpInside)
+        
+        self.addSubview(btnAuto)
+        btnAuto.translatesAutoresizingMaskIntoConstraints = false
+        btnAuto.layer.cornerRadius = 15
+        btnAuto.layer.borderColor = UIColor.white.cgColor
+        btnAuto.layer.borderWidth = 2
+        btnAuto.backgroundColor = .clear
+        btnAuto.setTitleColor(UIColor.white, for: .normal)
+        btnAuto.setTitle("", for: .normal)
+        btnAuto.titleLabel?.font = UIFont.customFont(bySize: 21)
+        btnAuto.clipsToBounds = true
+        let tC2 = btnAuto.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 15)
+        let lC2 = btnAuto.rightAnchor.constraint(equalTo: lblTitle.rightAnchor, constant: 0)
+        let wC2 = btnAuto.widthAnchor.constraint(equalTo: lblTitle.widthAnchor, multiplier: 0.5, constant: -10)
+        let hC2 = btnAuto.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
+        btnAuto.addTarget(self, action: #selector(onButtonTap(_:)), for: .touchUpInside)
+    }
+    
+    @objc func onButtonTap(_ button: UIButton) {
+        if button == btnManual {
+            selectButton(btnManual)
+            deselectButton(btnAuto)
+        } else {
+            selectButton(btnAuto)
+            deselectButton(btnManual)
+        }
+    }
+    
+    func selectButton(_ button: UIButton) {
+        button.backgroundColor = .white
+        button.setTitleColor(UIColor(hexString: "#009CDF"), for: .normal)
+    }
+    
+    func deselectButton(_ button: UIButton) {
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 2
+        button.backgroundColor = .clear
+        button.setTitleColor(UIColor.white, for: .normal)
     }
 }
 
@@ -622,7 +904,7 @@ class ConvectorSliderView: UIView {
         var x = pinView.center.x + c.x
         x = max(x, 0)
         x = min(self.frame.width, x)
-        pinView.center = CGPoint(x: x, y: pinView.center.y)
+        //pinView.center = CGPoint(x: x, y: pinView.center.y)
         gesture.setTranslation(.zero, in: pinView)
         
         self.value = x / self.frame.width
@@ -672,6 +954,14 @@ class ConvectorTrackBarView: UIView, ConvectorSliderViewDelegate, ConvectorPlusM
             plusBar.maxValue = _maxValue
         }
     }
+    public var postfix: String {
+        get {
+            return plusBar.postfix
+        }
+        set {
+            plusBar.postfix = newValue
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -715,7 +1005,7 @@ class ConvectorTrackBarView: UIView, ConvectorSliderViewDelegate, ConvectorPlusM
     
     func onSliderValueChange(_ value: CGFloat) {
         let v = minValue + Int(CGFloat(maxValue - minValue) * value)
-        self.value = v
+        plusBar.value = v
     }
     
     func onPlusMinusBarValueChange(_ val: Int) {
