@@ -143,6 +143,8 @@ class ConvectorParametersView: UIScrollView {
         let wC8 = temperatureReactionTime.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
         let hC8 = temperatureReactionTime.heightAnchor.constraint(equalToConstant: 160)
         NSLayoutConstraint.activate([tC8, lC8, wC8, hC8])
+        temperatureReactionTime.minValue = 1
+        temperatureReactionTime.maxValue = 300
         temperatureReactionTime.value = 5
     }
     
@@ -460,6 +462,10 @@ class ConvectorSwitchView: UIView {
     }
 }
 
+protocol ConvectorPlusMinusViewDelegate: class {
+    func onPlusMinusBarValueChange(_ val: Int)
+}
+
 class ConvectorPlusMinusView: UIView {
     private var btnPlus = UIButton()
     private var btnMinus = UIButton()
@@ -475,6 +481,9 @@ class ConvectorPlusMinusView: UIView {
             lblTitle.text = "\(_value) \(postfix)"
         }
     }
+    public weak var delegate: ConvectorPlusMinusViewDelegate?
+    public var minValue = 0
+    public var maxValue = 10
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -524,11 +533,19 @@ class ConvectorPlusMinusView: UIView {
     }
     
     @objc func onPlus() {
+        if self.value >= maxValue {
+            return
+        }
         self.value += 1
+        self.delegate?.onPlusMinusBarValueChange(self.value)
     }
     
     @objc func onMinus() {
+        if self.value <= minValue {
+            return
+        }
         self.value -= 1
+        self.delegate?.onPlusMinusBarValueChange(self.value)
     }
 }
 
@@ -551,6 +568,10 @@ class ConvectorPinView: UIView {
     }
 }
 
+protocol ConvectorSliderViewDelegate: class {
+    func onSliderValueChange(_ value: CGFloat)
+}
+
 class ConvectorSliderView: UIView {
     private var pinView = ConvectorPinView()
     private var _value = CGFloat(0.5)
@@ -565,6 +586,7 @@ class ConvectorSliderView: UIView {
     }
     public var activeColor = UIColor.white
     public var inactiveColor = UIColor(hexString: "#50FFFFFF")
+    public weak var delegate: ConvectorSliderViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -572,6 +594,8 @@ class ConvectorSliderView: UIView {
         self.isOpaque = false
         
         self.addSubview(pinView)
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onDragAction(_:)))
+        pinView.addGestureRecognizer(panGesture)
     }
     
     required init?(coder: NSCoder) {
@@ -590,12 +614,23 @@ class ConvectorSliderView: UIView {
         path2.fill()
         
         let w = rect.height
-        pinView.frame = CGRect(x: rect.width / 2 - w / 2, y: 0, width: w, height: w)
+        pinView.frame = CGRect(x: rect.width * _value - w / 2, y: 0, width: w, height: w)
     }
     
+    @objc func onDragAction(_ gesture: UIPanGestureRecognizer) {
+        let c = gesture.translation(in: pinView)
+        var x = pinView.center.x + c.x
+        x = max(x, 0)
+        x = min(self.frame.width, x)
+        pinView.center = CGPoint(x: x, y: pinView.center.y)
+        gesture.setTranslation(.zero, in: pinView)
+        
+        self.value = x / self.frame.width
+        self.delegate?.onSliderValueChange(self.value)
+    }
 }
 
-class ConvectorTrackBarView: UIView {
+class ConvectorTrackBarView: UIView, ConvectorSliderViewDelegate, ConvectorPlusMinusViewDelegate {
     private var lblTitle = UILabel()
     private var plusBar = ConvectorPlusMinusView()
     private var slider = ConvectorSliderView()
@@ -613,6 +648,28 @@ class ConvectorTrackBarView: UIView {
         }
         set {
             plusBar.value = newValue
+            let v = CGFloat(newValue - minValue) / CGFloat(maxValue - minValue)
+            self.slider.value = v
+        }
+    }
+    private var _minValue = 0
+    public var minValue: Int {
+        get {
+            return _minValue
+        }
+        set {
+            _minValue = newValue
+            plusBar.minValue = _minValue
+        }
+    }
+    private var _maxValue = 0
+    public var maxValue: Int {
+        get {
+            return _maxValue
+        }
+        set {
+            _maxValue = newValue
+            plusBar.maxValue = _maxValue
         }
     }
     
@@ -644,6 +701,7 @@ class ConvectorTrackBarView: UIView {
         let wC1 = plusBar.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -60)
         let hC1 = plusBar.heightAnchor.constraint(equalToConstant: 60)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        plusBar.delegate = self
         
         self.addSubview(slider)
         slider.translatesAutoresizingMaskIntoConstraints = false
@@ -652,9 +710,17 @@ class ConvectorTrackBarView: UIView {
         let wC2 = slider.widthAnchor.constraint(equalTo: self.widthAnchor, constant: 0)
         let hC2 = slider.heightAnchor.constraint(equalToConstant: 40)
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
+        slider.delegate = self
     }
     
-    func onDragAction(_ gesture: UIPanGestureRecognizer) {
-        
+    func onSliderValueChange(_ value: CGFloat) {
+        let v = minValue + Int(CGFloat(maxValue - minValue) * value)
+        self.value = v
+    }
+    
+    func onPlusMinusBarValueChange(_ val: Int) {
+        self.value = val
+        let v = CGFloat(val - minValue) / CGFloat(maxValue - minValue)
+        self.slider.value = v
     }
 }
