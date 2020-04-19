@@ -168,11 +168,11 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let colNumber = UIApplication.shared.statusBarOrientation.isLandscape ? 3 : 2
+        let colNumber = 1 //UIApplication.shared.statusBarOrientation.isLandscape ? 3 : 2
         let w = UIDevice.current.isiPad ?
             (UIScreen.main.bounds.width - CGFloat(10 * colNumber)) / CGFloat(colNumber) :
             (UIScreen.main.bounds.width - 10)
-        return CGSize(width: w, height: 100)
+        return CGSize(width: w, height: 60)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

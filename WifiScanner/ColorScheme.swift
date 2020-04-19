@@ -47,7 +47,21 @@ class ColorScheme {
     public var datePickerInputTextColor = UIColor(hexString: "#F6F7EB")
     
     public static var current: ColorScheme {
-        return ColorScheme()
+        return ColorScheme.varmann
+    }
+    
+    public static var varmann: ColorScheme {
+        let scheme = ColorScheme()
+        scheme.backgroundColor = .white
+        scheme.navigationBarColor = .white
+        scheme.navigationTextColor = .black
+        
+        scheme.spotCellBackgroundColor = .white
+        scheme.spotCellTitleColor = .black
+        scheme.spotCellDetailColor = .black
+        scheme.spotCellMenuButtonColor = .white
+        
+        return scheme
     }
     
     public static var light: ColorScheme {

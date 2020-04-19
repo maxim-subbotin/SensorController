@@ -127,7 +127,7 @@ protocol SpotCollectionViewCellDelegate: class {
 }
 
 class SpotCollectionViewCell: UICollectionViewCell, SpotCardViewDelegate {
-    private var spotView = SpotCardView()
+    private var spotView = RegulatorCellView() //SpotCardView()
     private var _spot: Spot?
     public var spot: Spot? {
         get {
@@ -140,10 +140,10 @@ class SpotCollectionViewCell: UICollectionViewCell, SpotCardViewDelegate {
     }
     public var isCurrentNetwork: Bool {
         get {
-            return spotView.isCurrentNetwork
+            return false // spotView.isCurrentNetwork
         }
         set {
-            spotView.isCurrentNetwork = newValue
+            //spotView.isCurrentNetwork = newValue
         }
     }
     public weak var delegate: SpotCollectionViewCellDelegate?
@@ -170,15 +170,15 @@ class SpotCollectionViewCell: UICollectionViewCell, SpotCardViewDelegate {
         spotView.layer.cornerRadius = 5
         spotView.clipsToBounds = true
         spotView.isUserInteractionEnabled = true
-        spotView.delegate = self
+        //spotView.delegate = self
     }
     
     func startAnimation() {
-        spotView.startAnimation()
+        //spotView.startAnimation()
     }
     
     func stopAnimation() {
-        spotView.stopAnimation()
+        //spotView.stopAnimation()
     }
     
     func onMenuTap() {
@@ -194,7 +194,7 @@ class SpotsCollectionView: UICollectionView {
         let w = UIDevice.current.isiPad ?
                     (UIScreen.main.bounds.width - 30) / 2 :
                     (UIScreen.main.bounds.width - 20)
-        l.itemSize = CGSize(width: w, height: 100)
+        l.itemSize = CGSize(width: w, height: 60)
         //l.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         return l
     }
