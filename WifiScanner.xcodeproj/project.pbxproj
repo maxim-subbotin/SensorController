@@ -14,6 +14,13 @@
 		D6310FA1240D89E7004733A2 /* ConvectotParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6310FA0240D89E7004733A2 /* ConvectotParametersView.swift */; };
 		D639840C23D4A37100C02F43 /* ValueSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D639840B23D4A37100C02F43 /* ValueSelectionView.swift */; };
 		D6434D99244C38210047A9F0 /* ConvectorWeeklyProgrammingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434D98244C38210047A9F0 /* ConvectorWeeklyProgrammingView.swift */; };
+		D6434D9B244C52C60047A9F0 /* ConvectorSleepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434D9A244C52C60047A9F0 /* ConvectorSleepView.swift */; };
+		D6434DA2244C56500047A9F0 /* CLDateTimeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434D9D244C56500047A9F0 /* CLDateTimeField.swift */; };
+		D6434DA3244C56500047A9F0 /* CLDateTimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434D9E244C56500047A9F0 /* CLDateTimePickerViewController.swift */; };
+		D6434DA4244C56500047A9F0 /* CLDatePickerResources.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6434D9F244C56500047A9F0 /* CLDatePickerResources.xcassets */; };
+		D6434DA5244C56500047A9F0 /* CLCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434DA0244C56500047A9F0 /* CLCalendarView.swift */; };
+		D6434DA6244C56500047A9F0 /* CLDateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434DA1244C56500047A9F0 /* CLDateTimePickerView.swift */; };
+		D6434DA8244C57750047A9F0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434DA7244C57750047A9F0 /* Extensions.swift */; };
 		D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B023335A17009D2D4C /* PingConfiguration.swift */; };
 		D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B123335A17009D2D4C /* SwiftPing.swift */; };
 		D674F1B723335A17009D2D4C /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B223335A17009D2D4C /* Shared.swift */; };
@@ -74,6 +81,13 @@
 		D6310FA0240D89E7004733A2 /* ConvectotParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvectotParametersView.swift; sourceTree = "<group>"; };
 		D639840B23D4A37100C02F43 /* ValueSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueSelectionView.swift; sourceTree = "<group>"; };
 		D6434D98244C38210047A9F0 /* ConvectorWeeklyProgrammingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConvectorWeeklyProgrammingView.swift; path = WifiScanner/UIv2/ConvectorWeeklyProgrammingView.swift; sourceTree = SOURCE_ROOT; };
+		D6434D9A244C52C60047A9F0 /* ConvectorSleepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvectorSleepView.swift; sourceTree = "<group>"; };
+		D6434D9D244C56500047A9F0 /* CLDateTimeField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CLDateTimeField.swift; path = DateTimePicker/CLDateTimeField.swift; sourceTree = "<group>"; };
+		D6434D9E244C56500047A9F0 /* CLDateTimePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CLDateTimePickerViewController.swift; path = DateTimePicker/CLDateTimePickerViewController.swift; sourceTree = "<group>"; };
+		D6434D9F244C56500047A9F0 /* CLDatePickerResources.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = CLDatePickerResources.xcassets; path = DateTimePicker/CLDatePickerResources.xcassets; sourceTree = "<group>"; };
+		D6434DA0244C56500047A9F0 /* CLCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CLCalendarView.swift; path = DateTimePicker/CLCalendarView.swift; sourceTree = "<group>"; };
+		D6434DA1244C56500047A9F0 /* CLDateTimePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CLDateTimePickerView.swift; path = DateTimePicker/CLDateTimePickerView.swift; sourceTree = "<group>"; };
+		D6434DA7244C57750047A9F0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D674F1B023335A17009D2D4C /* PingConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingConfiguration.swift; sourceTree = "<group>"; };
 		D674F1B123335A17009D2D4C /* SwiftPing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPing.swift; sourceTree = "<group>"; };
 		D674F1B223335A17009D2D4C /* Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
@@ -153,6 +167,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D6434D9C244C56400047A9F0 /* DateTimePicker */ = {
+			isa = PBXGroup;
+			children = (
+				D6434DA0244C56500047A9F0 /* CLCalendarView.swift */,
+				D6434D9F244C56500047A9F0 /* CLDatePickerResources.xcassets */,
+				D6434D9D244C56500047A9F0 /* CLDateTimeField.swift */,
+				D6434DA1244C56500047A9F0 /* CLDateTimePickerView.swift */,
+				D6434D9E244C56500047A9F0 /* CLDateTimePickerViewController.swift */,
+			);
+			name = DateTimePicker;
+			sourceTree = "<group>";
+		};
 		D674F1AF23335A17009D2D4C /* Ping */ = {
 			isa = PBXGroup;
 			children = (
@@ -178,6 +204,7 @@
 		D67944222406F1C400863E39 /* UIv2 */ = {
 			isa = PBXGroup;
 			children = (
+				D6434D9C244C56400047A9F0 /* DateTimePicker */,
 				D67944252406F53300863E39 /* Fonts */,
 				D67944232406F21D00863E39 /* ConvectorViewController.swift */,
 				D679442A2406F61600863E39 /* UIHelper.swift */,
@@ -187,6 +214,7 @@
 				D6310FA0240D89E7004733A2 /* ConvectotParametersView.swift */,
 				D6434D98244C38210047A9F0 /* ConvectorWeeklyProgrammingView.swift */,
 				D67944302406FD9F00863E39 /* convector.xcassets */,
+				D6434D9A244C52C60047A9F0 /* ConvectorSleepView.swift */,
 			);
 			path = UIv2;
 			sourceTree = "<group>";
@@ -313,6 +341,7 @@
 				D6E22532235C97B100E0D800 /* Tools.swift */,
 				D68F240823CC5D7400A249A2 /* ColorScheme.swift */,
 				D608674A23E200850013044A /* SpotAdditionalParametersViewController.swift */,
+				D6434DA7244C57750047A9F0 /* Extensions.swift */,
 			);
 			path = WifiScanner;
 			sourceTree = "<group>";
@@ -414,6 +443,7 @@
 				D67DFA89233519D700760D92 /* AUTHORS in Resources */,
 				D67DFA86233519D700760D92 /* README.md in Resources */,
 				D6F1DCAD2330B16C007248AC /* Main.storyboard in Resources */,
+				D6434DA4244C56500047A9F0 /* CLDatePickerResources.xcassets in Resources */,
 				D67DFA90233519D700760D92 /* README.rst in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,17 +455,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6434DA3244C56500047A9F0 /* CLDateTimePickerViewController.swift in Sources */,
 				D6E23AE423CDB5B200F0CB94 /* SpotIndicatorView.swift in Sources */,
 				D67DFA8B233519D700760D92 /* modbus-tcp.c in Sources */,
 				D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */,
 				D695920323DDE11E00CEDB4F /* ReactionTimeView.swift in Sources */,
 				D674F1B723335A17009D2D4C /* Shared.swift in Sources */,
+				D6434D9B244C52C60047A9F0 /* ConvectorSleepView.swift in Sources */,
 				D6302EA023F067700041531A /* UITextFieldExt.swift in Sources */,
 				D60EC82A23D0F39500D81289 /* SpotParameterView.swift in Sources */,
 				D67DFA612334A96400760D92 /* Color.swift in Sources */,
 				D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */,
 				D67DFA8A233519D700760D92 /* modbus.c in Sources */,
 				D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */,
+				D6434DA6244C56500047A9F0 /* CLDateTimePickerView.swift in Sources */,
 				D6F2046123DA1943002BFE0D /* DatetimeView.swift in Sources */,
 				D68F240923CC5D7400A249A2 /* ColorScheme.swift in Sources */,
 				D6AC45A123D793EF00779652 /* CalibratorView.swift in Sources */,
@@ -444,6 +477,7 @@
 				D6794433240708E200863E39 /* ConvectorManualView.swift in Sources */,
 				D695920123DDC91300CEDB4F /* FanSpeedView.swift in Sources */,
 				D679442D2406F74000863E39 /* ConvectorDateTimeView.swift in Sources */,
+				D6434DA5244C56500047A9F0 /* CLCalendarView.swift in Sources */,
 				D639840C23D4A37100C02F43 /* ValueSelectionView.swift in Sources */,
 				D67DFA88233519D700760D92 /* modbus-data.c in Sources */,
 				D6F1DCAA2330B16C007248AC /* ViewController.swift in Sources */,
@@ -464,6 +498,8 @@
 				D67DFA6B2335176800760D92 /* SpotViewController.swift in Sources */,
 				D6E22533235C97B100E0D800 /* Tools.swift in Sources */,
 				D6310FA1240D89E7004733A2 /* ConvectotParametersView.swift in Sources */,
+				D6434DA8244C57750047A9F0 /* Extensions.swift in Sources */,
+				D6434DA2244C56500047A9F0 /* CLDateTimeField.swift in Sources */,
 				D6434D99244C38210047A9F0 /* ConvectorWeeklyProgrammingView.swift in Sources */,
 				D674F1B823335A17009D2D4C /* ICMP.swift in Sources */,
 				D67DFA85233519D700760D92 /* SwiftLibModbus.swift in Sources */,

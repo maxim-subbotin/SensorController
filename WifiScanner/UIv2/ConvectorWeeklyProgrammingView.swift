@@ -2,7 +2,6 @@
 //  ConvectorWeeklyProgrammingView.swift
 //  WifiScanner
 //
-//  Created by Snappii on 4/19/20.
 //  Copyright © 2020 Max Subbotin. All rights reserved.
 //
 

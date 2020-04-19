@@ -19,6 +19,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
     private var btnTemperature = ConvectorBottomButton()
     private var parametersView = ConvectorParametersView()
     private var weeklyProgrammingView = ConvectorWeeklyProgrammingView()
+    private var sleepView = ConvectorSleepView()
     private var lblAuto = UILabel()
     public var spot = Spot()
     public var spotState = SpotState.demo
@@ -174,6 +175,16 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         NSLayoutConstraint.activate([bC10, cxC10, wC10, tC10])
         weeklyProgrammingView.backgroundColor = UIColor(hexString: "#009CDF")
         weeklyProgrammingView.isHidden = true
+        
+        self.view.addSubview(sleepView)
+        sleepView.translatesAutoresizingMaskIntoConstraints = false
+        let cxC11 = sleepView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0)
+        let tC11 = sleepView.topAnchor.constraint(equalTo: self.lblTitle.bottomAnchor, constant: 0)
+        let wC11 = sleepView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: 0)
+        let bC11 = sleepView.bottomAnchor.constraint(equalTo: self.bottomPanel.topAnchor)
+        NSLayoutConstraint.activate([bC11, cxC11, wC11, tC11])
+        sleepView.backgroundColor = UIColor(hexString: "#009CDF")
+        sleepView.isHidden = true
     }
     
     override func viewDidLayoutSubviews() {
@@ -257,6 +268,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         
         self.parametersView.isHidden = (action != .settings)
         self.weeklyProgrammingView.isHidden = (action != .calendar)
+        self.sleepView.isHidden = (action != .vacation)
     }
     
     //MARK: - fan/temp changes
