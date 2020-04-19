@@ -10,13 +10,14 @@ import Foundation
 import UIKit
 
 
-class ConvectorWeeklyProgrammingView: UIView {
+class ConvectorWeeklyProgrammingView: UIView, TimeTemperatureViewDelegate {
     private var lblTitle = UILabel()
     private var lblDay = DayLabelView()
     private var timeSegment1 = TimeTemperatureView()
     private var timeSegment2 = TimeTemperatureView()
     private var timeSegment3 = TimeTemperatureView()
     private var timeSegment4 = TimeTemperatureView()
+    private var graph = TemperatureGraphView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,6 +66,8 @@ class ConvectorWeeklyProgrammingView: UIView {
         timeSegment1.temperature = 23
         timeSegment1.startHour = 4
         timeSegment1.endHour = 10
+        timeSegment1.number = 0
+        timeSegment1.delegate = self
         
         self.addSubview(timeSegment2)
         timeSegment2.translatesAutoresizingMaskIntoConstraints = false
@@ -76,6 +79,8 @@ class ConvectorWeeklyProgrammingView: UIView {
         timeSegment2.temperature = 23
         timeSegment2.startHour = 10
         timeSegment2.endHour = 16
+        timeSegment2.number = 1
+        timeSegment2.delegate = self
         
         self.addSubview(timeSegment3)
         timeSegment3.translatesAutoresizingMaskIntoConstraints = false
@@ -87,6 +92,8 @@ class ConvectorWeeklyProgrammingView: UIView {
         timeSegment3.temperature = 23
         timeSegment3.startHour = 16
         timeSegment3.endHour = 22
+        timeSegment3.number = 2
+        timeSegment3.delegate = self
         
         self.addSubview(timeSegment4)
         timeSegment4.translatesAutoresizingMaskIntoConstraints = false
@@ -98,8 +105,22 @@ class ConvectorWeeklyProgrammingView: UIView {
         timeSegment4.temperature = 23
         timeSegment4.startHour = 22
         timeSegment4.endHour = 4
+        timeSegment4.number = 3
+        timeSegment4.delegate = self
+        
+        self.addSubview(graph)
+        graph.translatesAutoresizingMaskIntoConstraints = false
+        let tC6 = graph.topAnchor.constraint(equalTo: timeSegment4.bottomAnchor, constant: 15)
+        let lC6 = graph.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC6 = graph.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(38 + 38))
+        let hC6 = graph.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5)
+        NSLayoutConstraint.activate([tC6, lC6, wC6, hC6])
+        graph.points = [23, 23, 23, 23] //[12, 15, 8, 20]
     }
     
+    func onTemperatureChange(_ temp: Int, forNumber num: Int) {
+        graph.points[num] = temp
+    }
 }
 
 class DayLabelView: UIView {
@@ -177,11 +198,17 @@ class DayLabelView: UIView {
     }
 }
 
+protocol TimeTemperatureViewDelegate: class {
+    func onTemperatureChange(_ temp: Int, forNumber num: Int)
+}
+
 class TimeTemperatureView: UIView {
     private var lblTime = UILabel()
     private var lblTemperature = UILabel()
     private var btnMinus = UIButton()
     private var btnPlus = UIButton()
+    public var number = 0
+    public weak var delegate: TimeTemperatureViewDelegate?
     
     private var _temperature = 0
     public var temperature: Int {
@@ -191,6 +218,7 @@ class TimeTemperatureView: UIView {
         set {
             _temperature = newValue
             self.lblTemperature.text = "\(_temperature)°"
+            delegate?.onTemperatureChange(_temperature, forNumber: number)
         }
     }
     private var _startHour = 0
@@ -274,5 +302,83 @@ class TimeTemperatureView: UIView {
     
     @objc func onPlusAction() {
         self.temperature += 1
+    }
+}
+
+class TemperatureGraphView: UIView {
+    private var _points = [23, 23, 22, 23]
+    private var minPoint = 0
+    private var maxPoint = 0
+    public var points: [Int] {
+        get {
+            return _points
+        }
+        set {
+            self._points = newValue
+            self.minPoint = newValue.min() ?? 0
+            self.maxPoint = newValue.max() ?? 0
+            self.setNeedsDisplay()
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.isOpaque = false
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.setNeedsDisplay()
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        let h = rect.height / CGFloat(maxPoint - minPoint + 2)
+        var x = CGFloat(0)
+        let dx = rect.width / CGFloat(self.points.count)
+        let radius = CGFloat(8)
+        var i = 0
+        var coords = [CGPoint]()
+        for p in points {
+            let y = CGFloat(maxPoint - p + 1) * h
+            if i == 0 {
+                x += radius / 2
+            }
+            if i == points.count - 1 {
+                x -= radius / 2
+            }
+            coords.append(CGPoint(x: x, y: y))
+
+            x += dx
+            i += 1
+        }
+        coords.append(CGPoint(x: x - radius / 2, y: coords.first!.y))
+        
+        i = 0
+        for c in coords {
+            let frame = CGRect(x: c.x - radius / 2, y: c.y - radius / 2, width: radius, height: radius)
+            let circle = UIBezierPath(ovalIn: frame)
+            UIColor.white.setFill()
+            circle.fill()
+            
+            let line = UIBezierPath()
+            line.move(to: c)
+            if i < coords.count - 1 {
+                line.addLine(to: coords[i + 1])
+            }
+            line.lineWidth = 2
+            UIColor.white.setStroke()
+            line.stroke()
+            
+            i += 1
+        }
+        
+        let border = UIBezierPath(rect: CGRect(x: radius / 2, y: radius / 2, width: rect.width - radius, height: rect.height - radius))
+        border.lineWidth = 1
+        border.stroke()
     }
 }
