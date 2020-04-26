@@ -98,9 +98,12 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
 
     @objc func onAddAction() {
-        let vc = SpotEditViewController()
-        vc.delegate = self
-        self.navigationController?.pushViewController(vc, animated: true)
+        let vc = SpotAddingHelperViewController()
+        self.present(vc, animated: true, completion: nil)
+        
+        //let vc = SpotEditViewController()
+        //vc.delegate = self
+        //self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func onRefreshAction() {
