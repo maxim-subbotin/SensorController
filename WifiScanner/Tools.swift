@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import NetworkExtension
+import SystemConfiguration
 
 class Tools {
     
@@ -50,5 +52,25 @@ class Tools {
             return nil
         }
         return "\(parts[0]).\(parts[1]).\(parts[2]).1"
+    }
+    
+    static var currentSsid: String {
+        var currentSSID = ""
+        if let interfaces:CFArray = CNCopySupportedInterfaces() {
+            for i in 0..<CFArrayGetCount(interfaces){
+                let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interfaces, i)
+                let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
+                let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString)
+                if unsafeInterfaceData != nil {
+                    let interfaceData = unsafeInterfaceData! as Dictionary!
+                    for dictData in interfaceData! {
+                        if dictData.key as! String == "SSID" {
+                            currentSSID = dictData.value as! String
+                        }
+                    }
+                }
+            }
+        }
+        return currentSSID
     }
 }

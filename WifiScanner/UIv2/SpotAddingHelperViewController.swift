@@ -2,18 +2,23 @@
 //  SpotAddingHelperViewController.swift
 //  WifiScanner
 //
-//  Created by Snappii on 4/26/20.
 //  Copyright © 2020 Max Subbotin. All rights reserved.
 //
 
 import Foundation
 import UIKit
+import NetworkExtension
+import SystemConfiguration
 
-class SpotAddingHelperViewController: UIViewController {
+class SpotAddingHelperViewController: UIViewController, RegulatorConnectionCardDelegate, RegulatorOnlineAuthCardDelegate {
     private var card1 = RegulatorTitleCardView()
     private var card2 = RegulatorTypeConnectionCardView()
     private var card3 = RegulatorNetworkCardView()
     private var card4 = RegulatorConnectionCard()
+    private var card5 = RegulatorConnectionErrorCard()
+    private var card6 = RegulatorOnlineAuthCard()
+    private var card7 = RegulatorForgetPasswordCard()
+    private var card8 = RegulatorSignupCard()
     private var container = HelperCardContainerView()
     
     override func viewDidLoad() {
@@ -24,25 +29,78 @@ class SpotAddingHelperViewController: UIViewController {
             self.container.goToNext()
         }
         container.addCard(card1)
+        
         card2.firstButtonAction = {() in
-            self.container.goToPrev()
+            self.container.goToPosition(1)
         }
         card2.secondButtonAction = {() in
-            self.container.goToNext()
+            if self.card2.isDirectConnection {
+                self.container.goToNext()
+            } else {
+                self.container.goToPosition(5)
+            }
         }
         container.addCard(card2)
+        
         card3.firstButtonAction = {() in
             self.container.goToPrev()
         }
         card3.secondButtonAction = {() in
-            self.container.goToNext()
-            self.card4.startRotation()
+            if let ssid = self.card3.ssid, let password = self.card3.password {
+                self.card4.ssid = ssid
+                self.card4.password = password
+                
+                self.container.goToNext()
+                self.card4.startRotation()
+                
+                self.card4.tryToConnect()
+            } else {
+                print("Need to fill ssid and password")
+            }
         }
         container.addCard(card3)
+        
+        card4.delegate = self
+        card4.viewController = self
         card4.secondButtonAction = {() in
             self.container.goToPrev()
         }
         container.addCard(card4)
+        
+        card5.firstButtonAction = {() in
+            self.container.goToPosition(2)
+        }
+        card5.secondButtonAction = {() in
+            self.container.goToPosition(3)
+            self.card4.startRotation()
+            self.card4.tryToConnect()
+        }
+        container.addCard(card5)
+        
+        card6.delegate = self
+        card6.firstButtonAction = {() in
+            self.container.goToPrev()
+        }
+        card6.secondButtonAction = {() in
+            //self.container.goToNext()
+        }
+        container.addCard(card6)
+        
+        card7.firstButtonAction = {() in
+            self.container.goToPrev()
+        }
+        card7.secondButtonAction = {() in
+            //
+        }
+        container.addCard(card7)
+        
+        card8.firstButtonAction = {() in
+            self.container.goToPosition(5)
+        }
+        card8.secondButtonAction = {() in
+            //
+        }
+        container.addCard(card8)
         
         self.view.addSubview(container)
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -51,6 +109,22 @@ class SpotAddingHelperViewController: UIViewController {
         let wC = container.widthAnchor.constraint(equalTo: self.view.widthAnchor)
         let hC = container.heightAnchor.constraint(equalTo: self.view.heightAnchor)
         NSLayoutConstraint.activate([tC, lC, wC, hC])
+    }
+    
+    func onConnectionError() {
+        container.goToPosition(4)
+    }
+    
+    func onConnectionSuccess() {
+        
+    }
+    
+    func onSingUpAction() {
+        self.container.goToPosition(7)
+    }
+    
+    func onForgetPassword() {
+        self.container.goToPosition(6)
     }
 }
 
@@ -114,6 +188,21 @@ class HelperCardContainerView: UIView {
         }
         currentPosition -= 1
     }
+    
+    func goToPosition(_ pos: Int) {
+        if pos < 0 || pos >= cards.count {
+            return
+        }
+        if let lC1 = self.constraints.first(where: { $0.identifier == "left_\(currentPosition)" }),
+            let lC2 = self.constraints.first(where: { $0.identifier == "left_\(pos)" }) {
+            lC1.constant = UIScreen.main.bounds.width
+            lC2.constant = 0
+            UIView.animate(withDuration: 0.5, animations: {
+                self.layoutIfNeeded()
+            })
+        }
+        currentPosition = pos
+    }
 }
 
 class HelperCardView: UIView {
@@ -150,6 +239,8 @@ class HelperCardView: UIView {
     func applyUI() {
         self.addSubview(btnPrev)
         self.addSubview(btnNext)
+        
+        self.backgroundColor = .white
         
         btnPrev.layer.borderColor = UIColor(hexString: "#DADADA").cgColor
         btnPrev.layer.borderWidth = 1
@@ -264,6 +355,9 @@ class RegulatorTypeConnectionCardView: TwoButtonHelperCardView, CheckboxViewDele
     private var lblDirectConnection = UILabel()
     private var cbxInternectConnection = CheckboxView(frame: .zero)
     private var lblInternetConnection = UILabel()
+    public var isDirectConnection: Bool {
+        return cbxDirectConnection.value
+    }
     
     override func applyUI() {
         super.applyUI()
@@ -384,6 +478,12 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
     private var lblTitle = UILabel()
     private var txtTitle = UnderlinedTextField()
     private var txtPassword = UnderlinedTextField()
+    public var ssid: String? {
+        return txtTitle.text
+    }
+    public var password: String? {
+        return txtPassword.text
+    }
     
     override func applyUI() {
         super.applyUI()
@@ -429,9 +529,18 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
     }
 }
 
+protocol RegulatorConnectionCardDelegate: class {
+    func onConnectionError()
+    func onConnectionSuccess()
+}
+
 class RegulatorConnectionCard: OneButtonHelperCardView {
     private var lblTitle = UILabel()
     private var spinnerView = UIImageView()
+    public var ssid: String?
+    public var password: String?
+    public weak var viewController: UIViewController?
+    public weak var delegate: RegulatorConnectionCardDelegate?
     
     override func applyUI() {
         super.applyUI()
@@ -471,5 +580,338 @@ class RegulatorConnectionCard: OneButtonHelperCardView {
         rotation.repeatDuration = 600
         rotation.repeatCount = Float.greatestFiniteMagnitude
         spinnerView.layer.add(rotation, forKey: "rotationAnimation")
+    }
+    
+    func tryToConnect() {
+        if ssid == nil || password == nil {
+            return
+        }
+        
+        // try to connect to wi-fi
+        if #available(iOS 11.0, *) {
+            let hotspotConfig = NEHotspotConfiguration(ssid: self.ssid!, passphrase: self.password!, isWEP: false)
+            NEHotspotConfigurationManager.shared.apply(hotspotConfig, completionHandler: { (error) in
+                if error != nil {
+                    /*let msg = error!.localizedDescription
+                    let alert = UIAlertController(title: "Connection error", message: msg, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.viewController?.present(alert, animated: true, completion: nil)*/
+                    
+                    self.delegate?.onConnectionError()
+                    
+                    return
+                }
+                
+                if Tools.currentSsid == self.ssid {
+                    if let ip = Tools.getIPAddress() {
+                        print("Connected to network \(self.ssid) successfully. IP: \(ip)")
+                        self.delegate?.onConnectionSuccess()
+                    }
+                } else {
+                    print("Unable to connect: \(self.ssid)")
+                    self.delegate?.onConnectionError()
+                }
+
+            })
+        } else {
+            print("Need to update ios version")
+        }
+    }
+}
+
+class RegulatorConnectionErrorCard: TwoButtonHelperCardView {
+    private var lblTitle = UILabel()
+    private var lblDescription = UILabel()
+    
+    override func applyUI() {
+        super.applyUI()
+        
+        self.firstButtonTitle = "BACK"
+        self.secondButtonTitle = "TRY AGAIN"
+        
+        self.addSubview(lblTitle)
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 50)
+        let lC = lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC = lblTitle.heightAnchor.constraint(equalToConstant: 55)
+        NSLayoutConstraint.activate([tC, lC, wC, hC])
+        lblTitle.textAlignment = .center
+        lblTitle.numberOfLines = 0
+        lblTitle.text = "Impossible to connect the regulator"
+        lblTitle.font = UIFont.customFont(bySize: 33)
+        lblTitle.textColor = UIColor(hexString: "#767676")
+        
+        self.addSubview(lblDescription)
+        lblDescription.translatesAutoresizingMaskIntoConstraints = false
+        let tC1 = lblDescription.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 50)
+        let lC1 = lblDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC1 = lblDescription.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC1 = lblDescription.heightAnchor.constraint(equalToConstant: 255)
+        NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        lblDescription.textAlignment = .center
+        lblDescription.numberOfLines = 0
+        lblDescription.text = "Please make sure the regulator is connected to network and distance from your device to the regulator less than 10 meters."
+        lblDescription.font = UIFont.customFont(bySize: 24)
+        lblDescription.textColor = UIColor(hexString: "#767676")
+    }
+}
+
+protocol RegulatorOnlineAuthCardDelegate: class {
+    func onSingUpAction()
+    func onForgetPassword()
+}
+
+class RegulatorOnlineAuthCard: TwoButtonHelperCardView {
+    private var lblTitle = UILabel()
+    private var txtEmail = UnderlinedTextField()
+    private var txtPassword = UnderlinedTextField()
+    private var btnRegistration = UIButton()
+    private var btnForgetPassword = UIButton()
+    public weak var delegate: RegulatorOnlineAuthCardDelegate?
+    
+    override func applyUI() {
+        super.applyUI()
+        
+        self.firstButtonTitle = "BACK"
+        self.secondButtonTitle = "NEXT"
+        
+        self.addSubview(lblTitle)
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 50)
+        let lC = lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC = lblTitle.heightAnchor.constraint(equalToConstant: 55)
+        NSLayoutConstraint.activate([tC, lC, wC, hC])
+        lblTitle.textAlignment = .center
+        lblTitle.numberOfLines = 0
+        lblTitle.text = "Authorization:"
+        lblTitle.font = UIFont.customFont(bySize: 33)
+        lblTitle.textColor = UIColor(hexString: "#767676")
+        
+        self.addSubview(txtEmail)
+        txtEmail.translatesAutoresizingMaskIntoConstraints = false
+        let tC1 = txtEmail.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 60)
+        let lC1 = txtEmail.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC1 = txtEmail.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC1 = txtEmail.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        txtEmail.placeholder = "Email address"
+        txtEmail.textColor = UIColor(hexString: "#767676")
+        txtEmail.font = UIFont.customFont(bySize: 26)
+        
+        self.addSubview(txtPassword)
+        txtPassword.translatesAutoresizingMaskIntoConstraints = false
+        let tC2 = txtPassword.topAnchor.constraint(equalTo: txtEmail.bottomAnchor, constant: 30)
+        let lC2 = txtPassword.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC2 = txtPassword.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC2 = txtPassword.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
+        txtPassword.placeholder = "Password"
+        txtPassword.textColor = UIColor(hexString: "#767676")
+        txtPassword.font = UIFont.customFont(bySize: 26)
+        txtPassword.isSecureTextEntry = true
+        
+        let attrs = [NSAttributedString.Key.font : UIFont.customFont(bySize: 20),
+                     NSAttributedString.Key.foregroundColor : UIColor(hexString: "#767676"),
+                     NSAttributedString.Key.underlineStyle : 1] as [NSAttributedString.Key : Any]
+        
+        self.addSubview(btnRegistration)
+        btnRegistration.translatesAutoresizingMaskIntoConstraints = false
+        let tC3 = btnRegistration.topAnchor.constraint(equalTo: txtPassword.bottomAnchor, constant: 30)
+        let lC3 = btnRegistration.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15)
+        let wC3 = btnRegistration.widthAnchor.constraint(equalToConstant: 120)
+        let hC3 = btnRegistration.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC3, lC3, wC3, hC3])
+        btnRegistration.setAttributedTitle(NSMutableAttributedString(string:"Sing up", attributes:attrs), for: .normal)
+        btnRegistration.contentHorizontalAlignment = .left
+        btnRegistration.setTitleColor(UIColor(hexString: "#767676"), for: .normal)
+        btnRegistration.titleLabel?.font = UIFont.customFont(bySize: 18)
+        btnRegistration.addTarget(self, action: #selector(onSingUp), for: .touchUpInside)
+        
+        self.addSubview(btnForgetPassword)
+        btnForgetPassword.translatesAutoresizingMaskIntoConstraints = false
+        let tC4 = btnForgetPassword.topAnchor.constraint(equalTo: txtPassword.bottomAnchor, constant: 30)
+        let lC4 = btnForgetPassword.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15)
+        let wC4 = btnForgetPassword.widthAnchor.constraint(equalToConstant: 120)
+        let hC4 = btnForgetPassword.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
+        btnForgetPassword.setAttributedTitle(NSMutableAttributedString(string:"Forget password", attributes:attrs), for: .normal)
+        btnForgetPassword.contentHorizontalAlignment = .right
+        btnForgetPassword.setTitleColor( UIColor(hexString: "#767676"), for: .normal)
+        btnForgetPassword.titleLabel?.font = UIFont.customFont(bySize: 18)
+        btnForgetPassword.addTarget(self, action: #selector(onForgetPassword), for: .touchUpInside)
+    }
+    
+    @objc func onSingUp() {
+        self.delegate?.onSingUpAction()
+    }
+    
+    @objc func onForgetPassword() {
+        self.delegate?.onForgetPassword()
+    }
+}
+
+class RegulatorForgetPasswordCard: TwoButtonHelperCardView {
+    private var lblTitle = UILabel()
+    private var txtEmail = UnderlinedTextField()
+    private var lblDescription = UILabel()
+    
+    override func applyUI() {
+        super.applyUI()
+        
+        self.firstButtonTitle = "BACK"
+        self.secondButtonTitle = "RESTORE"
+        
+        self.addSubview(lblTitle)
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 50)
+        let lC = lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC = lblTitle.heightAnchor.constraint(equalToConstant: 55)
+        NSLayoutConstraint.activate([tC, lC, wC, hC])
+        lblTitle.textAlignment = .center
+        lblTitle.numberOfLines = 0
+        lblTitle.text = "Access recovery:"
+        lblTitle.font = UIFont.customFont(bySize: 33)
+        lblTitle.textColor = UIColor(hexString: "#767676")
+        
+        self.addSubview(txtEmail)
+        txtEmail.translatesAutoresizingMaskIntoConstraints = false
+        let tC1 = txtEmail.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 60)
+        let lC1 = txtEmail.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC1 = txtEmail.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC1 = txtEmail.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        txtEmail.placeholder = "Email address"
+        txtEmail.textColor = UIColor(hexString: "#767676")
+        txtEmail.font = UIFont.customFont(bySize: 26)
+        
+        self.addSubview(lblDescription)
+        lblDescription.translatesAutoresizingMaskIntoConstraints = false
+        let tC2 = lblDescription.topAnchor.constraint(equalTo: txtEmail.bottomAnchor, constant: 50)
+        let lC2 = lblDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC2 = lblDescription.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC2 = lblDescription.heightAnchor.constraint(equalToConstant: 55)
+        NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
+        lblDescription.textAlignment = .center
+        lblDescription.numberOfLines = 0
+        lblDescription.text = "Enter the email address for access recovery. You will receive an email with instructions for password resetting."
+        lblDescription.font = UIFont.customFont(bySize: 20)
+        lblDescription.textColor = UIColor(hexString: "#767676")
+    }
+}
+
+class RegulatorSignupCard: TwoButtonHelperCardView {
+    private var lblTitle = UILabel()
+    private var txtName = UnderlinedTextField()
+    private var txtCompany = UnderlinedTextField()
+    private var txtEmail = UnderlinedTextField()
+    private var txtPassword = UnderlinedTextField()
+    private var txtPassword2 = UnderlinedTextField()
+    private var cbxAgree = CheckboxView(frame: .zero)
+    private var lblAgreement = UILabel()
+
+    override func applyUI() {
+        super.applyUI()
+        
+        self.firstButtonTitle = "BACK"
+        self.secondButtonTitle = "OK"
+        
+        self.addSubview(lblTitle)
+        lblTitle.translatesAutoresizingMaskIntoConstraints = false
+        let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 50)
+        let lC = lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC = lblTitle.heightAnchor.constraint(equalToConstant: 55)
+        NSLayoutConstraint.activate([tC, lC, wC, hC])
+        lblTitle.textAlignment = .center
+        lblTitle.numberOfLines = 0
+        lblTitle.text = "Sign Up:"
+        lblTitle.font = UIFont.customFont(bySize: 33)
+        lblTitle.textColor = UIColor(hexString: "#767676")
+        
+        self.addSubview(txtName)
+        txtName.translatesAutoresizingMaskIntoConstraints = false
+        let tC1 = txtName.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 60)
+        let lC1 = txtName.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC1 = txtName.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC1 = txtName.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
+        txtName.placeholder = "Name"
+        txtName.textColor = UIColor(hexString: "#767676")
+        txtName.font = UIFont.customFont(bySize: 26)
+        
+        self.addSubview(txtCompany)
+        txtCompany.translatesAutoresizingMaskIntoConstraints = false
+        let tC2 = txtCompany.topAnchor.constraint(equalTo: txtName.bottomAnchor, constant: 30)
+        let lC2 = txtCompany.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC2 = txtCompany.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC2 = txtCompany.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
+        txtCompany.placeholder = "Company"
+        txtCompany.textColor = UIColor(hexString: "#767676")
+        txtCompany.font = UIFont.customFont(bySize: 26)
+        
+        self.addSubview(txtEmail)
+        txtEmail.translatesAutoresizingMaskIntoConstraints = false
+        let tC3 = txtEmail.topAnchor.constraint(equalTo: txtCompany.bottomAnchor, constant: 30)
+        let lC3 = txtEmail.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC3 = txtEmail.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC3 = txtEmail.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC3, lC3, wC3, hC3])
+        txtEmail.placeholder = "Email"
+        txtEmail.textColor = UIColor(hexString: "#767676")
+        txtEmail.font = UIFont.customFont(bySize: 26)
+        
+        self.addSubview(txtPassword)
+        txtPassword.translatesAutoresizingMaskIntoConstraints = false
+        let tC4 = txtPassword.topAnchor.constraint(equalTo: txtEmail.bottomAnchor, constant: 30)
+        let lC4 = txtPassword.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC4 = txtPassword.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC4 = txtPassword.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
+        txtPassword.placeholder = "Password"
+        txtPassword.textColor = UIColor(hexString: "#767676")
+        txtPassword.font = UIFont.customFont(bySize: 26)
+        txtPassword.isSecureTextEntry = true
+        
+        self.addSubview(txtPassword2)
+        txtPassword2.translatesAutoresizingMaskIntoConstraints = false
+        let tC5 = txtPassword2.topAnchor.constraint(equalTo: txtPassword.bottomAnchor, constant: 30)
+        let lC5 = txtPassword2.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC5 = txtPassword2.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
+        let hC5 = txtPassword2.heightAnchor.constraint(equalToConstant: 35)
+        NSLayoutConstraint.activate([tC5, lC5, wC5, hC5])
+        txtPassword2.placeholder = "Type password again"
+        txtPassword2.textColor = UIColor(hexString: "#767676")
+        txtPassword2.font = UIFont.customFont(bySize: 26)
+        txtPassword2.isSecureTextEntry = true
+        
+        self.addSubview(cbxAgree)
+        cbxAgree.translatesAutoresizingMaskIntoConstraints = false
+        let tC6 = cbxAgree.topAnchor.constraint(equalTo: txtPassword2.bottomAnchor, constant: 30)
+        let lC6 = cbxAgree.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15)
+        let wC6 = cbxAgree.widthAnchor.constraint(equalToConstant: 30)
+        let hC6 = cbxAgree.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC6, lC6, wC6, hC6])
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+            let w = self.frame.width - 30 - 30 - 15
+            let t = "By submitting your personal information you agree to receive emails from Varmann, also you accept Confidentiality Policy"
+            let h = t.height(withConstrainedWidth: w, font: UIFont.customFont(bySize: 20))
+            
+            self.addSubview(self.lblAgreement)
+            self.lblAgreement.translatesAutoresizingMaskIntoConstraints = false
+            let tC7 = self.lblAgreement.topAnchor.constraint(equalTo: self.cbxAgree.topAnchor, constant: 0)
+            let lC7 = self.lblAgreement.leftAnchor.constraint(equalTo: self.cbxAgree.rightAnchor, constant: 15)
+            let wC7 = self.lblAgreement.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15)
+            let hC7 = self.lblAgreement.heightAnchor.constraint(equalToConstant: h)
+            NSLayoutConstraint.activate([tC7, lC7, wC7, hC7])
+            self.lblAgreement.numberOfLines = 0
+            self.lblAgreement.text = t
+            self.lblAgreement.textColor = UIColor(hexString: "#767676")
+            self.lblAgreement.font = UIFont.customFont(bySize: 20)
+        })
     }
 }
