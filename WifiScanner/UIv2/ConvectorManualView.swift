@@ -11,6 +11,7 @@ import UIKit
 
 protocol ConvectorManualViewDelegate: class {
     func onManualValueChanged(_ view: ConvectorManualView)
+    func onFinalValueChanged(_ view: ConvectorManualView)
 }
 
 class ConvectorManualView: UIView {
@@ -177,12 +178,32 @@ class ConvectorManualView: UIView {
         let v = firstValue + (lastValue - firstValue) * val / 4.711
         _value = v
         
-        self.delegate?.onManualValueChanged(self)
+        if gesture.state == .ended {
+            self.delegate?.onFinalValueChanged(self)
+        } else {
+            self.delegate?.onManualValueChanged(self)
+        }
         
         self.mainTitle = String(format: "%.0f", v)
         
         pinView.frame = CGRect(x: self.frame.width / 2 + x - pinSize / 2, y: self.frame.height / 2 + y - pinSize / 2, width: pinSize, height: pinSize)
             
+    }
+    
+    static func color(byValue d: CGFloat) -> UIColor {
+        var color: UIColor?
+        if d <= 0.5 {
+            let r = 2 * d * 255
+            let g = 156 + d * (166 - 156) * 2
+            let b = 223 + d * (33 - 223) * 2
+            color = UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
+        } else {
+            let r = 255 + (d - 0.5) * (223 - 255) * 2
+            let g = 166 + (d - 0.5) * (54 - 166) * 2
+            let b = 33 + (d - 0.5) * (0 - 33) * 2
+            color = UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
+        }
+        return color ?? .blue
     }
     
     func showContent(_ show: Bool) {

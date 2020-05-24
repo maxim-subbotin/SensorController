@@ -183,9 +183,11 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     func openSpot(_ spot: Spot) {
-        let vc = SpotViewController()
+        let vc = ConvectorViewController() //SpotViewController()
         vc.spot = spot
-        self.navigationController?.pushViewController(vc, animated: true)
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .pageSheet
+        self.present(vc, animated: true, completion: nil)
     }
     
     func openDemoSpot(_ indexPath: IndexPath) {
@@ -234,6 +236,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         spot.name = "Qtech - Гараж"
         
         let vc = ConvectorViewController()
+        vc.mode = .demo
         vc.spot = spot
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .pageSheet

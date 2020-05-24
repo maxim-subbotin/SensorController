@@ -35,6 +35,8 @@ enum ConnectorCommand: Int32 {
     case weekProgrammingMode = 0x102C
     case defaultSettings = 0x102D
     
+    case version = 0x102F
+    
     case allData = 0x8080
     case additionalData = 0x9090
 }
@@ -245,6 +247,18 @@ class Connector {
         }, failure: {error in
             print("Error on regulator state")
             self.delegate?.onCommandFail(self, command: .regulatorState, error: error)
+        })
+        self.modbus.disconnect()
+    }
+    
+    func getVersion() {
+        connect()
+        self.modbus.readRegistersFrom(startAddress: ConnectorCommand.version.rawValue, count: 1, success: {objects in
+            print("Version: \(objects)")
+            self.delegate?.onCommandSuccess(self, command: .version, data: objects)
+        }, failure: {error in
+            print("Error on version")
+            self.delegate?.onCommandFail(self, command: .version, error: error)
         })
         self.modbus.disconnect()
     }

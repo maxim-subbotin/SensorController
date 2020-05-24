@@ -54,6 +54,7 @@
 		D67DFA8F233519D700760D92 /* modbus-rtu.c in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA7F233519D700760D92 /* modbus-rtu.c */; };
 		D67DFA90233519D700760D92 /* README.rst in Resources */ = {isa = PBXBuildFile; fileRef = D67DFA81233519D700760D92 /* README.rst */; };
 		D67DFA922335262300760D92 /* SpotEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DFA912335262300760D92 /* SpotEditViewController.swift */; };
+		D68CECED247A823E0044E148 /* ModbusCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CECEC247A823E0044E148 /* ModbusCenter.swift */; };
 		D68F240923CC5D7400A249A2 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F240823CC5D7400A249A2 /* ColorScheme.swift */; };
 		D68F240C23CC600600A249A2 /* SpotCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F240B23CC600600A249A2 /* SpotCardView.swift */; };
 		D695920123DDC91300CEDB4F /* FanSpeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695920023DDC91300CEDB4F /* FanSpeedView.swift */; };
@@ -134,6 +135,7 @@
 		D67DFA83233519D700760D92 /* modbus-tcp-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-tcp-private.h"; sourceTree = "<group>"; };
 		D67DFA84233519D700760D92 /* modbus-rtu-private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "modbus-rtu-private.h"; sourceTree = "<group>"; };
 		D67DFA912335262300760D92 /* SpotEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotEditViewController.swift; sourceTree = "<group>"; };
+		D68CECEC247A823E0044E148 /* ModbusCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModbusCenter.swift; sourceTree = "<group>"; };
 		D68F240823CC5D7400A249A2 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		D68F240B23CC600600A249A2 /* SpotCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotCardView.swift; sourceTree = "<group>"; };
 		D695920023DDC91300CEDB4F /* FanSpeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanSpeedView.swift; sourceTree = "<group>"; };
@@ -286,6 +288,15 @@
 			path = libmodbus;
 			sourceTree = "<group>";
 		};
+		D68CECEB247A82220044E148 /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				D6E22530235C94CE00E0D800 /* Connector.swift */,
+				D68CECEC247A823E0044E148 /* ModbusCenter.swift */,
+			);
+			path = Connection;
+			sourceTree = "<group>";
+		};
 		D68F240A23CC5FF100A249A2 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -325,6 +336,7 @@
 		D6F1DCA62330B16C007248AC /* WifiScanner */ = {
 			isa = PBXGroup;
 			children = (
+				D68CECEB247A82220044E148 /* Connection */,
 				D67944222406F1C400863E39 /* UIv2 */,
 				D68F240A23CC5FF100A249A2 /* UI */,
 				D67DFA6C233519D700760D92 /* Modbus */,
@@ -343,7 +355,6 @@
 				D67DFA622334AC0400760D92 /* Spot.swift */,
 				D67DFA6A2335176800760D92 /* SpotViewController.swift */,
 				D67DFA912335262300760D92 /* SpotEditViewController.swift */,
-				D6E22530235C94CE00E0D800 /* Connector.swift */,
 				D6E22532235C97B100E0D800 /* Tools.swift */,
 				D68F240823CC5D7400A249A2 /* ColorScheme.swift */,
 				D608674A23E200850013044A /* SpotAdditionalParametersViewController.swift */,
@@ -462,6 +473,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6434DA3244C56500047A9F0 /* CLDateTimePickerViewController.swift in Sources */,
+				D68CECED247A823E0044E148 /* ModbusCenter.swift in Sources */,
 				D6E23AE423CDB5B200F0CB94 /* SpotIndicatorView.swift in Sources */,
 				D67DFA8B233519D700760D92 /* modbus-tcp.c in Sources */,
 				D67DFA5F2334A83F00760D92 /* SpotsViewController.swift in Sources */,

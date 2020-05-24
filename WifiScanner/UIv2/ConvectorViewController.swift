@@ -25,6 +25,9 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
     public var spotState = SpotState.demo
     public var lblTurnedOff = UILabel()
     
+    public var mode = SpotViewMode.prod
+    private var connector: Connector?
+    
     private var prevColor = UIColor(hexString: "#009CDF")
     
     override func viewDidLoad() {
@@ -33,6 +36,28 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         self.view.backgroundColor = UIColor(hexString: "#009CDF")
         
         applyUI()
+        
+        if mode == .demo {
+            return
+        }
+        
+        if let ip = Tools.getIPAddress() {
+            print("Current ip address: \(ip)")
+            if let wifiIP = Tools.getWifiAddredd(byCurrentAddress: ip) {
+                /*connector = Connector()
+                connector?.idAddress = wifiIP
+                connector?.delegate = self
+                connector?.getAllData()*/
+                ModbusCenter.shared.ip = wifiIP
+                ModbusCenter.shared.getAllData()
+                
+                NotificationCenter.default.addObserver(self, selector: #selector(onModbusResponse(_:)), name: .modbusResponse, object: nil)
+            }
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func applyUI() {
@@ -273,6 +298,18 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
     
     //MARK: - fan/temp changes
     
+    func onFinalValueChanged(_ view: ConvectorManualView) {
+        onManualValueChanged(view)
+        
+        if view == temperatureView {
+            let d = round(Double(view.value))
+            ModbusCenter.shared.setDeviceTemperature(d)
+        }
+        if view == fanView {
+            ModbusCenter.shared.setFanSpeed(Double(view.value))
+        }
+    }
+    
     func onManualValueChanged(_ view: ConvectorManualView) {
         if view == temperatureView {
             let val = view.value
@@ -300,5 +337,42 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         }
     }
     
+    func applySpotState(_ spotState: SpotState) {
+        self.temperatureView.value = CGFloat(spotState.temperatureDevice)
+        self.temperatureView.mainTitle = String(format: "%.f", spotState.temperatureDevice)
+        self.temperatureView.detailText = String(format: "%.1f", spotState.temperatureCurrent)
+        self.dateView.date = spotState.date
+        
+        self.fanView.value = CGFloat(spotState.fanSpeed)
+        self.fanView.mainTitle = String(format: "%.f", spotState.fanSpeed)
+        self.fanView.detailText = String(format: "%.1f", spotState.fanSpeedCurrent)
+        
+        let d = (CGFloat(spotState.temperatureDevice) - 5.0) / 40
+        let color = ConvectorManualView.color(byValue: d)
+        self.view.backgroundColor = color
+        parametersView.backgroundColor = color
+        lblAuto.backgroundColor = color
+        NotificationCenter.default.post(name: ColorScheme.changeBackgroundColor, object: color)
+    }
+    
     //MARK: - auto
+    
+    //MARK: - connection delegate
+    
+    @objc func onModbusResponse(_ notification: NSNotification) {
+        if notification.object != nil && notification.object is ModbusResponse {
+            let response = notification.object as! ModbusResponse
+            if response.error != nil {
+                
+            } else if response.data != nil {
+                print("Command result was received. Command = \(response.command)")
+                if response.command == .allData {
+                    DispatchQueue.main.async {
+                        self.spotState = SpotState.parseData(response.data as! [Int])
+                        self.applySpotState(self.spotState)
+                    }
+                }
+            }
+        }
+    }
 }
