@@ -25,7 +25,7 @@ import UIKit
  types.append(ParameterType(withType: .defaultSettings, andTitle: "Default settings"))
  */
 
-class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
+class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, ConvectorTrackBarViewDelegate {
     private var lblParams = UILabel()
     private var fanModeView = ConvectorTwoValParamView()
     private var controlSequenceView = ConvectorCheckboxSetView()
@@ -59,6 +59,26 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
             if let obj = _spotState.additionalParams[.brightnessDimmingOnSleep] {
                 let dim = obj as! BrightnessDimmingOnSleepType
                 self.brightDimmingView.selectionIndex = dim == .yes ? 0 : 1
+            }
+            if let obj = _spotState.additionalParams[.reactionTimeOnTemperature] {
+                let time = obj as! Int
+                self.temperatureReactionTime.value = time
+            }
+            if let obj = _spotState.additionalParams[.maxFanSpeedLimit] {
+                let time = obj as! Int
+                self.maxFanSpeedView.value = time
+            }
+            if let obj = _spotState.additionalParams[.temperatureStepInSleepMode] {
+                let time = obj as! Int
+                self.tempStepSleepModeView.value = time
+            }
+            if let obj = _spotState.additionalParams[.displayBrightness] {
+                let time = obj as! Int
+                self.displayBrightnessView.value = time
+            }
+            if let obj = _spotState.additionalParams[.temperatureSensorCalibration] {
+                let time = obj as! Double
+                self.sensorCalibrationView.value = Int(time)
             }
         }
     }
@@ -168,6 +188,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
                                    ValueSelectorItem(withTitle: "Graph 3", andValue: AutoFanSpeedGraphType.graph3)]
         
         self.addSubview(temperatureReactionTime)
+        temperatureReactionTime.delegate = self
         temperatureReactionTime.title = "Temperature reaction time:"
         temperatureReactionTime.translatesAutoresizingMaskIntoConstraints = false
         let tC8 = temperatureReactionTime.topAnchor.constraint(equalTo: fanSpeedGraphView.bottomAnchor, constant: 35)
@@ -181,6 +202,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
         temperatureReactionTime.postfix = "sec"
         
         self.addSubview(maxFanSpeedView)
+        maxFanSpeedView.delegate = self
         maxFanSpeedView.postfix = "%"
         maxFanSpeedView.title = "Max fan speed limit:"
         maxFanSpeedView.translatesAutoresizingMaskIntoConstraints = false
@@ -194,6 +216,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
         maxFanSpeedView.value = 45
         
         self.addSubview(tempStepSleepModeView)
+        tempStepSleepModeView.delegate = self
         tempStepSleepModeView.postfix = "°"
         tempStepSleepModeView.title = "Temperature step for Sleep mode:"
         tempStepSleepModeView.translatesAutoresizingMaskIntoConstraints = false
@@ -241,6 +264,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
         NSLayoutConstraint.activate([tC13, lC13, wC13, hC13])
         
         self.addSubview(displayBrightnessView)
+        displayBrightnessView.delegate = self
         displayBrightnessView.postfix = ""
         displayBrightnessView.title = "Display brightness:"
         displayBrightnessView.translatesAutoresizingMaskIntoConstraints = false
@@ -288,6 +312,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
         NSLayoutConstraint.activate([tC17, lC17, wC17, hC17])
 
         self.addSubview(sensorCalibrationView)
+        sensorCalibrationView.delegate = self
         sensorCalibrationView.postfix = "°"
         sensorCalibrationView.title = "Temperature sensor calibration:"
         sensorCalibrationView.translatesAutoresizingMaskIntoConstraints = false
@@ -355,6 +380,28 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
         }
         if view == brightDimmingView {
             ModbusCenter.shared.setBrightnessDimming(n == 0 ? .yes : .no)
+        }
+    }
+    
+    //MARK: - track bar calibration
+    
+    func onParameterChange(view: ConvectorTrackBarView, value: Int) {
+        if view == self.temperatureReactionTime {
+            ModbusCenter.shared.setTemperatureReactionTime(view.value)
+        }
+        if view == self.maxFanSpeedView {
+            ModbusCenter.shared.setMaxFanSpeedLimit(view.value)
+        }
+        if view == self.tempStepSleepModeView {
+            ModbusCenter.shared.setTemperatureStepSleepMode(view.value)
+        }
+        if view == self.displayBrightnessView {
+            ModbusCenter.shared.setDisplayBrightness(view.value)
+        }
+        if view == self.sensorCalibrationView {
+            if view.value >= 0 {
+                ModbusCenter.shared.setTemperatureSensorCalibration(Double(view.value))
+            }
         }
     }
 }
@@ -1054,6 +1101,10 @@ class ConvectorSliderView: UIView {
     }
 }
 
+protocol ConvectorTrackBarViewDelegate: class {
+    func onParameterChange(view: ConvectorTrackBarView, value: Int)
+}
+
 class ConvectorTrackBarView: UIView, ConvectorSliderViewDelegate, ConvectorPlusMinusViewDelegate {
     private var lblTitle = UILabel()
     private var plusBar = ConvectorPlusMinusView()
@@ -1104,6 +1155,7 @@ class ConvectorTrackBarView: UIView, ConvectorSliderViewDelegate, ConvectorPlusM
             plusBar.postfix = newValue
         }
     }
+    public weak var delegate: ConvectorTrackBarViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -1148,11 +1200,13 @@ class ConvectorTrackBarView: UIView, ConvectorSliderViewDelegate, ConvectorPlusM
     func onSliderValueChange(_ value: CGFloat) {
         let v = minValue + Int(CGFloat(maxValue - minValue) * value)
         plusBar.value = v
+        self.delegate?.onParameterChange(view: self, value: Int(value))
     }
     
     func onPlusMinusBarValueChange(_ val: Int) {
         self.value = val
         let v = CGFloat(val - minValue) / CGFloat(maxValue - minValue)
         self.slider.value = v
+        self.delegate?.onParameterChange(view: self, value: Int(value))
     }
 }

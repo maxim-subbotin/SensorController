@@ -73,8 +73,32 @@ class ModbusCenter: ConnectorDelegate {
         connector.setBrightnessDimming(d)
     }
     
+    func setTemperatureReactionTime(_ t: Int) {
+        connector.setTemperatureReactionTime(t)
+    }
+    
+    func setMaxFanSpeedLimit(_ s: Int) {
+        connector.setMaxFanSpeedLimit(s)
+    }
+    
+    func setTemperatureStepSleepMode(_ s: Int) {
+        connector.setTemperatureStepSleepMode(s)
+    }
+    
+    func setDisplayBrightness(_ b: Int) {
+        connector.setDisplayBrightness(b)
+    }
+    
+    func setTemperatureSensorCalibration(_ d: Double) {
+        connector.setTemperatureSensorCalibration(d)
+    }
+    
     func shutdown() {
-        
+        connector.setRegulatorState(.off)
+    }
+    
+    func turnOn() {
+        connector.setRegulatorState(.on)
     }
     
     //MARK: - connector delegate

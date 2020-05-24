@@ -280,6 +280,8 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
             btnFan.isUserInteractionEnabled = false
             btnTemperature.isUserInteractionEnabled = false
             NotificationCenter.default.post(name: ColorScheme.changeBackgroundColor, object: UIColor(hexString: "#DADADA"))
+            
+            ModbusCenter.shared.shutdown()
         } else {
             self.view.backgroundColor = prevColor
             fanView.showContent(true)
@@ -373,6 +375,9 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                     DispatchQueue.main.async {
                         self.spotState = SpotState.parseData(response.data as! [Int])
                         self.applySpotState(self.spotState)
+                        if self.spotState.regulatorState == .off {
+                            ModbusCenter.shared.turnOn()
+                        }
                     }
                 }
                 if response.command == .additionalData {
