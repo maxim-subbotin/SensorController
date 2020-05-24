@@ -57,6 +57,10 @@ class ModbusCenter: ConnectorDelegate {
         
     }
     
+    func getSchedule(forDay day: WeekDay) {
+        connector.getSchedule(forDay: day)
+    }
+    
     func setDeviceTemperature(_ t: Double) {
         connector.setDeviceTemperature(t)
     }
@@ -91,6 +95,10 @@ class ModbusCenter: ConnectorDelegate {
     
     func setTemperatureSensorCalibration(_ d: Double) {
         connector.setTemperatureSensorCalibration(d)
+    }
+    
+    func setTemperatureSchedule(forDay day: WeekDay, time: DayTime, value: Int) {
+        connector.setTemperatureSchedule(forDay: day, time: time, andValue: value)
     }
     
     func shutdown() {

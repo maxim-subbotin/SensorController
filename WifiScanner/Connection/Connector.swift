@@ -39,6 +39,24 @@ enum ConnectorCommand: Int32 {
     
     case allData = 0x8080
     case additionalData = 0x9090
+    case schedule = 0xA0A0
+}
+
+enum WeekDay: Int {
+    case Monday = 0
+    case Tuesday = 1
+    case Wednesday = 2
+    case Thursday = 3
+    case Friday = 4
+    case Saturday = 5
+    case Sunday = 6
+}
+
+enum DayTime: Int {
+    case morning = 0
+    case noon = 1
+    case evening = 2
+    case night
 }
 
 enum FanMode: Int {
@@ -120,7 +138,7 @@ class Connector {
     func getAdditionalData() {
         isBusy = true
         connect()
-        self.modbus.readRegistersFrom(startAddress: 0x1020, count: 14, success: {objects in
+        self.modbus.readRegistersFrom(startAddress: 0x1020, count: 15, success: {objects in
             self.isBusy = false
             print("Data was received successfully: \(objects)")
             self.delegate?.onCommandSuccess(self, command: .additionalData, data: objects)
@@ -263,7 +281,20 @@ class Connector {
         self.modbus.disconnect()
     }
     
-    //MAARK: - set commands
+    func getSchedule(forDay day: WeekDay) {
+        connect()
+        let command = 0x1030 + day.rawValue * 0x10
+        self.modbus.readRegistersFrom(startAddress: Int32(command), count: 8, success: {objects in
+            print("Schedule: \(objects)")
+            self.delegate?.onCommandSuccess(self, command: .schedule, data: objects)
+        }, failure: {error in
+            print("Error on schedule")
+            self.delegate?.onCommandFail(self, command: .schedule, error: error)
+        })
+        self.modbus.disconnect()
+    }
+    
+    //MARK: - set commands
     
     /*func setTemperature(_ temp: Double) {
         connect()
@@ -492,6 +523,28 @@ class Connector {
             print("Default settings was updated successfully")
         }, failure: {(error) in
             print("Error on default settings updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setFanSpeedSchedule(forDay day: WeekDay, time: DayTime, andValue val: Int) {
+        let command = 0x1030 + day.rawValue * 0x10 + time.rawValue
+        connect()
+        self.modbus.writeRegistersFromAndOn(address: Int32(command), numberArray: [val * 10], success: {
+            print("Schedule fan speed was updated successfully")
+        }, failure: {(error) in
+            print("Error on schedule fan speed updating")
+        })
+        self.modbus.disconnect()
+    }
+    
+    func setTemperatureSchedule(forDay day: WeekDay, time: DayTime, andValue val: Int) {
+        let command = 0x1034 + day.rawValue * 0x10 + time.rawValue
+        connect()
+        self.modbus.writeRegistersFromAndOn(address: Int32(command), numberArray: [val * 10], success: {
+            print("Schedule temperature was updated successfully")
+        }, failure: {(error) in
+            print("Error on schedule temperature updating")
         })
         self.modbus.disconnect()
     }

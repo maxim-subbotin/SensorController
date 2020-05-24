@@ -192,6 +192,9 @@ class SpotState {
             if i == 13 {
                 dict[.defaultSettings] = DefaultSettingsType(rawValue: d) ?? .no
             }
+            if i == 14 {
+                dict[.version] = d
+            }
             
             i += 1
         }
@@ -285,6 +288,7 @@ enum SpotAdditionalParamType: Int {
     case temperatureStepInSleepMode = 12
     case weekProgramMode = 13
     case defaultSettings = 14
+    case version = 15
 }
 
 enum ControlSequenceType: Int {

@@ -295,6 +295,9 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         if action == .settings {
             ModbusCenter.shared.getAdditionalData()
         }
+        if action == .calendar {
+            self.weeklyProgrammingView.reloadData()
+        }
         
         self.parametersView.isHidden = (action != .settings)
         self.weeklyProgrammingView.isHidden = (action != .calendar)
@@ -384,6 +387,13 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                     DispatchQueue.main.async {
                         self.spotState.additionalParams = SpotState.parseAdditionalData(response.data as! [Int])
                         self.parametersView.spotState = self.spotState
+                    }
+                }
+                if response.command == .schedule {
+                    DispatchQueue.main.async {
+                        if let sch = ScheduleRecord.parse(fromArray: response.data as! [Int]) {
+                            self.weeklyProgrammingView.scheduleRecords = sch
+                        }
                     }
                 }
             }

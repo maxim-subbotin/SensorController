@@ -8,8 +8,25 @@
 import Foundation
 import UIKit
 
+struct ScheduleRecord {
+    public var fanSpeed: Int
+    public var temperature: Int
+    
+    static func parse(fromArray array: [Int]) -> [DayTime: ScheduleRecord]? {
+        if array.count != 8 {
+            return nil
+        }
+        var dict = [DayTime: ScheduleRecord]()
+        dict[.morning] = ScheduleRecord(fanSpeed: array[0] / 10, temperature: array[4] / 10)
+        dict[.noon] = ScheduleRecord(fanSpeed: array[1] / 10, temperature: array[5] / 10)
+        dict[.evening] = ScheduleRecord(fanSpeed: array[2] / 10, temperature: array[6] / 10)
+        dict[.night] = ScheduleRecord(fanSpeed: array[3] / 10, temperature: array[7] / 10)
+        return dict
+    }
+}
 
-class ConvectorWeeklyProgrammingView: UIView, TimeTemperatureViewDelegate {
+
+class ConvectorWeeklyProgrammingView: UIView, TimeTemperatureViewDelegate, DayLabelViewDelegate {
     private var lblTitle = UILabel()
     private var lblDay = DayLabelView()
     private var timeSegment1 = TimeTemperatureView()
@@ -17,10 +34,40 @@ class ConvectorWeeklyProgrammingView: UIView, TimeTemperatureViewDelegate {
     private var timeSegment3 = TimeTemperatureView()
     private var timeSegment4 = TimeTemperatureView()
     private var graph = TemperatureGraphView()
+    private var _stopUpdating = false
+    private var _scheduleRecords = [DayTime: ScheduleRecord]()
+    public var scheduleRecords: [DayTime: ScheduleRecord] {
+        get {
+            return _scheduleRecords
+        }
+        set {
+            _scheduleRecords = newValue
+            _stopUpdating = true
+            if let morning = _scheduleRecords[.morning] {
+                timeSegment1.temperature = morning.temperature
+            }
+            if let noon = _scheduleRecords[.noon] {
+                timeSegment2.temperature = noon.temperature
+            }
+            if let evening = _scheduleRecords[.evening] {
+                timeSegment3.temperature = evening.temperature
+            }
+            if let night = _scheduleRecords[.night] {
+                timeSegment4.temperature = night.temperature
+            }
+            _stopUpdating = false
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onColorNotification(_:)), name: ColorScheme.changeBackgroundColor, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -45,6 +92,7 @@ class ConvectorWeeklyProgrammingView: UIView, TimeTemperatureViewDelegate {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         
         self.addSubview(lblDay)
+        lblDay.delegate = self
         lblDay.translatesAutoresizingMaskIntoConstraints = false
         let tC1 = lblDay.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 15)
         let lC1 = lblDay.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
@@ -119,7 +167,34 @@ class ConvectorWeeklyProgrammingView: UIView, TimeTemperatureViewDelegate {
     
     func onTemperatureChange(_ temp: Int, forNumber num: Int) {
         graph.points[num] = temp
+        if _stopUpdating {
+            return
+        }
+        if let day = WeekDay(rawValue: lblDay.position), let time = DayTime(rawValue: num) {
+            ModbusCenter.shared.setTemperatureSchedule(forDay: day, time: time, value: temp)
+        }
     }
+    
+    func reloadData() {
+        if let day = WeekDay(rawValue: lblDay.position) {
+            ModbusCenter.shared.getSchedule(forDay: day)
+        }
+    }
+    
+    func onDayChange(_ num: Int) {
+        reloadData()
+    }
+    
+    @objc func onColorNotification(_ notification: Notification) {
+        if notification.object != nil && notification.object is UIColor {
+            let color = notification.object as! UIColor
+            self.backgroundColor = color
+        }
+    }
+}
+
+protocol DayLabelViewDelegate: class {
+    func onDayChange(_ num: Int)
 }
 
 class DayLabelView: UIView {
@@ -127,8 +202,12 @@ class DayLabelView: UIView {
     private var lblSecond = UILabel()
     private var btnPrev = UIButton()
     private var btnNext = UIButton()
-    private var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    private var position = 0
+    private var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", ]
+    private var _position = 0
+    public var position: Int {
+        return _position
+    }
+    public weak var delegate: DayLabelViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -179,21 +258,23 @@ class DayLabelView: UIView {
     }
     
     @objc func onPrevAction() {
-        if position == 0 {
-            position = self.days.count - 1
+        if _position == 0 {
+            _position = self.days.count - 1
         } else {
-            position -= 1
+            _position -= 1
         }
-        self.lblFirst.text = self.days[position]
+        self.lblFirst.text = self.days[_position]
+        delegate?.onDayChange(position)
     }
     
     @objc func onNextAction() {
-        if position == self.days.count - 1 {
-            position = 0
+        if _position == self.days.count - 1 {
+            _position = 0
         } else {
-            position += 1
+            _position += 1
         }
-        self.lblFirst.text = self.days[position]
+        self.lblFirst.text = self.days[_position]
+        delegate?.onDayChange(position)
     }
 }
 

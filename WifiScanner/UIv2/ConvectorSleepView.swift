@@ -14,10 +14,16 @@ class ConvectorSleepView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onColorNotification(_:)), name: ColorScheme.changeBackgroundColor, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func applyUI() {
@@ -34,5 +40,12 @@ class ConvectorSleepView: UIView {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         picker.date = Date()
         picker.backgroundColor = .white
+    }
+    
+    @objc func onColorNotification(_ notification: Notification) {
+        if notification.object != nil && notification.object is UIColor {
+            let color = notification.object as! UIColor
+            self.backgroundColor = color
+        }
     }
 }
