@@ -290,6 +290,9 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
             btnTemperature.isUserInteractionEnabled = true
             NotificationCenter.default.post(name: ColorScheme.changeBackgroundColor, object: prevColor)
         }
+        if action == .settings {
+            ModbusCenter.shared.getAdditionalData()
+        }
         
         self.parametersView.isHidden = (action != .settings)
         self.weeklyProgrammingView.isHidden = (action != .calendar)
@@ -370,6 +373,12 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                     DispatchQueue.main.async {
                         self.spotState = SpotState.parseData(response.data as! [Int])
                         self.applySpotState(self.spotState)
+                    }
+                }
+                if response.command == .additionalData {
+                    DispatchQueue.main.async {
+                        self.spotState.additionalParams = SpotState.parseAdditionalData(response.data as! [Int])
+                        self.parametersView.spotState = self.spotState
                     }
                 }
             }

@@ -49,6 +49,14 @@ class ModbusCenter: ConnectorDelegate {
         connector.getAllData()
     }
     
+    func getAdditionalData() {
+        connector.getAdditionalData()
+    }
+    
+    func getVersion() {
+        
+    }
+    
     func setDeviceTemperature(_ t: Double) {
         connector.setDeviceTemperature(t)
     }
@@ -57,14 +65,18 @@ class ModbusCenter: ConnectorDelegate {
         connector.setFanSpeed(s)
     }
     
+    func setFanMode(_ mode: FanMode) {
+        connector.setFanMode(mode)
+    }
+    
+    func setBrightnessDimming(_ d: BrightnessDimmingOnSleepType) {
+        connector.setBrightnessDimming(d)
+    }
+    
     func shutdown() {
         
     }
     
-    func getVersion() {
-        
-    }
-
     //MARK: - connector delegate
     
     func onSuccessConnection(_ connector: Connector) {

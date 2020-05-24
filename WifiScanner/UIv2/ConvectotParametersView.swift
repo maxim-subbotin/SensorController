@@ -25,7 +25,7 @@ import UIKit
  types.append(ParameterType(withType: .defaultSettings, andTitle: "Default settings"))
  */
 
-class ConvectorParametersView: UIScrollView {
+class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate {
     private var lblParams = UILabel()
     private var fanModeView = ConvectorTwoValParamView()
     private var controlSequenceView = ConvectorCheckboxSetView()
@@ -45,6 +45,23 @@ class ConvectorParametersView: UIScrollView {
     private var blockModeView = ConvectorCheckboxSetView()
     private var lblDefault = UILabel()
     private var btnDefault = UIButton()
+    private var _spotState = SpotState()
+    public var spotState: SpotState {
+        get {
+            return _spotState
+        }
+        set {
+            _spotState = newValue
+            self.fanModeView.selectionIndex = _spotState.fanMode == .manual ? 0 : 1
+            if let obj = _spotState.additionalParams[.controlSequence] {
+                let seq = obj as! ControlSequenceType
+            }
+            if let obj = _spotState.additionalParams[.brightnessDimmingOnSleep] {
+                let dim = obj as! BrightnessDimmingOnSleepType
+                self.brightDimmingView.selectionIndex = dim == .yes ? 0 : 1
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -83,6 +100,7 @@ class ConvectorParametersView: UIScrollView {
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
         
         self.addSubview(fanModeView)
+        fanModeView.delegate = self
         fanModeView.title = "Fan control mode:"
         fanModeView.param1Name = "Manual"
         fanModeView.param2Name = "Auto"
@@ -236,6 +254,7 @@ class ConvectorParametersView: UIScrollView {
         displayBrightnessView.value = 3
         
         self.addSubview(brightDimmingView)
+        brightDimmingView.delegate = self
         brightDimmingView.title = "Brightness dimming"
         brightDimmingView.param1Name = "Enabled"
         brightDimmingView.param2Name = "Disabled"
@@ -327,6 +346,21 @@ class ConvectorParametersView: UIScrollView {
         super.layoutSubviews()
         self.contentSize = CGSize(width: self.frame.width, height: 2800)
     }
+    
+    //MARK: - two val triggers
+    
+    func onParamSelection(view: ConvectorTwoValParamView, number n: Int) {
+        if view == fanModeView {
+            ModbusCenter.shared.setFanMode(n == 0 ? .manual : .auto)
+        }
+        if view == brightDimmingView {
+            ModbusCenter.shared.setBrightnessDimming(n == 0 ? .yes : .no)
+        }
+    }
+}
+
+protocol ConvectorTwoValParamViewDelegate: class {
+    func onParamSelection(view v: ConvectorTwoValParamView, number n: Int)
 }
 
 class ConvectorTwoValParamView: UIView {
@@ -361,7 +395,22 @@ class ConvectorTwoValParamView: UIView {
             lblTitle.text = newValue
         }
     }
-    private var selectionIndex = 0 // 0 or 1
+    private var _selectionIndex = 0 // 0 or 1
+    public var selectionIndex: Int {
+        get {
+            return _selectionIndex
+        }
+        set {
+            _selectionIndex = newValue
+            if _selectionIndex == 0 {
+                selectButton(btnManual)
+                deselectButton(btnAuto)
+            } else {
+                selectButton(btnAuto)
+                deselectButton(btnManual)
+            }
+        }
+    }
     private var _buttonTintColor = UIColor(hexString: "#009CDF")
     public var buttonTintColor: UIColor {
         get {
@@ -369,13 +418,14 @@ class ConvectorTwoValParamView: UIView {
         }
         set {
             _buttonTintColor = newValue
-            if selectionIndex == 0 {
+            if _selectionIndex == 0 {
                 btnManual.setTitleColor(_buttonTintColor, for: .normal)
             } else {
                 btnAuto.setTitleColor(_buttonTintColor, for: .normal)
             }
         }
     }
+    public weak var delegate: ConvectorTwoValParamViewDelegate?
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -437,31 +487,33 @@ class ConvectorTwoValParamView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(onColorNotification(_:)), name: ColorScheme.changeBackgroundColor, object: nil)
     }
     
-    @objc func onButtonTap(_ button: UIButton) {
+    @objc private func onButtonTap(_ button: UIButton) {
         if button == btnManual {
-            selectionIndex = 0
+            _selectionIndex = 0
             selectButton(btnManual)
             deselectButton(btnAuto)
+            delegate?.onParamSelection(view: self, number: 0)
         } else {
-            selectionIndex = 1
+            _selectionIndex = 1
             selectButton(btnAuto)
             deselectButton(btnManual)
+            delegate?.onParamSelection(view: self, number: 1)
         }
     }
     
-    func selectButton(_ button: UIButton) {
+    private func selectButton(_ button: UIButton) {
         button.backgroundColor = .white
         button.setTitleColor(buttonTintColor, for: .normal)
     }
     
-    func deselectButton(_ button: UIButton) {
+    private func deselectButton(_ button: UIButton) {
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.borderWidth = 2
         button.backgroundColor = .clear
         button.setTitleColor(UIColor.white, for: .normal)
     }
     
-    @objc func onColorNotification(_ notification: Notification) {
+    @objc private func onColorNotification(_ notification: Notification) {
         if notification.object != nil && notification.object is UIColor {
             let color = notification.object as! UIColor
             self.buttonTintColor = color
