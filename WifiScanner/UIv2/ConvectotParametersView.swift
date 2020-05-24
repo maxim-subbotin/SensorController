@@ -80,6 +80,18 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
                 let time = obj as! Double
                 self.sensorCalibrationView.value = Int(time)
             }
+            if let obj = _spotState.additionalParams[.controlSequence] {
+                let seq = obj as! ControlSequenceType
+                self.controlSequenceView.value = seq
+            }
+            if let obj = _spotState.additionalParams[.regulatorBehaviourInShutdown] {
+                let beh = obj as! RegulatorShutdownWorkType
+                self.regulatorShutdownModeView.value = beh
+            }
+            if let obj = _spotState.additionalParams[.fanWorkModeInShutdown] {
+                let beh = obj as! FanShutdownWorkType
+                self.valveShutdownModeView.value = beh
+            }
         }
     }
     
@@ -153,7 +165,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         let hC4 = regulatorShutdownModeView.heightAnchor.constraint(equalToConstant: 120)
         NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
         regulatorShutdownModeView.items = [ValueSelectorItem(withTitle: "Full shutdown", andValue: RegulatorShutdownWorkType.fullShutdown),
-        ValueSelectorItem(withTitle: "Partial shutdown", andValue: RegulatorShutdownWorkType.fullShutdown)]
+        ValueSelectorItem(withTitle: "Partial shutdown", andValue: RegulatorShutdownWorkType.partialShutdown)]
         
         self.addSubview(valveShutdownModeView)
         valveShutdownModeView.title = "Valve shutdown mode:"
@@ -163,8 +175,8 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         let wC5 = valveShutdownModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
         let hC5 = valveShutdownModeView.heightAnchor.constraint(equalToConstant: 120)
         NSLayoutConstraint.activate([tC5, lC5, wC5, hC5])
-        valveShutdownModeView.items = [ValueSelectorItem(withTitle: "Full shutdown", andValue: RegulatorShutdownWorkType.fullShutdown),
-        ValueSelectorItem(withTitle: "Partial shutdown", andValue: RegulatorShutdownWorkType.fullShutdown)]
+        valveShutdownModeView.items = [ValueSelectorItem(withTitle: "Full shutdown", andValue: FanShutdownWorkType.valveClosed),
+                                       ValueSelectorItem(withTitle: "Partial shutdown", andValue: FanShutdownWorkType.valveOpened)]
         
         self.addSubview(ventilationModeView)
         ventilationModeView.title = "Ventilation mode:"
@@ -176,7 +188,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         NSLayoutConstraint.activate([tC6, lC6, wC6, hC6])
         
         self.addSubview(fanSpeedGraphView)
-        fanSpeedGraphView.title = "Valve shutdown mode:"
+        fanSpeedGraphView.title = "Fan speed graph:"
         fanSpeedGraphView.translatesAutoresizingMaskIntoConstraints = false
         let tC7 = fanSpeedGraphView.topAnchor.constraint(equalTo: ventilationModeView.bottomAnchor, constant: 35)
         let lC7 = fanSpeedGraphView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -792,6 +804,31 @@ class ConvectorCheckboxSetView: UIView, ConvectorCheckboxViewDelegate {
         }
     }
     public var checkboxes = [ConvectorCheckboxLabeledView]()
+    public var value: Any? {
+        get {
+            var i = 0
+            for check in checkboxes {
+                if check.selected {
+                    return items[i].value
+                }
+                i += 1
+            }
+            return nil
+        }
+        set {
+            if newValue == nil {
+                return
+            }
+            var i = 0
+            for item in items {
+                if "\(item.value)" == "\(newValue!)" {
+                    checkboxes[i].selected = true
+                    break
+                }
+                i += 1
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
