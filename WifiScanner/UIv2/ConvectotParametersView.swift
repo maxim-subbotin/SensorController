@@ -55,6 +55,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
             self.fanModeView.selectionIndex = _spotState.fanMode == .manual ? 0 : 1
             if let obj = _spotState.additionalParams[.controlSequence] {
                 let seq = obj as! ControlSequenceType
+                self.controlSequenceView.value = seq
             }
             if let obj = _spotState.additionalParams[.brightnessDimmingOnSleep] {
                 let dim = obj as! BrightnessDimmingOnSleepType

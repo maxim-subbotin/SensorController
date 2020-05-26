@@ -40,6 +40,8 @@ enum ConnectorCommand: Int32 {
     case allData = 0x8080
     case additionalData = 0x9090
     case schedule = 0xA0A0
+    
+    case unknown = 0x6660
 }
 
 enum WeekDay: Int {
@@ -325,8 +327,10 @@ class Connector {
             connect()
             self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.yearMonth.rawValue, numberArray: [yearMonth, dayHour, minuteSecond], success: {
                 print("Date & time were updated successfully")
+                self.delegate?.onCommandSuccess(self, command: .yearMonth, data: [0] as [AnyObject])
             }, failure: {(error) in
                 print("Error on date & time updating")
+                self.delegate?.onCommandFail(self, command: .yearMonth, error: error)
             })
             self.modbus.disconnect()
         }
@@ -338,8 +342,10 @@ class Connector {
         connect()
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureDevice.rawValue, numberArray: [i], success: {
             print("Device temperature was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .temperatureDevice, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on device temperature updating")
+            self.delegate?.onCommandFail(self, command: .temperatureDevice, error: error)
         })
         self.modbus.disconnect()
     }
@@ -349,8 +355,10 @@ class Connector {
         let i = Int(fanSpeed * 10)
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.fanSpeedDevice.rawValue, numberArray: [i], success: {
             print("Fan speed was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .fanSpeedDevice, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on fan speed updating")
+            self.delegate?.onCommandFail(self, command: .fanSpeedDevice, error: error)
         })
         self.modbus.disconnect()
     }
@@ -360,8 +368,10 @@ class Connector {
         let i = mode.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.fanMode.rawValue, numberArray: [i], success: {
             print("Fan mode was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .fanMode, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on fan mode updating")
+            self.delegate?.onCommandFail(self, command: .fanMode, error: error)
         })
         self.modbus.disconnect()
     }
@@ -371,8 +381,10 @@ class Connector {
         let i = state.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.regulatorState.rawValue, numberArray: [i], success: {
             print("Regulator state was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .regulatorState, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on regulator state updating")
+            self.delegate?.onCommandFail(self, command: .regulatorState, error: error)
         })
         self.modbus.disconnect()
     }
@@ -382,8 +394,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.controlSequence.rawValue, numberArray: [i], success: {
             print("Control sequence was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .controlSequence, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on control sequence updating")
+            self.delegate?.onCommandFail(self, command: .controlSequence, error: error)
         })
         self.modbus.disconnect()
     }
@@ -393,8 +407,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.regulatorShutdownMode.rawValue, numberArray: [i], success: {
             print("Regulator shutdown mode was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .regulatorShutdownMode, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on regulator shutdown mode updating")
+            self.delegate?.onCommandFail(self, command: .regulatorShutdownMode, error: error)
         })
         self.modbus.disconnect()
     }
@@ -403,8 +419,10 @@ class Connector {
         connect()
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.displayBrightness.rawValue, numberArray: [val], success: {
             print("Display brightness was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .displayBrightness, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on display brightness updating")
+            self.delegate?.onCommandFail(self, command: .displayBrightness, error: error)
         })
         self.modbus.disconnect()
     }
@@ -414,8 +432,10 @@ class Connector {
         let i = Int(val)
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureSensorCalibration.rawValue, numberArray: [i], success: {
             print("Temperature sensor calibration was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .temperatureSensorCalibration, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on temperature sensor calibration  updating")
+            self.delegate?.onCommandFail(self, command: .temperatureSensorCalibration, error: error)
         })
         self.modbus.disconnect()
     }
@@ -425,8 +445,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.valveShutdownMode.rawValue, numberArray: [i], success: {
             print("Valve shutdown mode was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .valveShutdownMode, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on valve shutdown mode updating")
+            self.delegate?.onCommandFail(self, command: .valveShutdownMode, error: error)
         })
         self.modbus.disconnect()
     }
@@ -436,8 +458,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.ventilationMode.rawValue, numberArray: [i], success: {
             print("Ventilation mode was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .ventilationMode, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on ventilation mode updating")
+            self.delegate?.onCommandFail(self, command: .ventilationMode, error: error)
         })
         self.modbus.disconnect()
     }
@@ -447,8 +471,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.autoRegulationGraph.rawValue, numberArray: [i], success: {
             print("Auto regulation graph was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .autoRegulationGraph, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on auto regulation graph updating")
+            self.delegate?.onCommandFail(self, command: .autoRegulationGraph, error: error)
         })
         self.modbus.disconnect()
     }
@@ -457,8 +483,10 @@ class Connector {
         connect()
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureReactionTime.rawValue, numberArray: [val], success: {
             print("Temperature reaction time was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .temperatureReactionTime, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on temperature reaction time updating")
+            self.delegate?.onCommandFail(self, command: .temperatureReactionTime, error: error)
         })
         self.modbus.disconnect()
     }
@@ -467,8 +495,10 @@ class Connector {
         connect()
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.maxFanSpeedLimit.rawValue, numberArray: [val], success: {
             print("Max fan speed limit was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .maxFanSpeedLimit, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on max fan speed limit updating")
+            self.delegate?.onCommandFail(self, command: .maxFanSpeedLimit, error: error)
         })
         self.modbus.disconnect()
     }
@@ -478,8 +508,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.buttonsBlockMode.rawValue, numberArray: [i], success: {
             print("Buttons block mode was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .buttonsBlockMode, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on buttons block mode updating")
+            self.delegate?.onCommandFail(self, command: .buttonsBlockMode, error: error)
         })
         self.modbus.disconnect()
     }
@@ -489,8 +521,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.brightnessDimming.rawValue, numberArray: [i], success: {
             print("Brightness dimming was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .brightnessDimming, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on brightness dimming updating")
+            self.delegate?.onCommandFail(self, command: .brightnessDimming, error: error)
         })
         self.modbus.disconnect()
     }
@@ -499,8 +533,10 @@ class Connector {
         connect()
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.temperatureStepSleepMode.rawValue, numberArray: [val], success: {
             print("Temperature step sleep mode was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .temperatureStepSleepMode, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on temperature step sleep mode updating")
+            self.delegate?.onCommandFail(self, command: .temperatureStepSleepMode, error: error)
         })
         self.modbus.disconnect()
     }
@@ -510,8 +546,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.weekProgrammingMode.rawValue, numberArray: [i], success: {
             print("Temperature step sleep mode was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .weekProgrammingMode, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on temperature step sleep mode updating")
+            self.delegate?.onCommandFail(self, command: .weekProgrammingMode, error: error)
         })
         self.modbus.disconnect()
     }
@@ -521,8 +559,10 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.defaultSettings.rawValue, numberArray: [i], success: {
             print("Default settings was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .defaultSettings, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on default settings updating")
+            self.delegate?.onCommandFail(self, command: .defaultSettings, error: error)
         })
         self.modbus.disconnect()
     }
@@ -532,8 +572,10 @@ class Connector {
         connect()
         self.modbus.writeRegistersFromAndOn(address: Int32(command), numberArray: [val * 10], success: {
             print("Schedule fan speed was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .schedule, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on schedule fan speed updating")
+            self.delegate?.onCommandFail(self, command: .schedule, error: error)
         })
         self.modbus.disconnect()
     }
@@ -543,8 +585,10 @@ class Connector {
         connect()
         self.modbus.writeRegistersFromAndOn(address: Int32(command), numberArray: [val * 10], success: {
             print("Schedule temperature was updated successfully")
+            self.delegate?.onCommandSuccess(self, command: .schedule, data: [0] as [AnyObject])
         }, failure: {(error) in
             print("Error on schedule temperature updating")
+            self.delegate?.onCommandFail(self, command: .schedule, error: error)
         })
         self.modbus.disconnect()
     }
