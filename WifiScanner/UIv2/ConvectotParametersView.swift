@@ -25,7 +25,7 @@ import UIKit
  types.append(ParameterType(withType: .defaultSettings, andTitle: "Default settings"))
  */
 
-class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, ConvectorTrackBarViewDelegate {
+class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, ConvectorTrackBarViewDelegate, ConvectorCheckboxSetViewDelegate {
     private var lblParams = UILabel()
     private var fanModeView = ConvectorTwoValParamView()
     private var controlSequenceView = ConvectorCheckboxSetView()
@@ -145,6 +145,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
         
         self.addSubview(controlSequenceView)
+        controlSequenceView.delegate = self
         controlSequenceView.title = "Control sequence:"
         controlSequenceView.translatesAutoresizingMaskIntoConstraints = false
         let tC3 = controlSequenceView.topAnchor.constraint(equalTo: fanModeView.bottomAnchor, constant: 35)
@@ -158,6 +159,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
          ValueSelectorItem(withTitle: "Heat and cold", andValue: ControlSequenceType.heatAndCold)]
         
         self.addSubview(regulatorShutdownModeView)
+        regulatorShutdownModeView.delegate = self
         regulatorShutdownModeView.title = "Regulator shutdown mode:"
         regulatorShutdownModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC4 = regulatorShutdownModeView.topAnchor.constraint(equalTo: controlSequenceView.bottomAnchor, constant: 35)
@@ -169,6 +171,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         ValueSelectorItem(withTitle: "Partial shutdown", andValue: RegulatorShutdownWorkType.partialShutdown)]
         
         self.addSubview(valveShutdownModeView)
+        valveShutdownModeView.delegate = self
         valveShutdownModeView.title = "Valve shutdown mode:"
         valveShutdownModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC5 = valveShutdownModeView.topAnchor.constraint(equalTo: regulatorShutdownModeView.bottomAnchor, constant: 35)
@@ -189,6 +192,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         NSLayoutConstraint.activate([tC6, lC6, wC6, hC6])
         
         self.addSubview(fanSpeedGraphView)
+        fanSpeedGraphView.delegate = self
         fanSpeedGraphView.title = "Fan speed graph:"
         fanSpeedGraphView.translatesAutoresizingMaskIntoConstraints = false
         let tC7 = fanSpeedGraphView.topAnchor.constraint(equalTo: ventilationModeView.bottomAnchor, constant: 35)
@@ -243,6 +247,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         tempStepSleepModeView.value = 5
         
         self.addSubview(weekProgramModeView)
+        weekProgramModeView.delegate = self
         weekProgramModeView.title = "Week programming mode:"
         weekProgramModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC11 = weekProgramModeView.topAnchor.constraint(equalTo: tempStepSleepModeView.bottomAnchor, constant: 35)
@@ -339,6 +344,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         sensorCalibrationView.value = 0
         
         self.addSubview(blockModeView)
+        blockModeView.delegate = self
         blockModeView.title = "Buttons block mode:"
         blockModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC19 = blockModeView.topAnchor.constraint(equalTo: sensorCalibrationView.bottomAnchor, constant: 35)
@@ -396,7 +402,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         }
     }
     
-    //MARK: - track bar calibration
+    //MARK: - track bar delegate
     
     func onParameterChange(view: ConvectorTrackBarView, value: Int) {
         if view == self.temperatureReactionTime {
@@ -415,6 +421,20 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
             if view.value >= 0 {
                 ModbusCenter.shared.setTemperatureSensorCalibration(Double(view.value))
             }
+        }
+    }
+    
+    //MARK: - checkbox delegate
+    
+    func onCheckboxSetChanged(_ view: ConvectorCheckboxSetView, value: Any?) {
+        if view == self.controlSequenceView {
+            ModbusCenter.shared.setControlSequence(value as! ControlSequenceType)
+        }
+        if view == self.regulatorShutdownModeView {
+            ModbusCenter.shared.setRegulatorShutdownMode(value as! RegulatorShutdownWorkType)
+        }
+        if view == self.valveShutdownModeView {
+            ModbusCenter.shared.setValveShutdownMode(value as! FanShutdownWorkType)
         }
     }
 }
@@ -784,6 +804,10 @@ class ConvectorCheckboxLabeledView: UIView {
     }
 }
 
+protocol ConvectorCheckboxSetViewDelegate: class {
+    func onCheckboxSetChanged(_ view: ConvectorCheckboxSetView, value: Any?)
+}
+
 class ConvectorCheckboxSetView: UIView, ConvectorCheckboxViewDelegate {
     private var lblTitle = UILabel()
     public var title: String? {
@@ -830,6 +854,7 @@ class ConvectorCheckboxSetView: UIView, ConvectorCheckboxViewDelegate {
             }
         }
     }
+    public weak var delegate: ConvectorCheckboxSetViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -889,6 +914,7 @@ class ConvectorCheckboxSetView: UIView, ConvectorCheckboxViewDelegate {
                 }
             }
         }
+        delegate?.onCheckboxSetChanged(self, value: self.value)
     }
 }
 

@@ -177,6 +177,18 @@ class ModbusCenter: ConnectorDelegate {
         //connector.setTemperatureSchedule(forDay: day, time: time, andValue: value)
     }
     
+    func setControlSequence(_ c: ControlSequenceType) {
+        addToQueue(ModbusCommand(withCommand: .controlSequence, andData: c))
+    }
+    
+    func setRegulatorShutdownMode(_ d: RegulatorShutdownWorkType) {
+        addToQueue(ModbusCommand(withCommand: .regulatorShutdownMode, andData: d))
+    }
+    
+    func setValveShutdownMode(_ v: FanShutdownWorkType) {
+        addToQueue(ModbusCommand(withCommand: .valveShutdownMode, andData: v))
+    }
+    
     func shutdown() {
         addToQueue(ModbusCommand(withCommand: .regulatorState, andData: RegulatorState.off))
         //connector.setRegulatorState(.off)
@@ -238,6 +250,15 @@ class ModbusCenter: ConnectorDelegate {
         }
         if command.command == .temperatureSensorCalibration {
             connector.setTemperatureSensorCalibration(command.data as! Double)
+        }
+        if command.command == .controlSequence {
+            connector.setControlSequence(command.data as! ControlSequenceType)
+        }
+        if command.command == .regulatorShutdownMode {
+            connector.setRegulatorShutdownMode(command.data as! RegulatorShutdownWorkType)
+        }
+        if command.command == .valveShutdownMode {
+            connector.setValveShutdownMode(command.data as! FanShutdownWorkType)
         }
     }
     
