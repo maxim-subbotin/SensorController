@@ -199,4 +199,80 @@ class Localization {
     public var su: String {
         return string(byName: "su", defValue: "Su")
     }
+    
+    public var parameters: String {
+        return string(byName: "parameters", defValue: "Parameters")
+    }
+    
+    public var fanControlMode: String {
+        return string(byName: "fan_control_mode", defValue: "Fan control mode")
+    }
+    
+    public var manualMode: String {
+        return string(byName: "manual_mode", defValue: "Manual")
+    }
+    
+    public var autoMode: String {
+        return string(byName: "auto_mode", defValue: "Auto")
+    }
+    
+    public var controlSequence: String {
+        return string(byName: "control_sequence", defValue: "Control sequence")
+    }
+    
+    public var onlyHeat: String {
+        return string(byName: "only_heat", defValue: "Only heat")
+    }
+    
+    public var onlyCold: String {
+        return string(byName: "only_cold", defValue: "Only cold")
+    }
+    
+    public var heatAndCold: String {
+        return string(byName: "heat_and_cold", defValue: "Heat and cold")
+    }
+    
+    public var regulatorShutdownMode: String {
+        return string(byName: "regulator_shutdown_mode", defValue: "Regulator shutdown mode")
+    }
+    
+    public var valveShutdownMode: String {
+        return string(byName: "valve_shutdown_mode", defValue: "Valve shutdown mode")
+    }
+    
+    public var fullShutdown: String {
+        return string(byName: "full_shutdown", defValue: "Full shutdown")
+    }
+    
+    public var partialShutdown: String {
+        return string(byName: "partial_shutdown", defValue: "Partial shutdown")
+    }
+    
+    public var ventilationMode: String {
+        return string(byName: "ventilation_mode", defValue: "Ventilation mode")
+    }
+    
+    public var disabled: String {
+        return string(byName: "disabled", defValue: "Disabled")
+    }
+    
+    public var enabled: String {
+        return string(byName: "enabled", defValue: "Enabled")
+    }
+    
+    public var fanSpeedGraph: String {
+        return string(byName: "fan_speed_graph", defValue: "Fan speed graph")
+    }
+    
+    public var graph1: String {
+        return string(byName: "graph_1", defValue: "Graph 1")
+    }
+    
+    public var graph2: String {
+        return string(byName: "graph_2", defValue: "Graph 2")
+    }
+    
+    public var graph3: String {
+        return string(byName: "graph_3", defValue: "Graph 3")
+    }
 }

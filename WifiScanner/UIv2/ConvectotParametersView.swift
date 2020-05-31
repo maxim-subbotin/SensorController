@@ -111,7 +111,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         self.isUserInteractionEnabled = true
         
         self.addSubview(lblParams)
-        lblParams.text = "Parameters"
+        lblParams.text = Localization.main.parameters
         lblParams.textColor = .white
         lblParams.font = UIFont.customFont(bySize: 25)
         lblParams.translatesAutoresizingMaskIntoConstraints = false
@@ -134,9 +134,9 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         
         self.addSubview(fanModeView)
         fanModeView.delegate = self
-        fanModeView.title = "Fan control mode:"
-        fanModeView.param1Name = "Manual"
-        fanModeView.param2Name = "Auto"
+        fanModeView.title = Localization.main.fanControlMode
+        fanModeView.param1Name = Localization.main.manualMode
+        fanModeView.param2Name = Localization.main.autoMode
         fanModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC2 = fanModeView.topAnchor.constraint(equalTo: separator.topAnchor, constant: 35)
         let lC2 = fanModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -146,7 +146,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         
         self.addSubview(controlSequenceView)
         controlSequenceView.delegate = self
-        controlSequenceView.title = "Control sequence:"
+        controlSequenceView.title = Localization.main.controlSequence
         controlSequenceView.translatesAutoresizingMaskIntoConstraints = false
         let tC3 = controlSequenceView.topAnchor.constraint(equalTo: fanModeView.bottomAnchor, constant: 35)
         let lC3 = controlSequenceView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -154,36 +154,36 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         let hC3 = controlSequenceView.heightAnchor.constraint(equalToConstant: 160)
         NSLayoutConstraint.activate([tC3, lC3, wC3, hC3])
         controlSequenceView.items =
-         [ValueSelectorItem(withTitle: "Only heat", andValue: ControlSequenceType.onlyHeat),
-         ValueSelectorItem(withTitle: "Only cold", andValue: ControlSequenceType.onlyCold),
-         ValueSelectorItem(withTitle: "Heat and cold", andValue: ControlSequenceType.heatAndCold)]
+            [ValueSelectorItem(withTitle: Localization.main.onlyCold, andValue: ControlSequenceType.onlyHeat),
+             ValueSelectorItem(withTitle: Localization.main.onlyHeat, andValue: ControlSequenceType.onlyCold),
+             ValueSelectorItem(withTitle: Localization.main.heatAndCold, andValue: ControlSequenceType.heatAndCold)]
         
         self.addSubview(regulatorShutdownModeView)
         regulatorShutdownModeView.delegate = self
-        regulatorShutdownModeView.title = "Regulator shutdown mode:"
+        regulatorShutdownModeView.title = Localization.main.regulatorShutdownMode
         regulatorShutdownModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC4 = regulatorShutdownModeView.topAnchor.constraint(equalTo: controlSequenceView.bottomAnchor, constant: 35)
         let lC4 = regulatorShutdownModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC4 = regulatorShutdownModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
         let hC4 = regulatorShutdownModeView.heightAnchor.constraint(equalToConstant: 120)
         NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
-        regulatorShutdownModeView.items = [ValueSelectorItem(withTitle: "Full shutdown", andValue: RegulatorShutdownWorkType.fullShutdown),
-        ValueSelectorItem(withTitle: "Partial shutdown", andValue: RegulatorShutdownWorkType.partialShutdown)]
+        regulatorShutdownModeView.items = [ValueSelectorItem(withTitle: Localization.main.fullShutdown, andValue: RegulatorShutdownWorkType.fullShutdown),
+                                           ValueSelectorItem(withTitle: Localization.main.partialShutdown, andValue: RegulatorShutdownWorkType.partialShutdown)]
         
         self.addSubview(valveShutdownModeView)
         valveShutdownModeView.delegate = self
-        valveShutdownModeView.title = "Valve shutdown mode:"
+        valveShutdownModeView.title = Localization.main.valveShutdownMode
         valveShutdownModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC5 = valveShutdownModeView.topAnchor.constraint(equalTo: regulatorShutdownModeView.bottomAnchor, constant: 35)
         let lC5 = valveShutdownModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC5 = valveShutdownModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
         let hC5 = valveShutdownModeView.heightAnchor.constraint(equalToConstant: 120)
         NSLayoutConstraint.activate([tC5, lC5, wC5, hC5])
-        valveShutdownModeView.items = [ValueSelectorItem(withTitle: "Full shutdown", andValue: FanShutdownWorkType.valveClosed),
-                                       ValueSelectorItem(withTitle: "Partial shutdown", andValue: FanShutdownWorkType.valveOpened)]
+        valveShutdownModeView.items = [ValueSelectorItem(withTitle: Localization.main.fullShutdown, andValue: FanShutdownWorkType.valveClosed),
+                                       ValueSelectorItem(withTitle: Localization.main.partialShutdown, andValue: FanShutdownWorkType.valveOpened)]
         
         self.addSubview(ventilationModeView)
-        ventilationModeView.title = "Ventilation mode:"
+        ventilationModeView.title = Localization.main.ventilationMode
         ventilationModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC6 = ventilationModeView.topAnchor.constraint(equalTo: valveShutdownModeView.bottomAnchor, constant: 35)
         let lC6 = ventilationModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -193,16 +193,16 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         
         self.addSubview(fanSpeedGraphView)
         fanSpeedGraphView.delegate = self
-        fanSpeedGraphView.title = "Fan speed graph:"
+        fanSpeedGraphView.title = Localization.main.fanSpeedGraph
         fanSpeedGraphView.translatesAutoresizingMaskIntoConstraints = false
         let tC7 = fanSpeedGraphView.topAnchor.constraint(equalTo: ventilationModeView.bottomAnchor, constant: 35)
         let lC7 = fanSpeedGraphView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC7 = fanSpeedGraphView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
         let hC7 = fanSpeedGraphView.heightAnchor.constraint(equalToConstant: 160)
         NSLayoutConstraint.activate([tC7, lC7, wC7, hC7])
-        fanSpeedGraphView.items = [ValueSelectorItem(withTitle: "Graph 1", andValue: AutoFanSpeedGraphType.graph1),
-                                   ValueSelectorItem(withTitle: "Graph 2", andValue: AutoFanSpeedGraphType.graph2),
-                                   ValueSelectorItem(withTitle: "Graph 3", andValue: AutoFanSpeedGraphType.graph3)]
+        fanSpeedGraphView.items = [ValueSelectorItem(withTitle: Localization.main.graph1, andValue: AutoFanSpeedGraphType.graph1),
+                                   ValueSelectorItem(withTitle: Localization.main.graph2, andValue: AutoFanSpeedGraphType.graph2),
+                                   ValueSelectorItem(withTitle: Localization.main.graph3, andValue: AutoFanSpeedGraphType.graph3)]
         
         self.addSubview(temperatureReactionTime)
         temperatureReactionTime.delegate = self
@@ -940,8 +940,8 @@ class ConvectorSwitchView: UIView {
             slider.isOn = _enabled
         }
     }
-    public var positiveTitle = "Enabled"
-    public var negativeTitle = "Disabled"
+    public var positiveTitle = Localization.main.enabled
+    public var negativeTitle = Localization.main.disabled
     
     override init(frame: CGRect) {
         super.init(frame: frame)

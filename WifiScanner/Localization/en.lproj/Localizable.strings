@@ -46,3 +46,22 @@
 "sa" = "Sa";
 "su" = "Su";
 
+"parameters" = "Parameters";
+"fan_control_mode" = "Fan control mode:";
+"manual_mode" = "Manual";
+"auto_mode" = "Auto";
+"control_sequence" = "Control sequence:";
+"only_heat" = "Only heat";
+"only_cold" = "Only cold";
+"heat_and_cold" = "Heat and cold";
+"regulator_shutdown_mode" = "Regulator shutdown mode:";
+"full_shutdown" = "Full shutdown";
+"partial_shutdown" = "Partial shutdown";
+"valve_shutdown_mode" = "Valve shutdown mode";
+"ventilation_mode" = "Ventilation mode";
+"disabled" = "Disabled";
+"enabled" = "Enabled";
+"fan_speed_graph" = "Fan speed graph";
+"graph_1" = "Graph 1";
+"graph_2" = "Graph 2";
+"graph_3" = "Graph 3";
