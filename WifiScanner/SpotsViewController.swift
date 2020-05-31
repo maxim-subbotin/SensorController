@@ -93,7 +93,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         let wC = collectionView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
         NSLayoutConstraint.activate([cxC, tC, bC, wC])
         
-        let btnDemo = UIBarButtonItem(title: "Demo", style: .done, target: self, action: #selector(onDemo))
+        let btnDemo = UIBarButtonItem(title: Localization.main.demo, style: .done, target: self, action: #selector(onDemo))
         self.navigationItem.leftBarButtonItem = btnDemo
     }
 

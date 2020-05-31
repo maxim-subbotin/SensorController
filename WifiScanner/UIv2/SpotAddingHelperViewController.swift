@@ -310,7 +310,7 @@ class RegulatorTitleCardView: OneButtonHelperCardView {
     override func applyUI() {
         super.applyUI()
         
-        self.secondButtonTitle = "NEXT"
+        self.secondButtonTitle = Localization.main.next.uppercased()
         
         self.addSubview(lblTitle)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -321,7 +321,7 @@ class RegulatorTitleCardView: OneButtonHelperCardView {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
-        lblTitle.text = "Please enter an area name\nwhere the regulator is installed"
+        lblTitle.text = Localization.main.regulatorTitleDescription
         lblTitle.font = UIFont.customFont(bySize: 24)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
@@ -332,7 +332,7 @@ class RegulatorTitleCardView: OneButtonHelperCardView {
         let wC1 = txtTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC1 = txtTitle.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
-        txtTitle.placeholder = "Regulator title"
+        txtTitle.placeholder = Localization.main.regulatorTitle
         txtTitle.textColor = UIColor(hexString: "#767676")
         txtTitle.font = UIFont.customFont(bySize: 26)
     }
@@ -361,8 +361,8 @@ class RegulatorTypeConnectionCardView: TwoButtonHelperCardView, CheckboxViewDele
     
     override func applyUI() {
         super.applyUI()
-        self.firstButtonTitle = "BACK"
-        self.secondButtonTitle = "NEXT"
+        self.firstButtonTitle = Localization.main.back.uppercased()
+        self.secondButtonTitle = Localization.main.next.uppercased()
         
         self.addSubview(lblTitle)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -373,7 +373,7 @@ class RegulatorTypeConnectionCardView: TwoButtonHelperCardView, CheckboxViewDele
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
-        lblTitle.text = "Choose a connection type"
+        lblTitle.text = Localization.main.connectionType
         lblTitle.font = UIFont.customFont(bySize: 24)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
@@ -393,7 +393,7 @@ class RegulatorTypeConnectionCardView: TwoButtonHelperCardView, CheckboxViewDele
         let wC2 = lblDirectConnection.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15)
         let hC2 = lblDirectConnection.heightAnchor.constraint(equalToConstant: 30)
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
-        lblDirectConnection.text = "Direct connection"
+        lblDirectConnection.text = Localization.main.directConnection
         lblDirectConnection.font = UIFont.customFont(bySize: 24)
         lblDirectConnection.textColor = UIColor(hexString: "#767676")
         
@@ -413,7 +413,7 @@ class RegulatorTypeConnectionCardView: TwoButtonHelperCardView, CheckboxViewDele
         let wC4 = lblInternetConnection.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15)
         let hC4 = lblInternetConnection.heightAnchor.constraint(equalToConstant: 30)
         NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
-        lblInternetConnection.text = "Internet connection"
+        lblInternetConnection.text = Localization.main.internetConnection
         lblInternetConnection.font = UIFont.customFont(bySize: 24)
         lblInternetConnection.textColor = UIColor(hexString: "#767676")
     }
@@ -488,8 +488,8 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
     override func applyUI() {
         super.applyUI()
         
-        self.firstButtonTitle = "BACK"
-        self.secondButtonTitle = "NEXT"
+        self.firstButtonTitle = Localization.main.back.uppercased()
+        self.secondButtonTitle = Localization.main.next.uppercased()
         
         self.addSubview(lblTitle)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -500,7 +500,7 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
-        lblTitle.text = "Enter regulator network ID\nand his password"
+        lblTitle.text = Localization.main.enterRegulator
         lblTitle.font = UIFont.customFont(bySize: 24)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
@@ -511,7 +511,7 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
         let wC1 = txtTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC1 = txtTitle.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
-        txtTitle.placeholder = "Regulator network ID"
+        txtTitle.placeholder = Localization.main.regulatorNetworkId
         txtTitle.textColor = UIColor(hexString: "#767676")
         txtTitle.font = UIFont.customFont(bySize: 26)
         
@@ -523,7 +523,7 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
         let hC2 = txtPassword.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
         txtPassword.isSecureTextEntry = true
-        txtPassword.placeholder = "Regulator password"
+        txtPassword.placeholder = Localization.main.regulatorPassword
         txtPassword.textColor = UIColor(hexString: "#767676")
         txtPassword.font = UIFont.customFont(bySize: 26)
     }
@@ -545,7 +545,7 @@ class RegulatorConnectionCard: OneButtonHelperCardView {
     override func applyUI() {
         super.applyUI()
         
-        self.secondButtonTitle = "CANCEL"
+        self.secondButtonTitle = Localization.main.cancel.uppercased()
         
         self.addSubview(lblTitle)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -556,7 +556,7 @@ class RegulatorConnectionCard: OneButtonHelperCardView {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
-        lblTitle.text = "Connection..."
+        lblTitle.text = Localization.main.connection
         lblTitle.font = UIFont.customFont(bySize: 24)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
@@ -626,8 +626,8 @@ class RegulatorConnectionErrorCard: TwoButtonHelperCardView {
     override func applyUI() {
         super.applyUI()
         
-        self.firstButtonTitle = "BACK"
-        self.secondButtonTitle = "TRY AGAIN"
+        self.firstButtonTitle = Localization.main.back.uppercased()
+        self.secondButtonTitle = Localization.main.tryAgain.uppercased()
         
         self.addSubview(lblTitle)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -638,7 +638,7 @@ class RegulatorConnectionErrorCard: TwoButtonHelperCardView {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
-        lblTitle.text = "Impossible to connect the regulator"
+        lblTitle.text = Localization.main.impossibleConnect
         lblTitle.font = UIFont.customFont(bySize: 33)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
@@ -651,7 +651,7 @@ class RegulatorConnectionErrorCard: TwoButtonHelperCardView {
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
         lblDescription.textAlignment = .center
         lblDescription.numberOfLines = 0
-        lblDescription.text = "Please make sure the regulator is connected to network and distance from your device to the regulator less than 10 meters."
+        lblDescription.text = Localization.main.impossibleConnectDescription
         lblDescription.font = UIFont.customFont(bySize: 24)
         lblDescription.textColor = UIColor(hexString: "#767676")
     }
@@ -673,8 +673,8 @@ class RegulatorOnlineAuthCard: TwoButtonHelperCardView {
     override func applyUI() {
         super.applyUI()
         
-        self.firstButtonTitle = "BACK"
-        self.secondButtonTitle = "NEXT"
+        self.firstButtonTitle = Localization.main.back.uppercased()
+        self.secondButtonTitle = Localization.main.next.uppercased()
         
         self.addSubview(lblTitle)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -685,7 +685,7 @@ class RegulatorOnlineAuthCard: TwoButtonHelperCardView {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
-        lblTitle.text = "Authorization:"
+        lblTitle.text = Localization.main.authorization
         lblTitle.font = UIFont.customFont(bySize: 33)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
@@ -696,7 +696,7 @@ class RegulatorOnlineAuthCard: TwoButtonHelperCardView {
         let wC1 = txtEmail.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC1 = txtEmail.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
-        txtEmail.placeholder = "Email address"
+        txtEmail.placeholder = Localization.main.emailAddress
         txtEmail.textColor = UIColor(hexString: "#767676")
         txtEmail.font = UIFont.customFont(bySize: 26)
         
@@ -707,7 +707,7 @@ class RegulatorOnlineAuthCard: TwoButtonHelperCardView {
         let wC2 = txtPassword.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC2 = txtPassword.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
-        txtPassword.placeholder = "Password"
+        txtPassword.placeholder = Localization.main.password
         txtPassword.textColor = UIColor(hexString: "#767676")
         txtPassword.font = UIFont.customFont(bySize: 26)
         txtPassword.isSecureTextEntry = true
@@ -723,7 +723,7 @@ class RegulatorOnlineAuthCard: TwoButtonHelperCardView {
         let wC3 = btnRegistration.widthAnchor.constraint(equalToConstant: 120)
         let hC3 = btnRegistration.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC3, lC3, wC3, hC3])
-        btnRegistration.setAttributedTitle(NSMutableAttributedString(string:"Sing up", attributes:attrs), for: .normal)
+        btnRegistration.setAttributedTitle(NSMutableAttributedString(string:Localization.main.signUp, attributes:attrs), for: .normal)
         btnRegistration.contentHorizontalAlignment = .left
         btnRegistration.setTitleColor(UIColor(hexString: "#767676"), for: .normal)
         btnRegistration.titleLabel?.font = UIFont.customFont(bySize: 18)
@@ -736,7 +736,7 @@ class RegulatorOnlineAuthCard: TwoButtonHelperCardView {
         let wC4 = btnForgetPassword.widthAnchor.constraint(equalToConstant: 120)
         let hC4 = btnForgetPassword.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
-        btnForgetPassword.setAttributedTitle(NSMutableAttributedString(string:"Forget password", attributes:attrs), for: .normal)
+        btnForgetPassword.setAttributedTitle(NSMutableAttributedString(string:Localization.main.forgetPassword, attributes:attrs), for: .normal)
         btnForgetPassword.contentHorizontalAlignment = .right
         btnForgetPassword.setTitleColor( UIColor(hexString: "#767676"), for: .normal)
         btnForgetPassword.titleLabel?.font = UIFont.customFont(bySize: 18)
@@ -760,8 +760,8 @@ class RegulatorForgetPasswordCard: TwoButtonHelperCardView {
     override func applyUI() {
         super.applyUI()
         
-        self.firstButtonTitle = "BACK"
-        self.secondButtonTitle = "RESTORE"
+        self.firstButtonTitle = Localization.main.back.uppercased()
+        self.secondButtonTitle = Localization.main.restore.uppercased()
         
         self.addSubview(lblTitle)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -772,7 +772,7 @@ class RegulatorForgetPasswordCard: TwoButtonHelperCardView {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
-        lblTitle.text = "Access recovery:"
+        lblTitle.text = Localization.main.accessRecovery
         lblTitle.font = UIFont.customFont(bySize: 33)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
@@ -783,7 +783,7 @@ class RegulatorForgetPasswordCard: TwoButtonHelperCardView {
         let wC1 = txtEmail.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC1 = txtEmail.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
-        txtEmail.placeholder = "Email address"
+        txtEmail.placeholder = Localization.main.emailAddress
         txtEmail.textColor = UIColor(hexString: "#767676")
         txtEmail.font = UIFont.customFont(bySize: 26)
         
@@ -796,7 +796,7 @@ class RegulatorForgetPasswordCard: TwoButtonHelperCardView {
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
         lblDescription.textAlignment = .center
         lblDescription.numberOfLines = 0
-        lblDescription.text = "Enter the email address for access recovery. You will receive an email with instructions for password resetting."
+        lblDescription.text = Localization.main.accessRecoveryDescription
         lblDescription.font = UIFont.customFont(bySize: 20)
         lblDescription.textColor = UIColor(hexString: "#767676")
     }
@@ -815,8 +815,8 @@ class RegulatorSignupCard: TwoButtonHelperCardView {
     override func applyUI() {
         super.applyUI()
         
-        self.firstButtonTitle = "BACK"
-        self.secondButtonTitle = "OK"
+        self.firstButtonTitle = Localization.main.back.uppercased()
+        self.secondButtonTitle = Localization.main.OK.uppercased()
         
         self.addSubview(lblTitle)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -827,7 +827,7 @@ class RegulatorSignupCard: TwoButtonHelperCardView {
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
-        lblTitle.text = "Sign Up:"
+        lblTitle.text = Localization.main.signUp
         lblTitle.font = UIFont.customFont(bySize: 33)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
@@ -838,7 +838,7 @@ class RegulatorSignupCard: TwoButtonHelperCardView {
         let wC1 = txtName.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC1 = txtName.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC1, lC1, wC1, hC1])
-        txtName.placeholder = "Name"
+        txtName.placeholder = Localization.main.name
         txtName.textColor = UIColor(hexString: "#767676")
         txtName.font = UIFont.customFont(bySize: 26)
         
@@ -849,7 +849,7 @@ class RegulatorSignupCard: TwoButtonHelperCardView {
         let wC2 = txtCompany.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC2 = txtCompany.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
-        txtCompany.placeholder = "Company"
+        txtCompany.placeholder = Localization.main.company
         txtCompany.textColor = UIColor(hexString: "#767676")
         txtCompany.font = UIFont.customFont(bySize: 26)
         
@@ -860,7 +860,7 @@ class RegulatorSignupCard: TwoButtonHelperCardView {
         let wC3 = txtEmail.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC3 = txtEmail.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC3, lC3, wC3, hC3])
-        txtEmail.placeholder = "Email"
+        txtEmail.placeholder = Localization.main.emailAddress
         txtEmail.textColor = UIColor(hexString: "#767676")
         txtEmail.font = UIFont.customFont(bySize: 26)
         
@@ -871,7 +871,7 @@ class RegulatorSignupCard: TwoButtonHelperCardView {
         let wC4 = txtPassword.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC4 = txtPassword.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
-        txtPassword.placeholder = "Password"
+        txtPassword.placeholder = Localization.main.password
         txtPassword.textColor = UIColor(hexString: "#767676")
         txtPassword.font = UIFont.customFont(bySize: 26)
         txtPassword.isSecureTextEntry = true
@@ -883,7 +883,7 @@ class RegulatorSignupCard: TwoButtonHelperCardView {
         let wC5 = txtPassword2.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC5 = txtPassword2.heightAnchor.constraint(equalToConstant: 35)
         NSLayoutConstraint.activate([tC5, lC5, wC5, hC5])
-        txtPassword2.placeholder = "Type password again"
+        txtPassword2.placeholder = Localization.main.passwordAgain
         txtPassword2.textColor = UIColor(hexString: "#767676")
         txtPassword2.font = UIFont.customFont(bySize: 26)
         txtPassword2.isSecureTextEntry = true
@@ -898,7 +898,7 @@ class RegulatorSignupCard: TwoButtonHelperCardView {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
             let w = self.frame.width - 30 - 30 - 15
-            let t = "By submitting your personal information you agree to receive emails from Varmann, also you accept Confidentiality Policy"
+            let t = Localization.main.signUpDescription
             let h = t.height(withConstrainedWidth: w, font: UIFont.customFont(bySize: 20))
             
             self.addSubview(self.lblAgreement)

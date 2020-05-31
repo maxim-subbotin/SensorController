@@ -22,6 +22,8 @@
 		D6434DA6244C56500047A9F0 /* CLDateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434DA1244C56500047A9F0 /* CLDateTimePickerView.swift */; };
 		D6434DA8244C57750047A9F0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434DA7244C57750047A9F0 /* Extensions.swift */; };
 		D6434DAA244C605D0047A9F0 /* RegulatorCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6434DA9244C605D0047A9F0 /* RegulatorCellView.swift */; };
+		D6504E772483C6BB00118223 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6504E762483C6BB00118223 /* Localization.swift */; };
+		D6504E7B2483CC5400118223 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D6504E7D2483CC5400118223 /* Localizable.strings */; };
 		D6611D2224557E5200A4EA73 /* SpotAddingHelperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6611D2124557E5200A4EA73 /* SpotAddingHelperViewController.swift */; };
 		D674F1B523335A17009D2D4C /* PingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B023335A17009D2D4C /* PingConfiguration.swift */; };
 		D674F1B623335A17009D2D4C /* SwiftPing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D674F1B123335A17009D2D4C /* SwiftPing.swift */; };
@@ -92,6 +94,13 @@
 		D6434DA1244C56500047A9F0 /* CLDateTimePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CLDateTimePickerView.swift; path = DateTimePicker/CLDateTimePickerView.swift; sourceTree = "<group>"; };
 		D6434DA7244C57750047A9F0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D6434DA9244C605D0047A9F0 /* RegulatorCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegulatorCellView.swift; sourceTree = "<group>"; };
+		D6504E722483C5BB00118223 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D6504E732483C5BB00118223 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D6504E742483C5E900118223 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		D6504E752483C5E900118223 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		D6504E762483C6BB00118223 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		D6504E7C2483CC5400118223 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D6504E7E2483CC7800118223 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D6611D2124557E5200A4EA73 /* SpotAddingHelperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotAddingHelperViewController.swift; sourceTree = "<group>"; };
 		D674F1B023335A17009D2D4C /* PingConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingConfiguration.swift; sourceTree = "<group>"; };
 		D674F1B123335A17009D2D4C /* SwiftPing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPing.swift; sourceTree = "<group>"; };
@@ -148,9 +157,7 @@
 		D6F1DCA42330B16C007248AC /* WifiScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WifiScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F1DCA72330B16C007248AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6F1DCA92330B16C007248AC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D6F1DCAC2330B16C007248AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D6F1DCAE2330B16E007248AC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D6F1DCB12330B16E007248AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D6F1DCB32330B16E007248AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6F1DCBA2330B17F007248AC /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		D6F1DCBC2330B17F007248AC /* WifiScanner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WifiScanner.entitlements; sourceTree = "<group>"; };
@@ -183,6 +190,14 @@
 				D6434D9E244C56500047A9F0 /* CLDateTimePickerViewController.swift */,
 			);
 			name = DateTimePicker;
+			sourceTree = "<group>";
+		};
+		D6504E782483CBB500118223 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				D6504E7D2483CC5400118223 /* Localizable.strings */,
+			);
+			path = Localization;
 			sourceTree = "<group>";
 		};
 		D674F1AF23335A17009D2D4C /* Ping */ = {
@@ -336,6 +351,7 @@
 		D6F1DCA62330B16C007248AC /* WifiScanner */ = {
 			isa = PBXGroup;
 			children = (
+				D6504E782483CBB500118223 /* Localization */,
 				D68CECEB247A82220044E148 /* Connection */,
 				D67944222406F1C400863E39 /* UIv2 */,
 				D68F240A23CC5FF100A249A2 /* UI */,
@@ -359,6 +375,7 @@
 				D68F240823CC5D7400A249A2 /* ColorScheme.swift */,
 				D608674A23E200850013044A /* SpotAdditionalParametersViewController.swift */,
 				D6434DA7244C57750047A9F0 /* Extensions.swift */,
+				D6504E762483C6BB00118223 /* Localization.swift */,
 			);
 			path = WifiScanner;
 			sourceTree = "<group>";
@@ -432,6 +449,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = D6F1DC9B2330B16C007248AC;
 			productRefGroup = D6F1DCA52330B16C007248AC /* Products */;
@@ -458,6 +476,7 @@
 				D67944292406F56300863E39 /* font_2.ttf in Resources */,
 				D67944282406F56300863E39 /* font_1.otf in Resources */,
 				D67DFA89233519D700760D92 /* AUTHORS in Resources */,
+				D6504E7B2483CC5400118223 /* Localizable.strings in Resources */,
 				D67DFA86233519D700760D92 /* README.md in Resources */,
 				D6F1DCAD2330B16C007248AC /* Main.storyboard in Resources */,
 				D6434DA4244C56500047A9F0 /* CLDatePickerResources.xcassets in Resources */,
@@ -490,6 +509,7 @@
 				D6F2046123DA1943002BFE0D /* DatetimeView.swift in Sources */,
 				D68F240923CC5D7400A249A2 /* ColorScheme.swift in Sources */,
 				D6AC45A123D793EF00779652 /* CalibratorView.swift in Sources */,
+				D6504E772483C6BB00118223 /* Localization.swift in Sources */,
 				D674F1B923335A17009D2D4C /* PingResponse.swift in Sources */,
 				D6F1DCBE2330B404007248AC /* SwiftWifiIotPlugin.swift in Sources */,
 				D6611D2224557E5200A4EA73 /* SpotAddingHelperViewController.swift in Sources */,
@@ -529,10 +549,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		D6504E7D2483CC5400118223 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D6504E7C2483CC5400118223 /* en */,
+				D6504E7E2483CC7800118223 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		D6F1DCAB2330B16C007248AC /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D6F1DCAC2330B16C007248AC /* Base */,
+				D6504E722483C5BB00118223 /* Base */,
+				D6504E742483C5E900118223 /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -540,7 +570,8 @@
 		D6F1DCB02330B16E007248AC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D6F1DCB12330B16E007248AC /* Base */,
+				D6504E732483C5BB00118223 /* Base */,
+				D6504E752483C5E900118223 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -552,6 +583,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -613,6 +645,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
