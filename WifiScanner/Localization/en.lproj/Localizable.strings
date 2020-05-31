@@ -27,3 +27,22 @@
 "regulator_password" = "Regulator password";
 "connection" = "Connection...";
 "cancel" = "Cancel";
+"auto" = "Auto";
+"weekly_programming" = "Weekly programming";
+
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"sunday" = "Sunday";
+
+"mo" = "Mo";
+"tu" = "Tu";
+"we" = "We";
+"th" = "Th";
+"fr" = "Fr";
+"sa" = "Sa";
+"su" = "Su";
+

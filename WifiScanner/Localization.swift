@@ -135,4 +135,68 @@ class Localization {
     public var cancel: String {
         return string(byName: "cancel", defValue: "Cancel")
     }
+    
+    public var auto: String {
+        return string(byName: "auto", defValue: "Auto")
+    }
+    
+    public var weeklyProgramming: String {
+        return string(byName: "weekly_programming", defValue: "Weekly programming")
+    }
+    
+    public var monday: String {
+        return string(byName: "monday", defValue: "Monday")
+    }
+    
+    public var tuesday: String {
+        return string(byName: "tuesday", defValue: "Tuesday")
+    }
+    
+    public var wednesday: String {
+        return string(byName: "wednesday", defValue: "Wednesday")
+    }
+    
+    public var thursday: String {
+        return string(byName: "thursday", defValue: "Thursday")
+    }
+    
+    public var friday: String {
+        return string(byName: "friday", defValue: "Friday")
+    }
+    
+    public var saturday: String {
+        return string(byName: "saturday", defValue: "Saturday")
+    }
+    
+    public var sunday: String {
+        return string(byName: "sunday", defValue: "Sunday")
+    }
+    
+    public var mo: String {
+        return string(byName: "mo", defValue: "Mo")
+    }
+    
+    public var tu: String {
+        return string(byName: "tu", defValue: "Tu")
+    }
+    
+    public var we: String {
+        return string(byName: "we", defValue: "We")
+    }
+    
+    public var th: String {
+        return string(byName: "th", defValue: "Th")
+    }
+    
+    public var fr: String {
+        return string(byName: "fr", defValue: "Fr")
+    }
+    
+    public var sa: String {
+        return string(byName: "sa", defValue: "Sa")
+    }
+    
+    public var su: String {
+        return string(byName: "su", defValue: "Su")
+    }
 }

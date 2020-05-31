@@ -80,7 +80,7 @@ class ConvectorWeeklyProgrammingView: UIView, TimeTemperatureViewDelegate, DayLa
         self.isUserInteractionEnabled = true
         
         self.addSubview(lblTitle)
-        lblTitle.text = "Weekly programming"
+        lblTitle.text = Localization.main.weeklyProgramming.uppercased()
         lblTitle.textColor = .white
         lblTitle.font = UIFont.customFont(bySize: 25)
         lblTitle.textAlignment = .center
@@ -202,7 +202,13 @@ class DayLabelView: UIView {
     private var lblSecond = UILabel()
     private var btnPrev = UIButton()
     private var btnNext = UIButton()
-    private var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", ]
+    private var days = [Localization.main.monday,
+                        Localization.main.tuesday,
+                        Localization.main.wednesday,
+                        Localization.main.thursday,
+                        Localization.main.friday,
+                        Localization.main.saturday,
+                        Localization.main.sunday]
     private var _position = 0
     public var position: Int {
         return _position
@@ -223,7 +229,7 @@ class DayLabelView: UIView {
         self.addSubview(lblSecond)
         
         self.addSubview(lblFirst)
-        lblFirst.text = days.first
+        lblFirst.text = days.first?.uppercased()
         lblFirst.textColor = .white
         lblFirst.font = UIFont.customFont(bySize: 22)
         lblFirst.textAlignment = .center
@@ -263,7 +269,7 @@ class DayLabelView: UIView {
         } else {
             _position -= 1
         }
-        self.lblFirst.text = self.days[_position]
+        self.lblFirst.text = self.days[_position].uppercased()
         delegate?.onDayChange(position)
     }
     
@@ -273,7 +279,7 @@ class DayLabelView: UIView {
         } else {
             _position += 1
         }
-        self.lblFirst.text = self.days[_position]
+        self.lblFirst.text = self.days[_position].uppercased()
         delegate?.onDayChange(position)
     }
 }

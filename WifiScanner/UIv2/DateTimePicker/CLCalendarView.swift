@@ -137,7 +137,13 @@ class CLCalendarHeaderView: UILabel {
 
 class CLMonthHeaderView: UIView {
     private var labels = [UILabel]()
-    private var titles = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+    private var titles = [Localization.main.mo,
+                          Localization.main.tu,
+                          Localization.main.we,
+                          Localization.main.th,
+                          Localization.main.fr,
+                          Localization.main.sa,
+                          Localization.main.su]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -212,7 +218,7 @@ class CLMonthView: UIView, CLWeekViewDelegate {
         
         // need to determine how many weeks in month
         var count = 1
-        var currentMonth = date.month
+        let currentMonth = date.month
         var startWeeks = [Date]()
         var day = date.firstDayOfMonth
         if day.weekDayNumber == 1 {
@@ -391,7 +397,12 @@ extension Date {
     }
     
     var weekDayNumber: Int {
-        return Calendar.current.dateComponents([.weekday], from: self).weekday ?? 0
+        var num = Calendar.current.dateComponents([.weekday], from: self).weekday ?? 0
+        num -= 1
+        if num < 0 {
+            num += 7
+        }
+        return num
     }
     
     var monthNumber: Int {

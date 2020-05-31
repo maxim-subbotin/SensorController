@@ -150,7 +150,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         NSLayoutConstraint.activate([bC5, lC5, wC5, hC5])
         
         self.view.addSubview(lblAuto)
-        lblAuto.text = "Auto"
+        lblAuto.text = Localization.main.auto.uppercased()
         lblAuto.backgroundColor = UIColor(hexString: "#009CDF")
         lblAuto.clipsToBounds = true
         lblAuto.layer.cornerRadius = 7
