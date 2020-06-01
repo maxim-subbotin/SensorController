@@ -179,7 +179,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         parametersView.isHidden = true
         
         self.view.addSubview(lblTurnedOff)
-        lblTurnedOff.text = "TURNED OFF"
+        lblTurnedOff.text = Localization.main.turnedOff.uppercased()
         lblTurnedOff.textAlignment = .center
         lblTurnedOff.textColor = UIColor(hexString: "#DADADA")
         lblTurnedOff.font = UIFont.customFont(bySize: 35)

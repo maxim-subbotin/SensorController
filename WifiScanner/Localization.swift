@@ -275,4 +275,88 @@ class Localization {
     public var graph3: String {
         return string(byName: "graph_3", defValue: "Graph 3")
     }
+    
+    public var temperatureReactionTime: String {
+        return string(byName: "temperature_reaction_time", defValue: "Temperature reaction time:")
+    }
+    
+    public var sec: String {
+        return string(byName: "sec", defValue: "sec")
+    }
+    
+    public var maxFanSpeedLimit: String {
+        return string(byName: "max_fan_speed_limit", defValue: "Max fan speed limit:")
+    }
+    
+    public var temperatureStep: String {
+        return string(byName: "temperature_step_for_sleep_mode", defValue: "Temperature step for Sleep mode:")
+    }
+    
+    public var weekProgrammingMode: String {
+        return string(byName: "week_programming_mode", defValue: "Week programming mode:")
+    }
+    
+    public var byFanSpeed: String {
+        return string(byName: "by_fan_speed", defValue: "By fan speed")
+    }
+    
+    public var byAirTemperature: String {
+        return string(byName: "by_air_temperature", defValue: "By air temperature")
+    }
+    
+    public var indicationMode: String {
+        return string(byName: "indication_modes", defValue: "Indication modes")
+    }
+    
+    public var displayBrightness: String {
+        return string(byName: "display_brightness", defValue: "Display brightness:")
+    }
+    
+    public var displayDimming: String {
+        return string(byName: "brightness_dimming", defValue: "Brightness dimming")
+    }
+    
+    public var others: String {
+        return string(byName: "others", defValue: "Others")
+    }
+    
+    public var temperatureSensorCalibration: String {
+        return string(byName: "temperature_sensor_calibration", defValue: "Temperature sensor calibration:")
+    }
+    
+    public var buttonsBlockMode: String {
+        return string(byName: "buttons_block_mode", defValue: "Buttons block mode:")
+    }
+    
+    public var blockModeManual: String {
+        return string(byName: "block_mode_manual", defValue: "Manual block")
+    }
+    
+    public var blockModeAuto: String {
+        return string(byName: "block_mode_auto", defValue: "Automatic block")
+    }
+    
+    public var blockModeForbid: String {
+        return string(byName: "block_mode_forbid", defValue: "Don't block")
+    }
+    
+    public var defaultSettings: String {
+        return string(byName: "default_settings", defValue: "Default settings")
+    }
+    
+    public var reset: String {
+        return string(byName: "reset", defValue: "Reset")
+    }
+    
+    public var removeDevice: String {
+        return string(byName: "remove_device", defValue: "Remove device form list")
+    }
+    
+    public var remove: String {
+        return string(byName: "remove", defValue: "Remove")
+    }
+    
+    public var turnedOff: String {
+        return string(byName: "turned_off", defValue: "Turned off")
+    }
 }

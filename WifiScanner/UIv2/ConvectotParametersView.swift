@@ -206,7 +206,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         
         self.addSubview(temperatureReactionTime)
         temperatureReactionTime.delegate = self
-        temperatureReactionTime.title = "Temperature reaction time:"
+        temperatureReactionTime.title = Localization.main.temperatureReactionTime
         temperatureReactionTime.translatesAutoresizingMaskIntoConstraints = false
         let tC8 = temperatureReactionTime.topAnchor.constraint(equalTo: fanSpeedGraphView.bottomAnchor, constant: 35)
         let lC8 = temperatureReactionTime.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -216,12 +216,12 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         temperatureReactionTime.minValue = 1
         temperatureReactionTime.maxValue = 300
         temperatureReactionTime.value = 5
-        temperatureReactionTime.postfix = "sec"
+        temperatureReactionTime.postfix = Localization.main.sec
         
         self.addSubview(maxFanSpeedView)
         maxFanSpeedView.delegate = self
         maxFanSpeedView.postfix = "%"
-        maxFanSpeedView.title = "Max fan speed limit:"
+        maxFanSpeedView.title = Localization.main.maxFanSpeedLimit
         maxFanSpeedView.translatesAutoresizingMaskIntoConstraints = false
         let tC9 = maxFanSpeedView.topAnchor.constraint(equalTo: temperatureReactionTime.bottomAnchor, constant: 35)
         let lC9 = maxFanSpeedView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -235,7 +235,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         self.addSubview(tempStepSleepModeView)
         tempStepSleepModeView.delegate = self
         tempStepSleepModeView.postfix = "°"
-        tempStepSleepModeView.title = "Temperature step for Sleep mode:"
+        tempStepSleepModeView.title = Localization.main.temperatureStep
         tempStepSleepModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC10 = tempStepSleepModeView.topAnchor.constraint(equalTo: maxFanSpeedView.bottomAnchor, constant: 35)
         let lC10 = tempStepSleepModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -248,19 +248,19 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         
         self.addSubview(weekProgramModeView)
         weekProgramModeView.delegate = self
-        weekProgramModeView.title = "Week programming mode:"
+        weekProgramModeView.title = Localization.main.weekProgrammingMode
         weekProgramModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC11 = weekProgramModeView.topAnchor.constraint(equalTo: tempStepSleepModeView.bottomAnchor, constant: 35)
         let lC11 = weekProgramModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC11 = weekProgramModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
         let hC11 = weekProgramModeView.heightAnchor.constraint(equalToConstant: 160)
         NSLayoutConstraint.activate([tC11, lC11, wC11, hC11])
-        weekProgramModeView.items = [ValueSelectorItem(withTitle: "Disabled", andValue: WeekProgramMode.disabled),
-                                    ValueSelectorItem(withTitle: "By fan speed", andValue: WeekProgramMode.byFanSpeed),
-                                    ValueSelectorItem(withTitle: "By air temperature", andValue: WeekProgramMode.byAirTemperature)]
+        weekProgramModeView.items = [ValueSelectorItem(withTitle: Localization.main.disabled, andValue: WeekProgramMode.disabled),
+                                     ValueSelectorItem(withTitle: Localization.main.byFanSpeed, andValue: WeekProgramMode.byFanSpeed),
+                                     ValueSelectorItem(withTitle: Localization.main.byAirTemperature, andValue: WeekProgramMode.byAirTemperature)]
         
         self.addSubview(lblIndicationModes)
-        lblIndicationModes.text = "Indication modes"
+        lblIndicationModes.text = Localization.main.indicationMode
         lblIndicationModes.textColor = .white
         lblIndicationModes.font = UIFont.customFont(bySize: 25)
         lblIndicationModes.translatesAutoresizingMaskIntoConstraints = false
@@ -284,7 +284,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         self.addSubview(displayBrightnessView)
         displayBrightnessView.delegate = self
         displayBrightnessView.postfix = ""
-        displayBrightnessView.title = "Display brightness:"
+        displayBrightnessView.title = Localization.main.displayBrightness
         displayBrightnessView.translatesAutoresizingMaskIntoConstraints = false
         let tC14 = displayBrightnessView.topAnchor.constraint(equalTo: separator2.bottomAnchor, constant: 35)
         let lC14 = displayBrightnessView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -297,9 +297,9 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         
         self.addSubview(brightDimmingView)
         brightDimmingView.delegate = self
-        brightDimmingView.title = "Brightness dimming"
-        brightDimmingView.param1Name = "Enabled"
-        brightDimmingView.param2Name = "Disabled"
+        brightDimmingView.title = Localization.main.displayDimming
+        brightDimmingView.param1Name = Localization.main.enabled
+        brightDimmingView.param2Name = Localization.main.disabled
         brightDimmingView.translatesAutoresizingMaskIntoConstraints = false
         let tC15 = brightDimmingView.topAnchor.constraint(equalTo: displayBrightnessView.bottomAnchor, constant: 35)
         let lC15 = brightDimmingView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -308,7 +308,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         NSLayoutConstraint.activate([tC15, lC15, wC15, hC15])
         
         self.addSubview(lblOther)
-        lblOther.text = "Others"
+        lblOther.text = Localization.main.others
         lblOther.textColor = .white
         lblOther.font = UIFont.customFont(bySize: 25)
         lblOther.translatesAutoresizingMaskIntoConstraints = false
@@ -332,7 +332,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         self.addSubview(sensorCalibrationView)
         sensorCalibrationView.delegate = self
         sensorCalibrationView.postfix = "°"
-        sensorCalibrationView.title = "Temperature sensor calibration:"
+        sensorCalibrationView.title = Localization.main.temperatureSensorCalibration
         sensorCalibrationView.translatesAutoresizingMaskIntoConstraints = false
         let tC18 = sensorCalibrationView.topAnchor.constraint(equalTo: separator3.bottomAnchor, constant: 35)
         let lC18 = sensorCalibrationView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
@@ -345,19 +345,19 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         
         self.addSubview(blockModeView)
         blockModeView.delegate = self
-        blockModeView.title = "Buttons block mode:"
+        blockModeView.title = Localization.main.buttonsBlockMode
         blockModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC19 = blockModeView.topAnchor.constraint(equalTo: sensorCalibrationView.bottomAnchor, constant: 35)
         let lC19 = blockModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC19 = blockModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
         let hC19 = blockModeView.heightAnchor.constraint(equalToConstant: 160)
         NSLayoutConstraint.activate([tC19, lC19, wC19, hC19])
-        blockModeView.items = [ValueSelectorItem(withTitle: "Disabled", andValue: WeekProgramMode.disabled),
-                            ValueSelectorItem(withTitle: "By fan speed", andValue: WeekProgramMode.byFanSpeed),
-                            ValueSelectorItem(withTitle: "By air temperature", andValue: WeekProgramMode.byAirTemperature)]
+        blockModeView.items = [ValueSelectorItem(withTitle: Localization.main.blockModeManual, andValue: ButtonBlockMode.manual),
+                               ValueSelectorItem(withTitle: Localization.main.blockModeAuto, andValue: ButtonBlockMode.auto),
+                               ValueSelectorItem(withTitle: Localization.main.blockModeForbid, andValue: ButtonBlockMode.forbid)]
         
         self.addSubview(lblDefault)
-        lblDefault.text = "Default settings"
+        lblDefault.text = Localization.main.defaultSettings
         lblDefault.textColor = .white
         lblDefault.font = UIFont.customFont(bySize: 21)
         lblDefault.translatesAutoresizingMaskIntoConstraints = false
@@ -370,7 +370,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         self.addSubview(btnDefault)
         btnDefault.translatesAutoresizingMaskIntoConstraints = false
         btnDefault.layer.cornerRadius = 15
-        btnDefault.setTitle("Reset", for: .normal)
+        btnDefault.setTitle(Localization.main.reset, for: .normal)
         btnDefault.setTitleColor(UIColor(hexString: "#F0F0F0"), for: .highlighted)
         btnDefault.titleLabel?.font = UIFont.customFont(bySize: 21)
         btnDefault.clipsToBounds = true
