@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import NetworkExtension
 import SystemConfiguration
+import AVFoundation
 
 class SpotAddingHelperViewController: UIViewController, RegulatorConnectionCardDelegate, RegulatorOnlineAuthCardDelegate {
     private var card1 = RegulatorTitleCardView()
@@ -474,8 +475,9 @@ class CheckboxView: UIImageView {
     }
 }
 
-class RegulatorNetworkCardView: TwoButtonHelperCardView {
+class RegulatorNetworkCardView: TwoButtonHelperCardView, AVCaptureMetadataOutputObjectsDelegate {
     private var lblTitle = UILabel()
+    private var segment = UISegmentedControl(items: ["Scan code", "Manual"])
     private var txtTitle = UnderlinedTextField()
     private var txtPassword = UnderlinedTextField()
     public var ssid: String? {
@@ -484,6 +486,13 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
     public var password: String? {
         return txtPassword.text
     }
+    
+    // Camera
+    private var cameraView = UIView()
+    var captureSession: AVCaptureSession?
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer!
+    var isReading: Bool = false
+    private var isStopped = false
     
     override func applyUI() {
         super.applyUI()
@@ -504,9 +513,24 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
         lblTitle.font = UIFont.customFont(bySize: 24)
         lblTitle.textColor = UIColor(hexString: "#767676")
         
+        self.addSubview(segment)
+        segment.translatesAutoresizingMaskIntoConstraints = false
+        let tC3 = segment.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 30)
+        let lC3 = segment.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC3 = segment.widthAnchor.constraint(equalToConstant: 300)
+        let hC3 = segment.heightAnchor.constraint(equalToConstant: 40)
+        NSLayoutConstraint.activate([tC3, lC3, wC3, hC3])
+        segment.tintColor = UIColor(hexString: "#767676")
+        let attr = [NSAttributedString.Key.font: UIFont.customFont(bySize: 20), NSAttributedString.Key.foregroundColor: UIColor(hexString: "#767676")]
+        segment.setTitleTextAttributes(attr, for: .normal)
+        segment.selectedSegmentIndex = 0
+        segment.addTarget(self, action: #selector(onSegmentAction), for: .valueChanged)
+        
+        // Manual creadentials
+        
         self.addSubview(txtTitle)
         txtTitle.translatesAutoresizingMaskIntoConstraints = false
-        let tC1 = txtTitle.topAnchor.constraint(equalTo: lblTitle.bottomAnchor, constant: 60)
+        let tC1 = txtTitle.topAnchor.constraint(equalTo: segment.bottomAnchor, constant: 60)
         let lC1 = txtTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
         let wC1 = txtTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
         let hC1 = txtTitle.heightAnchor.constraint(equalToConstant: 35)
@@ -514,6 +538,7 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
         txtTitle.placeholder = Localization.main.regulatorNetworkId
         txtTitle.textColor = UIColor(hexString: "#767676")
         txtTitle.font = UIFont.customFont(bySize: 26)
+        txtTitle.isHidden = true
         
         self.addSubview(txtPassword)
         txtPassword.translatesAutoresizingMaskIntoConstraints = false
@@ -526,6 +551,95 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView {
         txtPassword.placeholder = Localization.main.regulatorPassword
         txtPassword.textColor = UIColor(hexString: "#767676")
         txtPassword.font = UIFont.customFont(bySize: 26)
+        txtPassword.isHidden = true
+        
+        // Scaner
+        
+        self.addSubview(cameraView)
+        cameraView.translatesAutoresizingMaskIntoConstraints = false
+        let tC4 = cameraView.topAnchor.constraint(equalTo: segment.bottomAnchor, constant: 30)
+        let lC4 = cameraView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        let wC4 = cameraView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -40)
+        let hC4 = cameraView.heightAnchor.constraint(equalTo: self.widthAnchor, constant: -40)
+        NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
+        cameraView.layer.cornerRadius = 5
+        cameraView.clipsToBounds = true
+        
+        cameraView.layer.cornerRadius = 5
+        captureSession = nil
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            self.startReading()
+        })
+    }
+    
+    func startReading() -> Bool {
+        let captureDevice = AVCaptureDevice.default(for: .video)!
+        do {
+            let input = try AVCaptureDeviceInput(device: captureDevice)
+            captureSession = AVCaptureSession()
+            captureSession?.addInput(input)
+            // Do the rest of your work...
+        } catch let error as NSError {
+            // Handle any errors
+            print(error)
+            return false
+        }
+        
+        videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
+        videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        videoPreviewLayer.frame = cameraView.layer.bounds
+        cameraView.layer.addSublayer(videoPreviewLayer)
+        
+        /* Check for metadata */
+        let captureMetadataOutput = AVCaptureMetadataOutput()
+        captureSession?.addOutput(captureMetadataOutput)
+        captureMetadataOutput.metadataObjectTypes = captureMetadataOutput.availableMetadataObjectTypes
+        print(captureMetadataOutput.availableMetadataObjectTypes)
+        captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+        captureSession?.startRunning()
+        
+        return true
+    }
+    
+    func stopReading() {
+        captureSession?.stopRunning()
+        captureSession = nil
+        videoPreviewLayer.removeFromSuperlayer()
+    }
+    
+    @objc func onSegmentAction() {
+        if segment.selectedSegmentIndex == 1 {
+            txtTitle.isHidden = false
+            txtPassword.isHidden = false
+            cameraView.isHidden = true
+            stopReading()
+        }
+        if segment.selectedSegmentIndex == 0 {
+            txtTitle.isHidden = true
+            txtPassword.isHidden = true
+            cameraView.isHidden = false
+            startReading()
+        }
+    }
+    
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        if let metadataObject = metadataObjects.first {
+            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+            guard let stringValue = readableObject.stringValue else { return }
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+        }
+    }
+    
+    public func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+        for data in metadataObjects {
+            let metaData = data as! AVMetadataObject
+            print(metaData.description)
+            let transformed = videoPreviewLayer?.transformedMetadataObject(for: metaData) as? AVMetadataMachineReadableCodeObject
+            if let unwraped = transformed {
+                print(unwraped.stringValue)
+            }
+        }
     }
 }
 
