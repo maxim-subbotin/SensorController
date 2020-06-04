@@ -9,8 +9,17 @@
 import Foundation
 import NetworkExtension
 import SystemConfiguration
+import UIKit
 
 class Tools {
+    
+    static var isRussian: Bool {
+        return Locale.current.languageCode == "ru"
+    }
+    
+    static var isiPad: Bool {
+        return UIDevice.current.isiPad
+    }
     
     static func getIPAddress() -> String? {
         var address : String?

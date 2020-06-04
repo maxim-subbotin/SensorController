@@ -159,25 +159,35 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
              ValueSelectorItem(withTitle: Localization.main.heatAndCold, andValue: ControlSequenceType.heatAndCold)]
         
         self.addSubview(regulatorShutdownModeView)
+        var h = CGFloat(120)
+        if !Tools.isiPad && Tools.isRussian {
+            regulatorShutdownModeView.titleLinesNumber = 2
+            h += CGFloat(25)
+        }
         regulatorShutdownModeView.delegate = self
         regulatorShutdownModeView.title = Localization.main.regulatorShutdownMode
         regulatorShutdownModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC4 = regulatorShutdownModeView.topAnchor.constraint(equalTo: controlSequenceView.bottomAnchor, constant: 35)
         let lC4 = regulatorShutdownModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC4 = regulatorShutdownModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
-        let hC4 = regulatorShutdownModeView.heightAnchor.constraint(equalToConstant: 120)
+        let hC4 = regulatorShutdownModeView.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
         regulatorShutdownModeView.items = [ValueSelectorItem(withTitle: Localization.main.fullShutdown, andValue: RegulatorShutdownWorkType.fullShutdown),
                                            ValueSelectorItem(withTitle: Localization.main.partialShutdown, andValue: RegulatorShutdownWorkType.partialShutdown)]
         
         self.addSubview(valveShutdownModeView)
+        h = CGFloat(120)
+        if !Tools.isiPad && Tools.isRussian {
+            valveShutdownModeView.titleLinesNumber = 2
+            h += CGFloat(25)
+        }
         valveShutdownModeView.delegate = self
         valveShutdownModeView.title = Localization.main.valveShutdownMode
         valveShutdownModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC5 = valveShutdownModeView.topAnchor.constraint(equalTo: regulatorShutdownModeView.bottomAnchor, constant: 35)
         let lC5 = valveShutdownModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC5 = valveShutdownModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
-        let hC5 = valveShutdownModeView.heightAnchor.constraint(equalToConstant: 120)
+        let hC5 = valveShutdownModeView.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC5, lC5, wC5, hC5])
         valveShutdownModeView.items = [ValueSelectorItem(withTitle: Localization.main.fullShutdown, andValue: FanShutdownWorkType.valveClosed),
                                        ValueSelectorItem(withTitle: Localization.main.partialShutdown, andValue: FanShutdownWorkType.valveOpened)]
@@ -205,13 +215,18 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
                                    ValueSelectorItem(withTitle: Localization.main.graph3, andValue: AutoFanSpeedGraphType.graph3)]
         
         self.addSubview(temperatureReactionTime)
+        h = CGFloat(160)
+        if !Tools.isiPad && Tools.isRussian {
+            temperatureReactionTime.titleLinesNumber = 2
+            h += CGFloat(25)
+        }
         temperatureReactionTime.delegate = self
         temperatureReactionTime.title = Localization.main.temperatureReactionTime
         temperatureReactionTime.translatesAutoresizingMaskIntoConstraints = false
         let tC8 = temperatureReactionTime.topAnchor.constraint(equalTo: fanSpeedGraphView.bottomAnchor, constant: 35)
         let lC8 = temperatureReactionTime.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC8 = temperatureReactionTime.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
-        let hC8 = temperatureReactionTime.heightAnchor.constraint(equalToConstant: 160)
+        let hC8 = temperatureReactionTime.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC8, lC8, wC8, hC8])
         temperatureReactionTime.minValue = 1
         temperatureReactionTime.maxValue = 300
@@ -219,6 +234,11 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         temperatureReactionTime.postfix = Localization.main.sec
         
         self.addSubview(maxFanSpeedView)
+        h = CGFloat(160)
+        if !Tools.isiPad && Tools.isRussian {
+            maxFanSpeedView.titleLinesNumber = 2
+            h += CGFloat(25)
+        }
         maxFanSpeedView.delegate = self
         maxFanSpeedView.postfix = "%"
         maxFanSpeedView.title = Localization.main.maxFanSpeedLimit
@@ -226,13 +246,18 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         let tC9 = maxFanSpeedView.topAnchor.constraint(equalTo: temperatureReactionTime.bottomAnchor, constant: 35)
         let lC9 = maxFanSpeedView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC9 = maxFanSpeedView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
-        let hC9 = maxFanSpeedView.heightAnchor.constraint(equalToConstant: 160)
+        let hC9 = maxFanSpeedView.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC9, lC9, wC9, hC9])
         maxFanSpeedView.minValue = 40
         maxFanSpeedView.maxValue = 100
         maxFanSpeedView.value = 45
         
         self.addSubview(tempStepSleepModeView)
+        h = CGFloat(160)
+        if !Tools.isiPad && Tools.isRussian {
+            tempStepSleepModeView.titleLinesNumber = 2
+            h += CGFloat(25)
+        }
         tempStepSleepModeView.delegate = self
         tempStepSleepModeView.postfix = "°"
         tempStepSleepModeView.title = Localization.main.temperatureStep
@@ -240,20 +265,25 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         let tC10 = tempStepSleepModeView.topAnchor.constraint(equalTo: maxFanSpeedView.bottomAnchor, constant: 35)
         let lC10 = tempStepSleepModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC10 = tempStepSleepModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
-        let hC10 = tempStepSleepModeView.heightAnchor.constraint(equalToConstant: 160)
+        let hC10 = tempStepSleepModeView.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC10, lC10, wC10, hC10])
         tempStepSleepModeView.minValue = 3
         tempStepSleepModeView.maxValue = 10
         tempStepSleepModeView.value = 5
         
         self.addSubview(weekProgramModeView)
+        h = CGFloat(160)
+        if !Tools.isiPad && Tools.isRussian {
+            weekProgramModeView.titleLinesNumber = 2
+            h += CGFloat(25)
+        }
         weekProgramModeView.delegate = self
         weekProgramModeView.title = Localization.main.weekProgrammingMode
         weekProgramModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC11 = weekProgramModeView.topAnchor.constraint(equalTo: tempStepSleepModeView.bottomAnchor, constant: 35)
         let lC11 = weekProgramModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC11 = weekProgramModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
-        let hC11 = weekProgramModeView.heightAnchor.constraint(equalToConstant: 160)
+        let hC11 = weekProgramModeView.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC11, lC11, wC11, hC11])
         weekProgramModeView.items = [ValueSelectorItem(withTitle: Localization.main.disabled, andValue: WeekProgramMode.disabled),
                                      ValueSelectorItem(withTitle: Localization.main.byFanSpeed, andValue: WeekProgramMode.byFanSpeed),
@@ -344,13 +374,18 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         sensorCalibrationView.value = 0
         
         self.addSubview(blockModeView)
+        h = CGFloat(160)
+        if !Tools.isiPad && Tools.isRussian {
+            blockModeView.titleLinesNumber = 2
+            h += CGFloat(25)
+        }
         blockModeView.delegate = self
         blockModeView.title = Localization.main.buttonsBlockMode
         blockModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC19 = blockModeView.topAnchor.constraint(equalTo: sensorCalibrationView.bottomAnchor, constant: 35)
         let lC19 = blockModeView.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
         let wC19 = blockModeView.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: 0)
-        let hC19 = blockModeView.heightAnchor.constraint(equalToConstant: 160)
+        let hC19 = blockModeView.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC19, lC19, wC19, hC19])
         blockModeView.items = [ValueSelectorItem(withTitle: Localization.main.blockModeManual, andValue: ButtonBlockMode.manual),
                                ValueSelectorItem(withTitle: Localization.main.blockModeAuto, andValue: ButtonBlockMode.auto),
@@ -388,7 +423,11 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.contentSize = CGSize(width: self.frame.width, height: 2800)
+        var h = CGFloat(2800)
+        if !Tools.isiPad && Tools.isRussian {
+            h += 150
+        }
+        self.contentSize = CGSize(width: self.frame.width, height: h)
     }
     
     //MARK: - two val triggers
@@ -855,6 +894,20 @@ class ConvectorCheckboxSetView: UIView, ConvectorCheckboxViewDelegate {
         }
     }
     public weak var delegate: ConvectorCheckboxSetViewDelegate?
+    private var _titleLinesNumber = 1
+    public var titleLinesNumber: Int {
+        get {
+            return _titleLinesNumber
+        }
+        set {
+            _titleLinesNumber = newValue
+            if let hC = lblTitle.constraints.first(where: { $0.identifier == "title_height" }) {
+                hC.constant = CGFloat(25 * self.titleLinesNumber)
+                lblTitle.layoutIfNeeded()
+            }
+            lblTitle.numberOfLines = _titleLinesNumber
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -874,7 +927,8 @@ class ConvectorCheckboxSetView: UIView, ConvectorCheckboxViewDelegate {
         let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 0)
         let lC = lblTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
         let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: 0)
-        let hC = lblTitle.heightAnchor.constraint(equalToConstant: 25)
+        let hC = lblTitle.heightAnchor.constraint(equalToConstant: CGFloat(25 * self.titleLinesNumber))
+        hC.identifier = "title_height"
         NSLayoutConstraint.activate([tC, lC, wC, hC])
     }
     
@@ -1220,6 +1274,20 @@ class ConvectorTrackBarView: UIView, ConvectorSliderViewDelegate, ConvectorPlusM
         }
     }
     public weak var delegate: ConvectorTrackBarViewDelegate?
+    private var _titleLinesNumber = 1
+    public var titleLinesNumber: Int {
+        get {
+            return _titleLinesNumber
+        }
+        set {
+            _titleLinesNumber = newValue
+            if let hC = lblTitle.constraints.first(where: { $0.identifier == "title_height" }) {
+                hC.constant = CGFloat(25 * self.titleLinesNumber)
+                lblTitle.layoutIfNeeded()
+            }
+            lblTitle.numberOfLines = _titleLinesNumber
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -1240,6 +1308,7 @@ class ConvectorTrackBarView: UIView, ConvectorSliderViewDelegate, ConvectorPlusM
         let lC = lblTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
         let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: 0)
         let hC = lblTitle.heightAnchor.constraint(equalToConstant: 24)
+        hC.identifier = "title_height"
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         
         self.addSubview(plusBar)
