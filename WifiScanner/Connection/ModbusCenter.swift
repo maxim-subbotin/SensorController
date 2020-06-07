@@ -119,7 +119,7 @@ class ModbusCenter: ConnectorDelegate {
     }
     
     func getVersion() {
-        //addToQueue(ModbusCommand(withCommand: .version))
+        addToQueue(ModbusCommand(withCommand: .version))
     }
     
     func getSchedule(forDay day: WeekDay) {
@@ -189,6 +189,18 @@ class ModbusCenter: ConnectorDelegate {
         addToQueue(ModbusCommand(withCommand: .valveShutdownMode, andData: v))
     }
     
+    func setFanSpeedGraph(_ g: AutoFanSpeedGraphType) {
+        addToQueue(ModbusCommand(withCommand: .autoRegulationGraph, andData: g))
+    }
+    
+    func setWeeklyProgrammingMode(_ m: WeekProgramMode) {
+        addToQueue(ModbusCommand(withCommand: .weekProgrammingMode, andData: m))
+    }
+    
+    func setButtonsBlockMode(_ m: ButtonBlockMode) {
+        addToQueue(ModbusCommand(withCommand: .buttonsBlockMode, andData: m))
+    }
+    
     func shutdown() {
         addToQueue(ModbusCommand(withCommand: .regulatorState, andData: RegulatorState.off))
         //connector.setRegulatorState(.off)
@@ -197,6 +209,10 @@ class ModbusCenter: ConnectorDelegate {
     func turnOn() {
         addToQueue(ModbusCommand(withCommand: .regulatorState, andData: RegulatorState.on))
         //connector.setRegulatorState(.on)
+    }
+    
+    func resetDefault() {
+        addToQueue(ModbusCommand(withCommand: .defaultSettings))
     }
     
     private func execute(command: ModbusCommand) {
@@ -259,6 +275,23 @@ class ModbusCenter: ConnectorDelegate {
         }
         if command.command == .valveShutdownMode {
             connector.setValveShutdownMode(command.data as! FanShutdownWorkType)
+        }
+        if command.command == .regulatorState {
+            if command.data != nil && command.data is RegulatorState {
+                connector.setRegulatorState(command.data as! RegulatorState)
+            }
+        }
+        if command.command == .autoRegulationGraph {
+            connector.setAutoRegulationGraph(command.data as! AutoFanSpeedGraphType)
+        }
+        if command.command == .weekProgrammingMode {
+            connector.setWeekProgrammingMode(command.data as! WeekProgramMode)
+        }
+        if command.command == .buttonsBlockMode {
+            connector.setButtonsBlockMode(command.data as! ButtonBlockMode)
+        }
+        if command.command == .defaultSettings {
+            connector.setDefaultSettings(.yes)
         }
     }
     

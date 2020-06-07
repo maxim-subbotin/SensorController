@@ -628,6 +628,24 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView, AVCaptureMetadataOutput
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            
+            if !parseJson(stringValue) {
+                if let rootVC = UIApplication.shared.keyWindow?.rootViewController {
+                    if rootVC is UINavigationController {
+                        if let vc = (rootVC as! UINavigationController).viewControllers.last {
+                            let alert = UIAlertController(title: "Error", message: "Incorrect QR code format", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
+                                self.startReading()
+                            }))
+                            vc.presentedViewController?.present(alert, animated: true, completion: nil)
+                            stopReading()
+                        }
+                    }
+                }
+            } else {
+                stopReading()
+                self.btnNext.sendActions(for: .touchUpInside)
+            }
         }
     }
     
@@ -640,6 +658,27 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView, AVCaptureMetadataOutput
                 print(unwraped.stringValue)
             }
         }
+    }
+    
+    func parseJson(_ jsonString: String) -> Bool {
+        if let data = jsonString.data(using: .utf8) {
+            do {
+                    if let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    if dict["ssid"] != nil && dict["ssid"] is String && dict["password"] != nil && dict["password"] is String {
+                        let ssid = dict["ssid"] as! String
+                        let password = dict["password"] as! String
+                        if ssid.count > 0 && password.count > 0 {
+                            txtTitle.text = ssid
+                            txtPassword.text = password
+                            return true
+                        }
+                    }
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return false
     }
 }
 

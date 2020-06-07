@@ -86,3 +86,8 @@
 "remove_device" = "Remove device form list";
 "remove" = "Remove";
 "turned_off" = "Turned off";
+"warning" = "Warning";
+"restoringMessage" = "The settings will be restored to factory default. Do you want to continue?";
+"yes" = "Yes";
+"no" = "No";
+"version" = "Version";

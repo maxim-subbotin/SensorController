@@ -26,6 +26,7 @@ import UIKit
  */
 
 class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, ConvectorTrackBarViewDelegate, ConvectorCheckboxSetViewDelegate {
+    public weak var parentViewController: UIViewController?
     private var lblParams = UILabel()
     private var fanModeView = ConvectorTwoValParamView()
     private var controlSequenceView = ConvectorCheckboxSetView()
@@ -45,6 +46,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
     private var blockModeView = ConvectorCheckboxSetView()
     private var lblDefault = UILabel()
     private var btnDefault = UIButton()
+    private var lblVersion = UILabel()
     private var _spotState = SpotState()
     public var spotState: SpotState {
         get {
@@ -93,16 +95,34 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
                 let beh = obj as! FanShutdownWorkType
                 self.valveShutdownModeView.value = beh
             }
+            if let obj = _spotState.additionalParams[.autoFanSpeedGraph] {
+                let g = obj as! AutoFanSpeedGraphType
+                self.fanSpeedGraphView.value = g
+            }
+            if let obj = _spotState.additionalParams[.weekProgramMode] {
+                let w = obj as! WeekProgramMode
+                self.weekProgramModeView.value = w
+            }
+            if let obj = _spotState.additionalParams[.buttonBlockMode] {
+                let w = obj as! ButtonBlockMode
+                self.blockModeView.value = w
+            }
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         applyUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onModbusResponse(_:)), name: .modbusResponse, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func applyUI() {
@@ -418,7 +438,29 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         let wC21 = btnDefault.widthAnchor.constraint(equalToConstant: 150)
         let hC21 = btnDefault.heightAnchor.constraint(equalToConstant: 30)
         NSLayoutConstraint.activate([tC21, lC21, wC21, hC21])
-        //btnDefault.addTarget(self, action: #selector(onButtonTap(_:)), for: .touchUpInside)
+        btnDefault.addTarget(self, action: #selector(onDefaultButton), for: .touchUpInside)
+        
+        let separator4 = UIView()
+        self.addSubview(separator4)
+        separator4.backgroundColor = .white
+        separator4.alpha = 0.5
+        separator4.translatesAutoresizingMaskIntoConstraints = false
+        let tC22 = separator4.topAnchor.constraint(equalTo: btnDefault.bottomAnchor, constant: 15)
+        let lC22 = separator4.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC22 = separator4.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: -20)
+        let hC22 = separator4.heightAnchor.constraint(equalToConstant: 2)
+        NSLayoutConstraint.activate([tC22, lC22, wC22, hC22])
+        
+        self.addSubview(lblVersion)
+        lblVersion.text = "\(Localization.main.version): "
+        lblVersion.textColor = .white
+        lblVersion.font = UIFont.customFont(bySize: 21)
+        lblVersion.translatesAutoresizingMaskIntoConstraints = false
+        let tC23 = lblVersion.topAnchor.constraint(equalTo: separator4.bottomAnchor, constant: 25)
+        let lC23 = lblVersion.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 38)
+        let wC23 = lblVersion.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(38 + 38))
+        let hC23 = lblVersion.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC23, lC23, wC23, hC23])
     }
     
     override func layoutSubviews() {
@@ -474,6 +516,48 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         }
         if view == self.valveShutdownModeView {
             ModbusCenter.shared.setValveShutdownMode(value as! FanShutdownWorkType)
+        }
+        if view == self.fanSpeedGraphView {
+            ModbusCenter.shared.setFanSpeedGraph(value as! AutoFanSpeedGraphType)
+        }
+        if view == self.weekProgramModeView {
+            ModbusCenter.shared.setWeeklyProgrammingMode(value as! WeekProgramMode)
+        }
+        if view == self.blockModeView {
+            ModbusCenter.shared.setButtonsBlockMode(value as! ButtonBlockMode)
+        }
+    }
+    
+    //MARK: - buttons
+    
+    @objc func onDefaultButton() {
+        if let vc = self.parentViewController {
+            let alert = UIAlertController(title: Localization.main.warning, message: Localization.main.restoringMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Localization.main.yes, style: .default, handler: { action in
+                ModbusCenter.shared.resetDefault()
+            }))
+            alert.addAction(UIAlertAction(title: Localization.main.no, style: .default, handler: { action in
+                // skip
+            }))
+            vc.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    //MARK: - modbus command callback
+    
+    @objc func onModbusResponse(_ notification: NSNotification) {        if notification.object != nil && notification.object is ModbusResponse {
+            let response = notification.object as! ModbusResponse
+            if response.error != nil {
+                
+            } else if response.command == .version {
+                if response.data != nil && response.data is [Int] {
+                    if let version = (response.data as! [Int]).first {
+                        DispatchQueue.main.async {
+                            self.lblVersion.text = "\(Localization.main.version): \(version)"
+                        }
+                    }
+                }
+            }
         }
     }
 }

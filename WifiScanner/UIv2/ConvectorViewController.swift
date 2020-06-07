@@ -177,6 +177,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         NSLayoutConstraint.activate([bC8, cxC8, wC8, tC8])
         parametersView.backgroundColor = UIColor(hexString: "#009CDF")
         parametersView.isHidden = true
+        parametersView.parentViewController = self
         
         self.view.addSubview(lblTurnedOff)
         lblTurnedOff.text = Localization.main.turnedOff.uppercased()
@@ -387,6 +388,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                     DispatchQueue.main.async {
                         self.spotState.additionalParams = SpotState.parseAdditionalData(response.data as! [Int])
                         self.parametersView.spotState = self.spotState
+                        ModbusCenter.shared.getVersion()
                     }
                 }
                 if response.command == .schedule {

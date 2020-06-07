@@ -359,4 +359,24 @@ class Localization {
     public var turnedOff: String {
         return string(byName: "turned_off", defValue: "Turned off")
     }
+    
+    public var yes: String {
+        return string(byName: "yes", defValue: "Yes")
+    }
+    
+    public var no: String {
+        return string(byName: "no", defValue: "No")
+    }
+    
+    public var restoringMessage: String {
+        return string(byName: "restoringMessage", defValue: "The settings will be restored to factory default. Do you want to continue?")
+    }
+    
+    public var warning: String {
+        return string(byName: "warning", defValue: "Warning")
+    }
+    
+    public var version: String {
+        return string(byName: "version", defValue: "Version")
+    }
 }
