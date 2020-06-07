@@ -201,6 +201,10 @@ class ModbusCenter: ConnectorDelegate {
         addToQueue(ModbusCommand(withCommand: .buttonsBlockMode, andData: m))
     }
     
+    func setVentilationMode(_ m: Bool) {
+        addToQueue(ModbusCommand(withCommand: .ventilationMode, andData: m))
+    }
+    
     func shutdown() {
         addToQueue(ModbusCommand(withCommand: .regulatorState, andData: RegulatorState.off))
         //connector.setRegulatorState(.off)
@@ -292,6 +296,11 @@ class ModbusCenter: ConnectorDelegate {
         }
         if command.command == .defaultSettings {
             connector.setDefaultSettings(.yes)
+        }
+        if command.command == .ventilationMode {
+            let b = command.data as! Bool
+            let m = b ? VentilationMode.turnOn : VentilationMode.turnOff
+            connector.setVentilationMode(m)
         }
     }
     

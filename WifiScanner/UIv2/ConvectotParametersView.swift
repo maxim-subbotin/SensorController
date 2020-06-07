@@ -25,7 +25,7 @@ import UIKit
  types.append(ParameterType(withType: .defaultSettings, andTitle: "Default settings"))
  */
 
-class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, ConvectorTrackBarViewDelegate, ConvectorCheckboxSetViewDelegate {
+class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, ConvectorTrackBarViewDelegate, ConvectorCheckboxSetViewDelegate, ConvectorSwitchViewDelegate {
     public weak var parentViewController: UIViewController?
     private var lblParams = UILabel()
     private var fanModeView = ConvectorTwoValParamView()
@@ -106,6 +106,10 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
             if let obj = _spotState.additionalParams[.buttonBlockMode] {
                 let w = obj as! ButtonBlockMode
                 self.blockModeView.value = w
+            }
+            if let obj = _spotState.additionalParams[.ventilationMode] {
+                let m = obj as! VentilationMode
+                self.ventilationModeView.enabled = m == .turnOn
             }
         }
     }
@@ -213,6 +217,7 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
                                        ValueSelectorItem(withTitle: Localization.main.partialShutdown, andValue: FanShutdownWorkType.valveOpened)]
         
         self.addSubview(ventilationModeView)
+        ventilationModeView.delegate = self
         ventilationModeView.title = Localization.main.ventilationMode
         ventilationModeView.translatesAutoresizingMaskIntoConstraints = false
         let tC6 = ventilationModeView.topAnchor.constraint(equalTo: valveShutdownModeView.bottomAnchor, constant: 35)
@@ -526,6 +531,12 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         if view == self.blockModeView {
             ModbusCenter.shared.setButtonsBlockMode(value as! ButtonBlockMode)
         }
+    }
+    
+    //MARK: - switch delegate
+    
+    func onSwitchChanges(_ val: Bool) {
+        ModbusCenter.shared.setVentilationMode(val)
     }
     
     //MARK: - buttons
@@ -1056,6 +1067,10 @@ class ConvectorCheckboxSetView: UIView, ConvectorCheckboxViewDelegate {
     }
 }
 
+protocol ConvectorSwitchViewDelegate: class {
+    func onSwitchChanges(_ val: Bool)
+}
+
 class ConvectorSwitchView: UIView {
     private var lblTitle = UILabel()
     private var lblDetail = UILabel()
@@ -1080,6 +1095,7 @@ class ConvectorSwitchView: UIView {
     }
     public var positiveTitle = Localization.main.enabled
     public var negativeTitle = Localization.main.disabled
+    public weak var delegate: ConvectorSwitchViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -1132,6 +1148,7 @@ class ConvectorSwitchView: UIView {
     @objc func onSwitchChange() {
         _enabled = slider.isOn
         lblDetail.text = _enabled ? positiveTitle : negativeTitle
+        self.delegate?.onSwitchChanges(_enabled)
     }
 }
 
