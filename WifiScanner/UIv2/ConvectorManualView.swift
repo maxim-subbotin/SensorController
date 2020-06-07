@@ -39,6 +39,23 @@ class ConvectorManualView: UIView {
             lblDetailTitle.text = "\(newValue ?? "")\(postfix ?? "")"
         }
     }
+    private var _isEnabled = true
+    public var isEnabled: Bool {
+        get {
+            return _isEnabled
+        }
+        set {
+            _isEnabled = newValue
+            if _isEnabled {
+                let currentColor = pinView.borderColor
+                lblMainTitle.textColor = currentColor
+                pinView.isUserInteractionEnabled = true
+            } else {
+                lblMainTitle.textColor = UIColor(hexString: "#DADADA")
+                pinView.isUserInteractionEnabled = false
+            }
+        }
+    }
     
     private var _startAngle = -(CGFloat.pi + CGFloat(1.0))
     private var _endAngle = CGFloat(1.0)
@@ -217,7 +234,9 @@ class ConvectorManualView: UIView {
         if notification.object != nil && notification.object is UIColor {
             let color = notification.object as! UIColor
             self.pinView.borderColor = color
-            lblMainTitle.textColor = color
+            if _isEnabled {
+                lblMainTitle.textColor = color
+            }
         }
     }
 }

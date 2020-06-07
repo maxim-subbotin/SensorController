@@ -368,7 +368,7 @@ class Connector {
         let i = mode.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.fanMode.rawValue, numberArray: [i], success: {
             print("Fan mode was updated successfully")
-            self.delegate?.onCommandSuccess(self, command: .fanMode, data: [0] as [AnyObject])
+            self.delegate?.onCommandSuccess(self, command: .fanMode, data: [i] as [AnyObject])
         }, failure: {(error) in
             print("Error on fan mode updating")
             self.delegate?.onCommandFail(self, command: .fanMode, error: error)

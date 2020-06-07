@@ -52,6 +52,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                 ModbusCenter.shared.getAllData()
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(onModbusResponse(_:)), name: .modbusResponse, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(onColorNotification(_:)), name: ColorScheme.changeBackgroundColor, object: nil)
             }
         }
     }
@@ -382,6 +383,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                         if self.spotState.regulatorState == .off {
                             ModbusCenter.shared.turnOn()
                         }
+                        self.fanView.isEnabled = self.spotState.fanMode == .manual
                     }
                 }
                 if response.command == .additionalData {
@@ -398,6 +400,35 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                         }
                     }
                 }
+                if response.command == .fanMode {
+                    let arr = response.data as! [Int]
+                    if let mode = FanMode(rawValue: arr[0]) {
+                        self.spotState.fanMode = mode
+                        DispatchQueue.main.async {
+                            if mode == .auto {
+                                self.lblAuto.backgroundColor = .white
+                                self.lblAuto.layer.borderColor = self.view.backgroundColor?.cgColor
+                                self.lblAuto.textColor = self.view.backgroundColor
+                            } else {
+                                self.lblAuto.backgroundColor = self.view.backgroundColor
+                                self.lblAuto.layer.borderColor = UIColor.white.cgColor
+                                self.lblAuto.textColor = .white
+                            }
+                            self.fanView.isEnabled = mode == .manual
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc func onColorNotification(_ notification: Notification) {
+        if notification.object != nil && notification.object is UIColor {
+            let color = notification.object as! UIColor
+            if self.spotState.fanMode == .auto {
+                self.lblAuto.backgroundColor = .white
+                self.lblAuto.layer.borderColor = color.cgColor
+                self.lblAuto.textColor = color
             }
         }
     }
