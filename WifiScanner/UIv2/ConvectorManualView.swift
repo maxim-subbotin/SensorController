@@ -69,6 +69,15 @@ class ConvectorManualView: UIView {
         }
         set {
             _value = newValue
+            
+            let center = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
+            let radius = min(frame.width, frame.height) / 2 - 15
+
+            let v = (_value - firstValue) / (lastValue - firstValue)
+            let alpha = (_endAngle - _startAngle) * v + _startAngle
+            let dx = cos(alpha) * radius
+            let dy = sin(alpha) * radius
+            pinView.frame = CGRect(x: center.x + dx - pinSize / 2, y: center.y + dy - pinSize / 2, width: pinSize, height: pinSize)
         }
     }
     
