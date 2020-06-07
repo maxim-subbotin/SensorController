@@ -178,8 +178,8 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         let hC3 = controlSequenceView.heightAnchor.constraint(equalToConstant: 160)
         NSLayoutConstraint.activate([tC3, lC3, wC3, hC3])
         controlSequenceView.items =
-            [ValueSelectorItem(withTitle: Localization.main.onlyCold, andValue: ControlSequenceType.onlyHeat),
-             ValueSelectorItem(withTitle: Localization.main.onlyHeat, andValue: ControlSequenceType.onlyCold),
+            [ValueSelectorItem(withTitle: Localization.main.onlyHeat, andValue: ControlSequenceType.onlyHeat),
+             ValueSelectorItem(withTitle: Localization.main.onlyCold, andValue: ControlSequenceType.onlyCold),
              ValueSelectorItem(withTitle: Localization.main.heatAndCold, andValue: ControlSequenceType.heatAndCold)]
         
         self.addSubview(regulatorShutdownModeView)
