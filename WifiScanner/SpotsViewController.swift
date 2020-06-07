@@ -66,7 +66,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         super.viewDidLoad()
         
-        self.navigationItem.title = "Devices"
+        self.navigationItem.title = Localization.main.devices
         
         self.view.backgroundColor = ColorScheme.current.backgroundColor
         

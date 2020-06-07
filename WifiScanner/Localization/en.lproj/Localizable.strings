@@ -91,3 +91,6 @@
 "yes" = "Yes";
 "no" = "No";
 "version" = "Version";
+"devices" = "Devices";
+"add_device_scan_mode" = "Scan code";
+"add_device_manual_mode" = "Manual";

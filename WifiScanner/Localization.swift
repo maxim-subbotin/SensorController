@@ -379,4 +379,16 @@ class Localization {
     public var version: String {
         return string(byName: "version", defValue: "Version")
     }
+    
+    public var devices: String {
+        return string(byName: "devices", defValue: "Devices")
+    }
+    
+    public var deviceViaScan: String {
+        return string(byName: "add_device_scan_mode", defValue: "Scan mode")
+    }
+    
+    public var deviceViaManual: String {
+        return string(byName: "add_device_manual_mode", defValue: "Manual")
+    }
 }

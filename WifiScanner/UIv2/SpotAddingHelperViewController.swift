@@ -388,16 +388,21 @@ class RegulatorTypeConnectionCardView: TwoButtonHelperCardView, CheckboxViewDele
         cbxDirectConnection.delegate = self
         
         self.addSubview(lblDirectConnection)
+        var h = CGFloat(30)
+        if !Tools.isiPad && Tools.isRussian {
+            lblDirectConnection.numberOfLines = 2
+            h = 55
+        }
         lblDirectConnection.translatesAutoresizingMaskIntoConstraints = false
         let tC2 = lblDirectConnection.topAnchor.constraint(equalTo: cbxDirectConnection.topAnchor, constant: 0)
         let lC2 = lblDirectConnection.leftAnchor.constraint(equalTo: cbxDirectConnection.rightAnchor, constant: 15)
         let wC2 = lblDirectConnection.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15)
-        let hC2 = lblDirectConnection.heightAnchor.constraint(equalToConstant: 30)
+        let hC2 = lblDirectConnection.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC2, lC2, wC2, hC2])
         lblDirectConnection.text = Localization.main.directConnection
         lblDirectConnection.font = UIFont.customFont(bySize: 24)
         lblDirectConnection.textColor = UIColor(hexString: "#767676")
-        
+
         self.addSubview(cbxInternectConnection)
         cbxInternectConnection.translatesAutoresizingMaskIntoConstraints = false
         let tC3 = cbxInternectConnection.topAnchor.constraint(equalTo: cbxDirectConnection.bottomAnchor, constant: 30)
@@ -408,11 +413,16 @@ class RegulatorTypeConnectionCardView: TwoButtonHelperCardView, CheckboxViewDele
         cbxInternectConnection.delegate = self
         
         self.addSubview(lblInternetConnection)
+        h = 30
+        if !Tools.isiPad && Tools.isRussian {
+            lblInternetConnection.numberOfLines = 2
+            h = 55
+        }
         lblInternetConnection.translatesAutoresizingMaskIntoConstraints = false
         let tC4 = lblInternetConnection.topAnchor.constraint(equalTo: cbxInternectConnection.topAnchor, constant: 0)
         let lC4 = lblInternetConnection.leftAnchor.constraint(equalTo: cbxInternectConnection.rightAnchor, constant: 15)
         let wC4 = lblInternetConnection.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15)
-        let hC4 = lblInternetConnection.heightAnchor.constraint(equalToConstant: 30)
+        let hC4 = lblInternetConnection.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC4, lC4, wC4, hC4])
         lblInternetConnection.text = Localization.main.internetConnection
         lblInternetConnection.font = UIFont.customFont(bySize: 24)
@@ -477,7 +487,7 @@ class CheckboxView: UIImageView {
 
 class RegulatorNetworkCardView: TwoButtonHelperCardView, AVCaptureMetadataOutputObjectsDelegate {
     private var lblTitle = UILabel()
-    private var segment = UISegmentedControl(items: ["Scan code", "Manual"])
+    private var segment = UISegmentedControl(items: [Localization.main.deviceViaScan, Localization.main.deviceViaManual])
     private var txtTitle = UnderlinedTextField()
     private var txtPassword = UnderlinedTextField()
     public var ssid: String? {
@@ -783,11 +793,16 @@ class RegulatorConnectionErrorCard: TwoButtonHelperCardView {
         self.secondButtonTitle = Localization.main.tryAgain.uppercased()
         
         self.addSubview(lblTitle)
+        var h = CGFloat(55)
+        if !Tools.isiPad {
+            lblTitle.numberOfLines = 2
+            h = 70
+        }
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
         let tC = lblTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 50)
         let lC = lblTitle.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
         let wC = lblTitle.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -30)
-        let hC = lblTitle.heightAnchor.constraint(equalToConstant: 55)
+        let hC = lblTitle.heightAnchor.constraint(equalToConstant: h)
         NSLayoutConstraint.activate([tC, lC, wC, hC])
         lblTitle.textAlignment = .center
         lblTitle.numberOfLines = 0
