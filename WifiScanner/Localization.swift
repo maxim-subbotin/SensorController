@@ -399,4 +399,16 @@ class Localization {
     public var setCurrentDate: String {
         return string(byName: "set_current_date", defValue: "Set current date and time")
     }
+    
+    public var qrCodeError: String {
+        return string(byName: "qr_code_error", defValue: "Incorrect QR code format")
+    }
+    
+    public var error: String {
+        return string(byName: "error", defValue: "Error")
+    }
+    
+    public var sameNetworkError: String {
+        return string(byName: "same_network_error", defValue: "You have already connected to this network. Please disconnect and try again.")
+    }
 }

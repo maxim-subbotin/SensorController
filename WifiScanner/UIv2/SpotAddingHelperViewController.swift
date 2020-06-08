@@ -117,7 +117,7 @@ class SpotAddingHelperViewController: UIViewController, RegulatorConnectionCardD
     }
     
     func onConnectionSuccess() {
-        
+        // need to hide view and show regulator's list
     }
     
     func onSingUpAction() {
@@ -643,8 +643,8 @@ class RegulatorNetworkCardView: TwoButtonHelperCardView, AVCaptureMetadataOutput
                 if let rootVC = UIApplication.shared.keyWindow?.rootViewController {
                     if rootVC is UINavigationController {
                         if let vc = (rootVC as! UINavigationController).viewControllers.last {
-                            let alert = UIAlertController(title: "Error", message: "Incorrect QR code format", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
+                            let alert = UIAlertController(title: Localization.main.error, message: Localization.main.qrCodeError, preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: Localization.main.OK, style: .default, handler: {action in
                                 self.startReading()
                             }))
                             vc.presentedViewController?.present(alert, animated: true, completion: nil)
@@ -747,6 +747,16 @@ class RegulatorConnectionCard: OneButtonHelperCardView {
     
     func tryToConnect() {
         if ssid == nil || password == nil {
+            return
+        }
+        
+        if Tools.currentSsid == ssid {
+            let alert = UIAlertController(title: Localization.main.error, message: Localization.main.sameNetworkError, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: Localization.main.OK, style: .default, handler: {action in
+                self.delegate?.onConnectionError()
+            }))
+            self.viewController?.present(alert, animated: true, completion: nil)
+            
             return
         }
         

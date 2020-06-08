@@ -96,3 +96,6 @@
 "add_device_manual_mode" = "Manual";
 "date_and_time" = "Date and time";
 "set_current_date" = "Set current date and time";
+"qr_code_error" = "Incorrect QR code format";
+"error" = "Error";
+"same_network_error" = "You have already connected to this network. Please disconnect and try again.";
