@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
-class ConvectorDateTimeView: UIView {
+protocol ConvectorDateTimeViewDelegate: class {
+    func onDateSelected(_ date: Date)
+}
+
+class ConvectorDateTimeView: UIView, CLDateTimePickerViewControllerDelegate {
     private var lblDate = UILabel()
     private var lblTime = UILabel()
     private var _date = Date()
@@ -23,6 +27,7 @@ class ConvectorDateTimeView: UIView {
             let formatter = DateFormatter()
             formatter.dateStyle = .none
             formatter.timeStyle = .short
+            formatter.locale = Locale.current
             
             lblTime.text = formatter.string(from: _date)
             
@@ -32,6 +37,8 @@ class ConvectorDateTimeView: UIView {
             lblDate.text = formatter.string(from: _date)
         }
     }
+    public weak var viewController: UIViewController?
+    public weak var delegate: ConvectorDateTimeViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,5 +71,22 @@ class ConvectorDateTimeView: UIView {
         lblDate.textAlignment = .center
         lblDate.textColor = .white
         lblDate.font = UIFont.customFont(bySize: 20)
+        
+        self.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        self.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func onTap() {
+        let vc = CLDateTimePickerViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        vc.topOffset = 50
+        vc.date = self.date
+        vc.delegate = self
+        viewController?.present(navVC, animated: true, completion: nil)
+    }
+    
+    func onDateTimeSelection(_ date: Date) {
+        delegate?.onDateSelected(date)
     }
 }

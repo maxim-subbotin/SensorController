@@ -127,6 +127,10 @@ class ModbusCenter: ConnectorDelegate {
         //connector.getSchedule(forDay: day)
     }
     
+    func setDate(_ date: Date) {
+        addToQueue(ModbusCommand(withCommand: .yearMonth, andData: date))
+    }
+    
     func setDeviceTemperature(_ t: Double) {
         addToQueue(ModbusCommand(withCommand: .temperatureDevice, andData: t))
         //connector.setDeviceTemperature(t)
@@ -301,6 +305,10 @@ class ModbusCenter: ConnectorDelegate {
             let b = command.data as! Bool
             let m = b ? VentilationMode.turnOn : VentilationMode.turnOff
             connector.setVentilationMode(m)
+        }
+        if command.command == .yearMonth || command.command == .dayHour {
+            let date = command.data as! Date
+            connector.setDate(date)
         }
     }
     

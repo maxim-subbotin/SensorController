@@ -94,3 +94,5 @@
 "devices" = "Devices";
 "add_device_scan_mode" = "Scan code";
 "add_device_manual_mode" = "Manual";
+"date_and_time" = "Date and time";
+"set_current_date" = "Set current date and time";

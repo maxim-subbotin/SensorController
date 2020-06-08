@@ -95,3 +95,6 @@
 "devices" = "Регуляторы";
 "add_device_scan_mode" = "Сканирование";
 "add_device_manual_mode" = "Вручную";
+
+"date_and_time" = "Дата и время";
+"set_current_date" = "Установить текущую дату";

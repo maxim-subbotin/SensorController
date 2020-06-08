@@ -124,6 +124,10 @@ class CLCalendarHeaderView: UILabel {
         self.textAlignment = .center
         self.textColor = UIColor(hexString: "#050505")
         self.font = UIFont.customFont(bySize: 20)
+        
+        self.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onHeaderTap))
+        self.addGestureRecognizer(tapGesture)
     }
     
     @objc func onLeftButton() {
@@ -132,6 +136,10 @@ class CLCalendarHeaderView: UILabel {
     
     @objc func onRightButton() {
         delegate?.goToNextMonth()
+    }
+    
+    @objc func onHeaderTap() {
+        print("header tap")
     }
 }
 

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ConvectorViewController: UIViewController, SelectedButtonDelegate, ConvectorBottomPanelDelegate, ConvectorManualViewDelegate {
+class ConvectorViewController: UIViewController, SelectedButtonDelegate, ConvectorBottomPanelDelegate, ConvectorManualViewDelegate, ConvectorDateTimeViewDelegate {
     private var lblTitle = UILabel()
     private var dateView = ConvectorDateTimeView()
     private var bottomPanel = ConvectorBottomPanel()
@@ -76,6 +76,8 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         lblTitle.font = UIFont.customFont(bySize: 26)
         
         self.view.addSubview(dateView)
+        dateView.viewController = self
+        dateView.delegate = self
         dateView.translatesAutoresizingMaskIntoConstraints = false
         let tC1 = dateView.topAnchor.constraint(equalTo: self.lblTitle.bottomAnchor, constant: 15)
         let cxC1 = dateView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
@@ -418,6 +420,13 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                         }
                     }
                 }
+                if response.command == .yearMonth {
+                    if response.data is [Date] {
+                        if let date = (response.data as! [Date]).first {
+                            self.dateView.date = date
+                        }
+                    }
+                }
             }
         }
     }
@@ -431,5 +440,11 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                 self.lblAuto.textColor = color
             }
         }
+    }
+    
+    //MARK: - on date selection
+    
+    func onDateSelected(_ date: Date) {
+        ModbusCenter.shared.setDate(date)
     }
 }

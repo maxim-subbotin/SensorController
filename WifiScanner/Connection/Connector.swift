@@ -327,7 +327,7 @@ class Connector {
             connect()
             self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.yearMonth.rawValue, numberArray: [yearMonth, dayHour, minuteSecond], success: {
                 print("Date & time were updated successfully")
-                self.delegate?.onCommandSuccess(self, command: .yearMonth, data: [0] as [AnyObject])
+                self.delegate?.onCommandSuccess(self, command: .yearMonth, data: [date] as [AnyObject])
             }, failure: {(error) in
                 print("Error on date & time updating")
                 self.delegate?.onCommandFail(self, command: .yearMonth, error: error)

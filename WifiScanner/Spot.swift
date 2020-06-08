@@ -218,6 +218,9 @@ class SpotState {
                 let bytes = d.twoBytes
                 
                 year = Int(bytes[0])
+                if year < 1000 {
+                    year += 2000
+                }
                 month = Int(bytes[1])
             }
             if i == 1 { // day and hour

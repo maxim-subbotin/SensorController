@@ -391,4 +391,12 @@ class Localization {
     public var deviceViaManual: String {
         return string(byName: "add_device_manual_mode", defValue: "Manual")
     }
+    
+    public var dateAndTime: String {
+        return string(byName: "date_and_time", defValue: "Date and time")
+    }
+    
+    public var setCurrentDate: String {
+        return string(byName: "set_current_date", defValue: "Set current date and time")
+    }
 }
