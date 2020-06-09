@@ -22,6 +22,16 @@ class ConvectorManualView: UIView {
     private let pinSize = CGFloat(45)
     public var postfix: String?
     public weak var delegate: ConvectorManualViewDelegate?
+    private var _controlSequence: ControlSequenceType?
+    public var controlSequence: ControlSequenceType? {
+        get {
+            return _controlSequence
+        }
+        set {
+            _controlSequence = newValue
+            indicatorPanel.controlSequence = _controlSequence
+        }
+    }
     
     public var mainTitle: String? {
         get {

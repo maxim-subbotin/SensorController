@@ -411,4 +411,12 @@ class Localization {
     public var sameNetworkError: String {
         return string(byName: "same_network_error", defValue: "You have already connected to this network. Please disconnect and try again.")
     }
+
+    public var deleteRegulator: String {
+        return string(byName: "delete_regulator", defValue: "Delete the regulator")
+    }
+    
+    public var delete: String {
+        return string(byName: "delete", defValue: "Delete")
+    }
 }

@@ -394,7 +394,7 @@ class Connector {
         let i = val.rawValue
         self.modbus.writeRegistersFromAndOn(address: ConnectorCommand.controlSequence.rawValue, numberArray: [i], success: {
             print("Control sequence was updated successfully")
-            self.delegate?.onCommandSuccess(self, command: .controlSequence, data: [0] as [AnyObject])
+            self.delegate?.onCommandSuccess(self, command: .controlSequence, data: [val] as [AnyObject])
         }, failure: {(error) in
             print("Error on control sequence updating")
             self.delegate?.onCommandFail(self, command: .controlSequence, error: error)

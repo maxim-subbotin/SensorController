@@ -25,6 +25,10 @@ import UIKit
  types.append(ParameterType(withType: .defaultSettings, andTitle: "Default settings"))
  */
 
+protocol ConvectorParametersViewDelegate: class {
+    func onSpotDelete()
+}
+
 class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, ConvectorTrackBarViewDelegate, ConvectorCheckboxSetViewDelegate, ConvectorSwitchViewDelegate {
     public weak var parentViewController: UIViewController?
     private var lblParams = UILabel()
@@ -47,6 +51,9 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
     private var lblDefault = UILabel()
     private var btnDefault = UIButton()
     private var lblVersion = UILabel()
+    private var lblDelete = UILabel()
+    private var btnDelete = UIButton()
+    public weak var spotDelegate: ConvectorParametersViewDelegate?
     private var _spotState = SpotState()
     public var spotState: SpotState {
         get {
@@ -466,11 +473,51 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
         let wC23 = lblVersion.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(38 + 38))
         let hC23 = lblVersion.heightAnchor.constraint(equalToConstant: 30)
         NSLayoutConstraint.activate([tC23, lC23, wC23, hC23])
+        
+        let separator5 = UIView()
+        self.addSubview(separator5)
+        separator5.backgroundColor = .white
+        separator5.alpha = 0.5
+        separator5.translatesAutoresizingMaskIntoConstraints = false
+        let tC24 = separator5.topAnchor.constraint(equalTo: lblVersion.bottomAnchor, constant: 15)
+        let lC24 = separator5.leftAnchor.constraint(equalTo: lblParams.leftAnchor, constant: 0)
+        let wC24 = separator5.widthAnchor.constraint(equalTo: lblParams.widthAnchor, constant: -20)
+        let hC24 = separator5.heightAnchor.constraint(equalToConstant: 2)
+        NSLayoutConstraint.activate([tC24, lC24, wC24, hC24])
+        
+        self.addSubview(lblDelete)
+        lblDelete.text = Localization.main.deleteRegulator
+        lblDelete.textColor = .white
+        lblDelete.font = UIFont.customFont(bySize: 21)
+        lblDelete.translatesAutoresizingMaskIntoConstraints = false
+        let tC25 = lblDelete.topAnchor.constraint(equalTo: separator5.bottomAnchor, constant: 25)
+        let lC25 = lblDelete.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 38)
+        let wC25 = lblDelete.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -(38 + 38))
+        let hC25 = lblDelete.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC25, lC25, wC25, hC25])
+        
+        self.addSubview(btnDelete)
+        btnDelete.translatesAutoresizingMaskIntoConstraints = false
+        btnDelete.layer.cornerRadius = 15
+        btnDelete.setTitle(Localization.main.delete, for: .normal)
+        btnDelete.setTitleColor(UIColor(hexString: "#F0F0F0"), for: .highlighted)
+        btnDelete.titleLabel?.font = UIFont.customFont(bySize: 21)
+        btnDelete.clipsToBounds = true
+        btnDelete.layer.borderColor = UIColor.white.cgColor
+        btnDelete.layer.borderWidth = 2
+        btnDelete.backgroundColor = .clear
+        btnDelete.setTitleColor(UIColor.white, for: .normal)
+        let tC26 = btnDelete.topAnchor.constraint(equalTo: lblDelete.bottomAnchor, constant: 15)
+        let lC26 = btnDelete.leftAnchor.constraint(equalTo: lblDelete.leftAnchor, constant: 0)
+        let wC26 = btnDelete.widthAnchor.constraint(equalToConstant: 150)
+        let hC26 = btnDelete.heightAnchor.constraint(equalToConstant: 30)
+        NSLayoutConstraint.activate([tC26, lC26, wC26, hC26])
+        btnDelete.addTarget(self, action: #selector(onDeleteButton), for: .touchUpInside)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var h = CGFloat(2800)
+        var h = CGFloat(2950)
         if !Tools.isiPad && Tools.isRussian {
             h += 150
         }
@@ -552,6 +599,10 @@ class ConvectorParametersView: UIScrollView, ConvectorTwoValParamViewDelegate, C
             }))
             vc.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    @objc func onDeleteButton() {
+        self.spotDelegate?.onSpotDelete()
     }
     
     //MARK: - modbus command callback

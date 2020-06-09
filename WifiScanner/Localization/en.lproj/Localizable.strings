@@ -99,3 +99,5 @@
 "qr_code_error" = "Incorrect QR code format";
 "error" = "Error";
 "same_network_error" = "You have already connected to this network. Please disconnect and try again.";
+"delete_regulator" = "Delete the regulator";
+"delete" = "Delete";

@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
-class ConvectorViewController: UIViewController, SelectedButtonDelegate, ConvectorBottomPanelDelegate, ConvectorManualViewDelegate, ConvectorDateTimeViewDelegate {
+protocol ConvectorViewControllerDelegate: class {
+    func onSpotDelete()
+}
+
+class ConvectorViewController: UIViewController, SelectedButtonDelegate, ConvectorBottomPanelDelegate, ConvectorManualViewDelegate, ConvectorDateTimeViewDelegate, ConvectorParametersViewDelegate {
     private var lblTitle = UILabel()
     private var dateView = ConvectorDateTimeView()
     private var bottomPanel = ConvectorBottomPanel()
@@ -24,6 +28,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
     public var spot = Spot()
     public var spotState = SpotState.demo
     public var lblTurnedOff = UILabel()
+    public weak var delegate: ConvectorViewControllerDelegate?
     
     public var mode = SpotViewMode.prod
     private var connector: Connector?
@@ -50,6 +55,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                 connector?.getAllData()*/
                 ModbusCenter.shared.ip = wifiIP
                 ModbusCenter.shared.getAllData()
+                ModbusCenter.shared.getAdditionalData()
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(onModbusResponse(_:)), name: .modbusResponse, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(onColorNotification(_:)), name: ColorScheme.changeBackgroundColor, object: nil)
@@ -172,6 +178,7 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
         lblAuto.isHidden = true
         
         self.view.addSubview(parametersView)
+        parametersView.spotDelegate = self
         parametersView.translatesAutoresizingMaskIntoConstraints = false
         let cxC8 = parametersView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0)
         let tC8 = parametersView.topAnchor.constraint(equalTo: self.lblTitle.bottomAnchor, constant: 0)
@@ -392,6 +399,8 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                     DispatchQueue.main.async {
                         self.spotState.additionalParams = SpotState.parseAdditionalData(response.data as! [Int])
                         self.parametersView.spotState = self.spotState
+                        self.fanView.controlSequence = self.spotState.additionalParams[.controlSequence] as? ControlSequenceType
+                        self.temperatureView.controlSequence = self.spotState.additionalParams[.controlSequence] as? ControlSequenceType
                         ModbusCenter.shared.getVersion()
                     }
                 }
@@ -427,6 +436,14 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
                         }
                     }
                 }
+                if response.command == .controlSequence {
+                    if response.data is [ControlSequenceType] {
+                        if let cs = (response.data as! [ControlSequenceType]).first {
+                            self.fanView.controlSequence = cs
+                            self.temperatureView.controlSequence = cs
+                        }
+                    }
+                }
             }
         }
     }
@@ -446,5 +463,13 @@ class ConvectorViewController: UIViewController, SelectedButtonDelegate, Convect
     
     func onDateSelected(_ date: Date) {
         ModbusCenter.shared.setDate(date)
+    }
+    
+    //MARK: - on spot delete
+    
+    func onSpotDelete() {
+        spot.delete()
+        self.delegate?.onSpotDelete()
+        self.dismiss(animated: true, completion: nil)
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 import NetworkExtension
 import SystemConfiguration
 
-class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SpotEditViewControllerDelegate, SpotCollectionViewCellDelegate {
+class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SpotEditViewControllerDelegate, SpotCollectionViewCellDelegate, SpotAddingHelperViewControllerDelegate, ConvectorViewControllerDelegate {
     private var collectionView = SpotsCollectionView()
     private var spots = [Spot]()
     public var currentSsid: String {
@@ -99,6 +99,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
 
     @objc func onAddAction() {
         let vc = SpotAddingHelperViewController()
+        vc.delegate = self
         self.present(vc, animated: true, completion: nil)
         
         //let vc = SpotEditViewController()
@@ -184,6 +185,7 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func openSpot(_ spot: Spot) {
         let vc = ConvectorViewController() //SpotViewController()
+        vc.delegate = self
         vc.spot = spot
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .pageSheet
@@ -314,6 +316,21 @@ class SpotsViewController: UIViewController, UICollectionViewDelegate, UICollect
         if let index = spots.firstIndex(where: { $0.id == spot.id }) {
             spots.remove(at: index)
         }
+        self.collectionView.reloadData()
+    }
+    
+    //MARK: - adding of new regulator
+    
+    func onSuccessSpotAdding() {
+        reloadDate()
+    }
+    
+    func onSpotDelete() {
+        reloadDate()
+    }
+    
+    func reloadDate() {
+        spots = Spot.getSavedSpots().sorted(by: { $0.order < $1.order })
         self.collectionView.reloadData()
     }
 }

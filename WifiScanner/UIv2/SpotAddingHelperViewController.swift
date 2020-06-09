@@ -11,6 +11,10 @@ import NetworkExtension
 import SystemConfiguration
 import AVFoundation
 
+protocol SpotAddingHelperViewControllerDelegate: class {
+    func onSuccessSpotAdding()
+}
+
 class SpotAddingHelperViewController: UIViewController, RegulatorConnectionCardDelegate, RegulatorOnlineAuthCardDelegate {
     private var card1 = RegulatorTitleCardView()
     private var card2 = RegulatorTypeConnectionCardView()
@@ -21,6 +25,7 @@ class SpotAddingHelperViewController: UIViewController, RegulatorConnectionCardD
     private var card7 = RegulatorForgetPasswordCard()
     private var card8 = RegulatorSignupCard()
     private var container = HelperCardContainerView()
+    public weak var delegate: SpotAddingHelperViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,7 +122,14 @@ class SpotAddingHelperViewController: UIViewController, RegulatorConnectionCardD
     }
     
     func onConnectionSuccess() {
-        // need to hide view and show regulator's list
+        if let name = self.card1.title, let ssid = self.card4.ssid, let psw = self.card4.password {
+            let spot = Spot(withSSid: ssid, andPassword: psw)
+            spot.name = name
+            spot.save()
+        }
+        
+        self.delegate?.onSuccessSpotAdding()
+        self.dismiss(animated: true, completion: nil)
     }
     
     func onSingUpAction() {
@@ -307,6 +319,9 @@ class TwoButtonHelperCardView: HelperCardView {
 class RegulatorTitleCardView: OneButtonHelperCardView {
     private var lblTitle = UILabel()
     private var txtTitle = UnderlinedTextField()
+    public var title: String? {
+        return txtTitle.text
+    }
     
     override func applyUI() {
         super.applyUI()

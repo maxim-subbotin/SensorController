@@ -206,6 +206,28 @@ class ConvectorIndicatorPanel: UIView {
     private var buttons = [IndicatorImage]()
     public var activeColor = UIColor(hexString: "#009CDF")
     public var inactiveColor = UIColor(hexString: "#DADADA")
+    private var _controlSequence: ControlSequenceType?
+    public var controlSequence: ControlSequenceType? {
+        get {
+            return _controlSequence
+        }
+        set {
+            _controlSequence = newValue
+            
+            for v in subviews {
+                if v is IndicatorImage {
+                    let btn = v as! IndicatorImage
+                    v.tintColor = inactiveColor
+                    if btn.type == .cool && (_controlSequence! == .onlyCold || _controlSequence! == .heatAndCold) {
+                        v.tintColor = activeColor
+                    }
+                    if btn.type == .heat && (_controlSequence! == .onlyHeat || _controlSequence! == .heatAndCold) {
+                        v.tintColor = activeColor
+                    }
+                }
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
